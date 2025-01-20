@@ -61,6 +61,7 @@ trait CommonSubtotal
 		if (!in_array($current_module, $allowed_types)) {
 			return false; // Unsupported type
 		}
+		$desc = dol_html_entity_decode($desc, ENT_QUOTES);
 		$max_existing_level = 0;
 		$rang = -1;
 		$next_line = false;
