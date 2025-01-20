@@ -1317,6 +1317,7 @@ function sanitizeVal($out = '', $check = 'alphanohtml', $filter = null, $options
 		case 'restricthtmlnolink':
 		case 'restricthtml':		// Recommended for most html textarea
 		case 'restricthtmlallowclass':
+		case 'restricthtmlallowiframe':
 		case 'restricthtmlallowlinkscript':	// Allow link and script tag for head section.
 		case 'restricthtmlallowunvalid':
 			$out = dol_htmlwithnojs($out, 1, $check);
@@ -8482,7 +8483,7 @@ function dol_nl2br($stringtoencode, $nl2brmode = 0, $forxml = false)
  *
  * @param	string	$stringtoencode				String to encode
  * @param	int     $nouseofiframesandbox		0=Default, 1=Allow use of option MAIN_SECURITY_USE_SANDBOX_FOR_HTMLWITHNOJS for html sanitizing (not yet working)
- * @param	string	$check						'restricthtmlnolink' or 'restricthtml' or 'restricthtmlallowclass' or 'restricthtmlallowlinkscript' or 'restricthtmlallowunvalid'
+ * @param	string	$check						'restricthtmlnolink' or 'restricthtml' or 'restricthtmlallowclass' or 'restricthtmlallowiframe' or 'restricthtmlallowlinkscript' or 'restricthtmlallowunvalid'
  * @return	string								HTML sanitized
  */
 function dol_htmlwithnojs($stringtoencode, $nouseofiframesandbox = 0, $check = 'restricthtml')
@@ -8608,6 +8609,8 @@ function dol_htmlwithnojs($stringtoencode, $nouseofiframesandbox = 0, $check = '
 				$out = dol_string_onlythesehtmltags($out, 0, 1, 0, 0, array(), 1, 1, 1, getDolGlobalInt("UNSECURED_restricthtmlallowlinkscript_ALLOW_PHP"));
 			} elseif ($check == 'restricthtmlallowclass' || $check == 'restricthtmlallowunvalid') {
 				$out = dol_string_onlythesehtmltags($out, 0, 0, 1);
+			} elseif ($check == 'restricthtmlallowiframe') {
+				$out = dol_string_onlythesehtmltags($out, 0, 0, 1, 1);
 			} else {
 				$out = dol_string_onlythesehtmltags($out, 0, 1, 1);
 			}
@@ -9186,7 +9189,7 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
 			} elseif (property_exists($object, 'delivery_date')) {
 				$date_delivery =  $object->delivery_date;
 			}
-			$substitutionarray['__DATE_DELIVERY__'] = (isset($date_delivery) ? dol_print_date($date_delivery, 'day', 0, $outputlangs) : '');
+			$substitutionarray['__DATE_DELIVERY__'] = (isset($date_delivery) ? dol_print_date($date_delivery, 'day', false, $outputlangs) : '');
 			$substitutionarray['__DATE_DELIVERY_DAY__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%d") : '');
 			$substitutionarray['__DATE_DELIVERY_DAY_TEXT__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%A") : '');
 			$substitutionarray['__DATE_DELIVERY_MON__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%m") : '');
@@ -10510,10 +10513,11 @@ function dol_osencode($str)
  * 		@param	string				$fieldid		Field to get
  *      @param  int					$entityfilter	Filter by entity
  *      @param	string				$filters		Filters to add. WARNING: string must be escaped for SQL and not coming from user input.
+ *      @param	bool    			$useCache       If true (default), cache will be queried and updated.
  *      @return int<-1,max>|string					ID of code if OK, 0 if key empty, -1 if KO
  *      @see $langs->getLabelFromKey
  */
-function dol_getIdFromCode($db, $key, $tablename, $fieldkey = 'code', $fieldid = 'id', $entityfilter = 0, $filters = '')
+function dol_getIdFromCode($db, $key, $tablename, $fieldkey = 'code', $fieldid = 'id', $entityfilter = 0, $filters = '', $useCache = true)
 {
 	global $conf;
 
@@ -10523,7 +10527,7 @@ function dol_getIdFromCode($db, $key, $tablename, $fieldkey = 'code', $fieldid =
 	}
 
 	// Check in cache
-	if (isset($conf->cache['codeid'][$tablename][$key][$fieldid])) {	// Can be defined to 0 or ''
+	if ($useCache && isset($conf->cache['codeid'][$tablename][$key][$fieldid])) {	// Can be defined to 0 or ''
 		return $conf->cache['codeid'][$tablename][$key][$fieldid]; // Found in cache
 	}
 
@@ -10546,14 +10550,16 @@ function dol_getIdFromCode($db, $key, $tablename, $fieldkey = 'code', $fieldid =
 	$resql = $db->query($sql);
 	if ($resql) {
 		$obj = $db->fetch_object($resql);
+		$valuetoget = '';
 		if ($obj) {
-			$conf->cache['codeid'][$tablename][$key][$fieldid] = $obj->valuetoget;
+			$valuetoget = $obj->valuetoget;
+			$conf->cache['codeid'][$tablename][$key][$fieldid] = $valuetoget;
 		} else {
 			$conf->cache['codeid'][$tablename][$key][$fieldid] = '';
 		}
 		$db->free($resql);
 
-		return $conf->cache['codeid'][$tablename][$key][$fieldid];
+		return $valuetoget;
 	} else {
 		return -1;
 	}
@@ -11719,7 +11725,7 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 					if ($newcrit != '') {
 						$numnewcrit = price2num($newcrit);
 						if (is_numeric($numnewcrit)) {
-							$newres .= $field.' '.$operator.' '.((float) $numnewcrit); // should be a numeric
+							$newres .= $db->sanitize($field).' '.$operator.' '.((float) $numnewcrit); // should be a numeric
 						} else {
 							$newres .= '1 = 2'; // force false, we received a corrupted data
 						}
@@ -11729,10 +11735,10 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 				$i2++; // a criteria for 1 more field was added to string
 			} elseif ($mode == 2 || $mode == -2) {
 				$crit = preg_replace('/[^0-9,]/', '', $crit); // ID are always integer
-				$newres .= ($i2 > 0 ? ' OR ' : '').$field." ".($mode == -2 ? 'NOT ' : '');
+				$newres .= ($i2 > 0 ? ' OR ' : '').$db->sanitize($field)." ".($mode == -2 ? 'NOT ' : '');
 				$newres .= $crit ? "IN (".$db->sanitize($db->escape($crit)).")" : "IN (0)";
 				if ($mode == -2) {
-					$newres .= ' OR '.$field.' IS NULL';
+					$newres .= ' OR '.$db->sanitize($field).' IS NULL';
 				}
 				$i2++; // a criteria for 1 more field was added to string
 			} elseif ($mode == 3 || $mode == -3) {
@@ -11746,11 +11752,11 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 							$listofcodes .= "'".$db->escape($val)."'";
 						}
 					}
-					$newres .= ($i2 > 0 ? ' OR ' : '').$field." ".($mode == -3 ? 'NOT ' : '')."IN (".$db->sanitize($listofcodes, 1).")";
+					$newres .= ($i2 > 0 ? ' OR ' : '').$db->sanitize($field)." ".($mode == -3 ? 'NOT ' : '')."IN (".$db->sanitize($listofcodes, 1).")";
 					$i2++; // a criteria for 1 more field was added to string
 				}
 				if ($mode == -3) {
-					$newres .= ' OR '.$field.' IS NULL';
+					$newres .= ' OR '.$db->sanitize($field).' IS NULL';
 				}
 			} elseif ($mode == 4) {
 				$tmparray = explode(',', $crit);
@@ -11759,10 +11765,10 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 					foreach ($tmparray as $val) {
 						$val = trim($val);
 						if ($val) {
-							$newres .= ($i2 > 0 ? " OR (" : "(").$field." LIKE '".$db->escape($val).",%'";
-							$newres .= ' OR '.$field." = '".$db->escape($val)."'";
-							$newres .= ' OR '.$field." LIKE '%,".$db->escape($val)."'";
-							$newres .= ' OR '.$field." LIKE '%,".$db->escape($val).",%'";
+							$newres .= ($i2 > 0 ? " OR (" : "(").$db->sanitize($field)." LIKE '".$db->escape($val).",%'";
+							$newres .= ' OR '.$db->sanitize($field)." = '".$db->escape($val)."'";
+							$newres .= ' OR '.$db->sanitize($field)." LIKE '%,".$db->escape($val)."'";
+							$newres .= ' OR '.$db->sanitize($field)." LIKE '%,".$db->escape($val).",%'";
 							$newres .= ')';
 							$i2++; // a criteria for 1 more field was added to string (we can add several criteria for the same field as it is a multiselect search criteria)
 						}
@@ -11784,7 +11790,7 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 					}
 
 					if (preg_match('/\.(id|rowid)$/', $field)) {	// Special case for rowid that is sometimes a ref so used as a search field
-						$newres .= $field." = ".(is_numeric($tmpcrit) ? ((float) $tmpcrit) : '0');
+						$newres .= $db->sanitize($field)." = ".(is_numeric($tmpcrit) ? ((float) $tmpcrit) : '0');
 					} else {
 						$tmpcrit2 = $tmpcrit;
 						$tmpbefore = '%';
@@ -11792,10 +11798,10 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 						$tmps = '';
 
 						if (preg_match('/^!/', $tmpcrit)) {
-							$tmps .= $field." NOT LIKE "; // ! as exclude character
+							$tmps .= $db->sanitize($field)." NOT LIKE "; // ! as exclude character
 							$tmpcrit2 = preg_replace('/^!/', '', $tmpcrit2);
 						} else {
-							$tmps .= $field." LIKE ";
+							$tmps .= $db->sanitize($field)." LIKE ";
 						}
 						$tmps .= "'";
 

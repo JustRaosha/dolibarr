@@ -83,9 +83,9 @@ if ($line->qty > 0) { ?>
 	<td class="linecollabel"><?=str_repeat('&nbsp;', ($line->qty-1)*8);?>
 		<?php
 		echo $line->desc;
-		echo '&nbsp;'.img_picto('', 'invoicing', 'class="colorwhite"');
+		echo '&nbsp;'.img_picto($langs->trans("ShowUPOnPDF"), 'invoicing', 'class="colorwhite"');
 		echo '&nbsp; <span class="colorwhite">%</span>';
-		echo '&nbsp;'.img_picto('', 'file', 'class="colorwhite"');
+		echo '&nbsp;'.img_picto($langs->trans("ForcePageBreak"), 'file', 'class="colorwhite"');
 		?>
 	</td>
 	<td class="linecolvat nowrap right">
