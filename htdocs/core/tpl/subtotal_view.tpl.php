@@ -80,7 +80,14 @@ if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 
 if ($line->qty > 0) { ?>
 		<?php $colspan = isModEnabled('multicurrency') && $this->multicurrency_code != $conf->currency ? $colspan+2 : $colspan+1 ?>
-	<td class="linecollabel"><?=str_repeat('&nbsp;', ($line->qty-1)*8);?><?= $line->desc ?></td>
+	<td class="linecollabel"><?=str_repeat('&nbsp;', ($line->qty-1)*8);?>
+		<?php
+		echo $line->desc;
+		echo '&nbsp;'.img_picto('', 'invoicing', 'class="colorwhite"');
+		echo '&nbsp; <span class="colorwhite">%</span>';
+		echo '&nbsp;'.img_picto('', 'file', 'class="colorwhite"');
+		?>
+	</td>
 	<td class="linecolvat nowrap right">
 		<?php
 		if (GETPOST('mode', 'aZ09') == 'vatforblocklines' && GETPOST('lineid') == $line->id) {
@@ -110,7 +117,11 @@ if ($line->qty > 0) { ?>
 	</td>
 	<td class="linecollabel" colspan="<?= $colspan - 4 ?>"></td>
 <?php } elseif ($line->qty < 0) {?>
-		<td class="linecollabel nowrap right" colspan="<?= $colspan + 2 ?>"><?= $line->desc.' :' ?></td>
+		<td class="linecollabel nowrap right" colspan="<?= $colspan + 2 ?>">
+			<?php
+			echo $line->desc.'&nbsp;<span class="colorwhite">%</span> :'
+			?>
+		</td>
 		<td class="linecolamount nowrap right">
 			<?php
 			echo $this->getSubtotalLineAmount($line);
