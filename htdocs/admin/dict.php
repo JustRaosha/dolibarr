@@ -2794,12 +2794,11 @@ function dictFieldList($fieldlist, $obj = null, $tabname = '', $context = '')
 			print '</td>';
 		} elseif ($value == 'department_buyer') {
 			if ($context == 'edit') {
-				print '<td>';
+				print '<td class="nowraponall">';
 				// show department buyer list
 				$country_code = (!empty($obj->country_code) ? $obj->country_code : '');
 				$department_buyer_id = (!empty($obj->department_buyer_id) ? (int) $obj->department_buyer_id : 0);
 				if ($country_code != '') {
-					print img_picto('', 'state', 'class="pictofixedwidth"');
 					print $formcompany->select_state($department_buyer_id, $country_code, 'department_buyer_id', 'minwidth100 maxwidth150 maxwidthonsmartphone');
 				}
 				print '</td>';
