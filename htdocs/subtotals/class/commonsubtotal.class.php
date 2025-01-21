@@ -34,6 +34,16 @@ trait CommonSubtotal
 	 */
 	public static $PRODUCT_TYPE = 9;
 
+	/**
+	 * Options for subtotals module title lines
+	 */
+	public static $TITLE_OPTIONS = ['showuponpdf', 'showtotalexludingvatonpdf', 'forcepagebreak'];
+
+	/**
+	 * Options for subtotals module subtotal lines
+	 */
+	public static $SUBTOTAL_OPTIONS = ['showtotalexludingvatonpdf'];
+
 	public function getSubtotalSpecialCode(): int
 	{
 		return self::$SPECIAL_CODE;
@@ -49,7 +59,7 @@ trait CommonSubtotal
 	/**
 	 * Adds a subtotal or a title line to a document
 	 */
-	public function addSubtotalLine($desc, $depth)
+	public function addSubtotalLine($desc, $depth, $options)
 	{
 		if (empty($desc)) {
 			setEventMessages("TitleNeedDesc", null, 'errors');
@@ -116,7 +126,21 @@ trait CommonSubtotal
 				0,						// PU ttc
 				self::$PRODUCT_TYPE,	// Type
 				$rang,					// Rang
-				self::$SPECIAL_CODE		// Special code
+				self::$SPECIAL_CODE,	// Special code
+				'', 					// Origin
+				0, 						// Origin_id
+				0, 						// FK parent line
+				null, 					// FK fournprice
+				0, 						// PA ht
+				'', 					// Label
+				array(), 				// Array options
+				100, 					// Situation percent
+				0, 						// FK prev id
+				null, 					// FK unit
+				0, 						// PU ht devise
+				'', 					// Ref ext
+				0, 						// Noupdateafterinsertline
+				serialize($options) 	// Subtotal options
 			);
 		} elseif ($current_module== 'propal') {
 			$result = $this->addline(
@@ -133,7 +157,21 @@ trait CommonSubtotal
 				0,						// Info bits
 				self::$PRODUCT_TYPE,	// Type
 				$rang,					// Rang
-				self::$SPECIAL_CODE		// Special code
+				self::$SPECIAL_CODE,	// Special code
+				0, 						// FK parent line
+				0, 						// FK fournprice
+				0, 						// PA ht
+				'', 					// Label
+				'', 					// Date start
+				'', 					// Date end
+				array(), 				// Array options
+				null, 					// FK unit
+				'', 					// Origin
+				0, 						// Origin id
+				0, 						// PU ht devise
+				0, 						// FK remise except
+				0, 						// Noupdateafterinsertline
+				serialize($options) 	// Subtotal options
 			);
 		} elseif ($current_module== 'commande') {
 			$result = $this->addline(
@@ -153,7 +191,19 @@ trait CommonSubtotal
 				'',						// Date end
 				self::$PRODUCT_TYPE,	// Type
 				$rang,					// Rang
-				self::$SPECIAL_CODE		// Special code
+				self::$SPECIAL_CODE,	// Special code
+				0, 						// FK parent line
+				null , 					// FK fournprice
+				0 , 					// PA ht
+				'' , 					// Label
+				array() , 				// Array options
+				null , 					// FK unit
+				'' , 					// Origin
+				0 , 					// Origin id
+				0 , 					// PU ht devise
+				'' , 					// Ref ext
+				0 , 					// Noupdateafterinsertline
+				serialize($options)		// Subtotal options
 			);
 		}
 
@@ -202,7 +252,7 @@ trait CommonSubtotal
 	/**
 	 * Updates a subtotals line to a document
 	 */
-	public function updateSubtotalLine($lineid, $desc, $depth)
+	public function updateSubtotalLine($lineid, $desc, $depth, $options)
 	{
 
 		$current_module = $this->element;
@@ -236,7 +286,7 @@ trait CommonSubtotal
 					$oldDepth = $line->qty;
 				}
 				if ($line->special_code == self::$SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
-					$this->updateSubtotalLine($line->id, $desc, -$depth);
+					$this->updateSubtotalLine($line->id, $desc, -$depth, unserialize($line->subtotal_options));
 					break;
 				}
 			}
@@ -263,7 +313,15 @@ trait CommonSubtotal
 				null,					// FK fournprice
 				0,						// PA ht
 				'',						// Label
-				self::$SPECIAL_CODE		// Special code
+				self::$SPECIAL_CODE,	// Special code
+				array(), 				// Array options
+				100, 					// Situation percent
+				null,					// FK unit
+				0, 						// PU ht devise
+				0, 						// Notrigger
+				'', 					// Ref ext
+				0, 						// Rang
+				serialize($options) 	// Subtotal_options
 			);
 		} elseif ($current_module== 'propal') {
 			$result = $this->updateline(
@@ -283,7 +341,15 @@ trait CommonSubtotal
 				0, 						// FK fournprice
 				0, 						// PA ht
 				'',						// Label
-				self::$PRODUCT_TYPE		// Type
+				self::$PRODUCT_TYPE,	// Type
+				'', 					// Date start
+				'', 					// Date end
+				array(), 				// Array options
+				null, 					// FK unit
+				0, 						// PU ht devise
+				0, 						// Notrigger
+				0,						// Rang
+				serialize($options) 	// Subtotal options
 			);
 		} elseif ($current_module== 'commande') {
 			$result = $this->updateline(
@@ -305,7 +371,14 @@ trait CommonSubtotal
 				0, 						// FK fournprice
 				0, 						// PA ht
 				'',						// Label
-				self::$SPECIAL_CODE 	// Special code
+				self::$SPECIAL_CODE, 	// Special code
+				array(), 				// Array options
+				null, 					// FK unit
+				0, 						// PU ht devise
+				0, 						// Notrigger
+				'', 					// Ref ext
+				0, 						// Rang
+				serialize($options) 	// Subtotal options
 			);
 		}
 

@@ -1091,6 +1091,8 @@ if (empty($reshook)) {
 		if (in_array($line_type, ['subtotal', 'title'])) {
 			$langs->load('subtotals');
 
+			$subtotal_options = array();
+
 			if ($line_type == 'subtotal') {
 				$choosen_line = GETPOST('subtotaltitleline');
 				foreach ($object->lines as $line) {
@@ -1099,13 +1101,23 @@ if (empty($reshook)) {
 						$depth = -$line->qty;
 					}
 				}
+				foreach (Propal::$SUBTOTAL_OPTIONS as $option) {
+					if (GETPOST($option)) {
+						$subtotal_options[] = $option;
+					}
+				}
 			} else {
 				$desc = GETPOST('subtotallinedesc', 'san_alpha');
 				$depth = GETPOSTINT('subtotallinelevel') ?? 1;
+				foreach (Propal::$TITLE_OPTIONS as $option) {
+					if (GETPOST($option)) {
+						$subtotal_options[] = $option;
+					}
+				}
 			}
 
 			// Insert line
-			$result = $object->addSubtotalLine($desc, $depth);
+			$result = $object->addSubtotalLine($desc, $depth, $subtotal_options);
 
 			if ($result > 0) {
 				// TODO refresh pdf ?
@@ -1646,23 +1658,30 @@ if (empty($reshook)) {
 		if (in_array($line_edit_mode, ['subtotal', 'title'])) {
 			$langs->load('subtotals');
 
+			$subtotal_options = array();
+
 			$lineid = GETPOSTINT('lineid');
 
 			if ($line_edit_mode == 'subtotal') {
-				$choosen_line = GETPOST('subtotaltitleline');
-				foreach ($object->lines as $line) {
-					if ($line->desc == $choosen_line && $object->isSubtotalLine($line) && $line->qty > 0) {
-						$desc = $line->desc;
-						$depth = -$line->qty;
+				$desc = GETPOST('line_desc');
+				$depth = GETPOST('line_depth');
+				foreach (Propal::$SUBTOTAL_OPTIONS as $option) {
+					if (GETPOSTISSET($option)) {
+						$subtotal_options[] = $option;
 					}
 				}
 			} else {
 				$desc = GETPOST('line_desc') ?? $langs->trans("Title");
 				$depth = GETPOSTINT('line_depth') ?? 1;
+				foreach (Propal::$TITLE_OPTIONS as $option) {
+					if (GETPOSTISSET($option)) {
+						$subtotal_options[] = $option;
+					}
+				}
 			}
 
 			// Update line
-			$result = $object->updateSubtotalLine($lineid, $desc, $depth);
+			$result = $object->updateSubtotalLine($lineid, $desc, $depth, $subtotal_options);
 
 			if ($result > 0) {
 				// TODO refresh pdf ?

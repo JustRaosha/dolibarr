@@ -145,6 +145,10 @@ class OrderLine extends CommonOrderLine
 	 */
 	public $skip_update_total;
 
+	/**
+	 * @var string Serialized subtotal options
+	 */
+	public mixed $subtotal_options;
 
 	/**
 	 *      Constructor
@@ -170,7 +174,7 @@ class OrderLine extends CommonOrderLine
 		$sql .= ' cd.fk_unit,';
 		$sql .= ' cd.fk_multicurrency, cd.multicurrency_code, cd.multicurrency_subprice, cd.multicurrency_total_ht, cd.multicurrency_total_tva, cd.multicurrency_total_ttc,';
 		$sql .= ' p.ref as product_ref, p.label as product_label, p.description as product_desc, p.tobatch as product_tobatch,';
-		$sql .= ' cd.date_start, cd.date_end, cd.vat_src_code';
+		$sql .= ' cd.date_start, cd.date_end, cd.vat_src_code, cd.subtotal_options';
 		$sql .= ' FROM '.MAIN_DB_PREFIX.'commandedet as cd';
 		$sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'product as p ON cd.fk_product = p.rowid';
 		$sql .= ' WHERE cd.rowid = '.((int) $rowid);
@@ -416,7 +420,7 @@ class OrderLine extends CommonOrderLine
 		$sql .= ' special_code, rang, fk_product_fournisseur_price, buy_price_ht,';
 		$sql .= ' info_bits, total_ht, total_tva, total_localtax1, total_localtax2, total_ttc, date_start, date_end,';
 		$sql .= ' fk_unit,';
-		$sql .= ' fk_multicurrency, multicurrency_code, multicurrency_subprice, multicurrency_total_ht, multicurrency_total_tva, multicurrency_total_ttc';
+		$sql .= ' fk_multicurrency, multicurrency_code, multicurrency_subprice, multicurrency_total_ht, multicurrency_total_tva, multicurrency_total_ttc, subtotal_options';
 		$sql .= ')';
 		$sql .= " VALUES (".$this->fk_commande.",";
 		$sql .= " ".($this->fk_parent_line > 0 ? "'".$this->db->escape($this->fk_parent_line)."'" : "null").",";
@@ -455,6 +459,7 @@ class OrderLine extends CommonOrderLine
 		$sql .= ", ".price2num($this->multicurrency_total_ht, 'CT');
 		$sql .= ", ".price2num($this->multicurrency_total_tva, 'CT');
 		$sql .= ", ".price2num($this->multicurrency_total_ttc, 'CT');
+		$sql .= ", '".$this->subtotal_options."'";
 		$sql .= ')';
 
 		dol_syslog(get_class($this)."::insert", LOG_DEBUG);
@@ -613,6 +618,7 @@ class OrderLine extends CommonOrderLine
 			$sql .= ", rang=".((int) $this->rang);
 		}
 		$sql .= " , fk_unit=".(!$this->fk_unit ? 'NULL' : $this->fk_unit);
+		$sql .= ", subtotal_options='".$this->subtotal_options."'";
 
 		// Multicurrency
 		$sql .= " , multicurrency_subprice=".price2num($this->multicurrency_subprice);

@@ -44,6 +44,8 @@ $langs->load('subtotals');
 // Base colspan if there is no module activated to display line correctly
 $colspan = 3;
 
+$line_options = unserialize($line->subtotal_options);
+
 // Handling colspan if margin module is enabled
 if (!empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande')) && isModEnabled('margin') && empty($user->socid)) {
 	if ($user->hasRight('margins', 'creer')) {
@@ -83,9 +85,17 @@ if ($line->qty > 0) { ?>
 	<td class="linecollabel"><?=str_repeat('&nbsp;', ($line->qty-1)*8);?>
 		<?php
 		echo $line->desc;
-		echo '&nbsp;'.img_picto($langs->trans("ShowUPOnPDF"), 'invoicing', 'class="colorwhite"');
-		echo '&nbsp; <span class="colorwhite">%</span>';
-		echo '&nbsp;'.img_picto($langs->trans("ForcePageBreak"), 'file', 'class="colorwhite"');
+		if ($line_options) {
+			if (in_array('showuponpdf', $line_options)) {
+				echo '&nbsp;'.img_picto($langs->trans("ShowUPOnPDF"), 'invoicing', 'class="colorwhite"');
+			}
+			if (in_array('showtotalexludingvatonpdf', $line_options)) {
+				echo '&nbsp; <span class="colorwhite" title="'.$langs->trans("ShowTotalExludingVATOnPDF").'">%</span>';
+			}
+			if (in_array('forcepagebreak', $line_options)) {
+				echo '&nbsp;'.img_picto($langs->trans("ForcePageBreak"), 'file', 'class="colorwhite"');
+			}
+		}
 		?>
 	</td>
 	<td class="linecolvat nowrap right">
@@ -119,7 +129,13 @@ if ($line->qty > 0) { ?>
 <?php } elseif ($line->qty < 0) {?>
 		<td class="linecollabel nowrap right" colspan="<?= $colspan + 2 ?>">
 			<?php
-			echo $line->desc.'&nbsp;<span class="colorwhite">%</span> :'
+			echo $line->desc;
+			if ($line_options) {
+				if (in_array('showtotalexludingvatonpdf', $line_options)) {
+					echo '&nbsp; <span class="colorwhite" title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
+				}
+			}
+			echo ' :';
 			?>
 		</td>
 		<td class="linecolamount nowrap right">

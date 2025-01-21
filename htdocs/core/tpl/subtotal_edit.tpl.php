@@ -28,11 +28,19 @@
  * @var User $user
  */
 
-// Options for subtotal //TODO : check if 'checked' is true or false
+// Options for subtotal
+$sub_options = unserialize($line->subtotal_options);
+
+if ($sub_options) {
+	$showuponpdf = in_array('showuponpdf', $sub_options);
+	$showtotalexludingvatonpdf = in_array('showtotalexludingvatonpdf', $sub_options);
+	$forcepagebreak = in_array('forcepagebreak', $sub_options);
+}
+
 $line_options = array(
-	'showuponpdf' => array('type' => array('title'), 'checked' => true, 'trans_key' => 'ShowUPOnPDF'),
-	'showtotalexludingvatonpdf' => array('type' => array('title', 'subtotal'), 'checked' => true, 'trans_key' => 'ShowTotalExludingVATOnPDF'),
-	'forcepagebreak' => array('type' => array('title'), 'checked' => true, 'trans_key' => 'ForcePageBreak'),
+	'showuponpdf' => array('type' => array('title'), 'checked' => $showuponpdf ?? false, 'trans_key' => 'ShowUPOnPDF'),
+	'showtotalexludingvatonpdf' => array('type' => array('title', 'subtotal'), 'checked' => $showtotalexludingvatonpdf ?? false, 'trans_key' => 'ShowTotalExludingVATOnPDF'),
+	'forcepagebreak' => array('type' => array('title'), 'checked' => $forcepagebreak ?? false, 'trans_key' => 'ForcePageBreak'),
 );
 
 // Line type
@@ -113,17 +121,25 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 
 
 	if (!$situationinvoicelinewithparent) {
-		if ($line_edit_mode == 'title') {
-			print '<input type="text" name="line_desc" class="marginrightonly" id="line_desc" value="';
-			print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $line->description;
-			print '">';
-			$depth_array = $this->getPossibleLevels($langs);
-			print $form->selectarray('line_depth', $depth_array, abs($line->qty));
+		print '<input type="text" name="line_desc" class="marginrightonly" id="line_desc" value="';
+		print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $line->description.'"';
+		$disabled = 0;
+		if ($line_edit_mode == 'subtotal') {
+			print ' readonly="readonly"';
+			$disabled = 1;
+		}
+		print '>';
+		$depth_array = $this->getPossibleLevels($langs);
+		print $form->selectarray('line_depth', $depth_array, abs($line->qty), 0, 0, 0, '', 0, 0, $disabled);
+		if ($disabled) {
+			print '<input type="hidden" name="line_depth" value="'.$line->qty.'">';
 		}
 		print '<div><ul class="ecmjqft">';
 		foreach ($line_options as $key => $value) {
 			if (in_array($line_type, $value['type'])) {
-				print '<li><input id="'.$key.'" type="checkbox" name="'.$key.'" value="" checked="'.$value['checked'].'">'.$langs->trans($value['trans_key']).'</input></li>';
+				print '<li><input id="'.$key.'" type="checkbox" name="'.$key.'" value="" ';
+				print $value['checked'] ? 'checked' : '';
+				print '>'.$langs->trans($value['trans_key']).'</input></li>';
 			}
 		}
 		print '</ul></div></td>';
