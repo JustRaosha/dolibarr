@@ -32,15 +32,17 @@
 $sub_options = unserialize($line->subtotal_options);
 
 if ($sub_options) {
-	$showuponpdf = in_array('showuponpdf', $sub_options);
-	$showtotalexludingvatonpdf = in_array('showtotalexludingvatonpdf', $sub_options);
-	$forcepagebreak = in_array('forcepagebreak', $sub_options);
+	$titleshowuponpdf = in_array('titleshowuponpdf', $sub_options);
+	$titleshowtotalexludingvatonpdf = in_array('titleshowtotalexludingvatonpdf', $sub_options);
+	$titleforcepagebreak = in_array('titleforcepagebreak', $sub_options);
+	$subtotalshowtotalexludingvatonpdf = in_array('subtotalshowtotalexludingvatonpdf', $sub_options);
 }
 
 $line_options = array(
-	'showuponpdf' => array('type' => array('title'), 'checked' => $showuponpdf ?? false, 'trans_key' => 'ShowUPOnPDF'),
-	'showtotalexludingvatonpdf' => array('type' => array('title', 'subtotal'), 'checked' => $showtotalexludingvatonpdf ?? false, 'trans_key' => 'ShowTotalExludingVATOnPDF'),
-	'forcepagebreak' => array('type' => array('title'), 'checked' => $forcepagebreak ?? false, 'trans_key' => 'ForcePageBreak'),
+	'titleshowuponpdf' => array('type' => array('title'), 'checked' => $titleshowuponpdf ?? false, 'trans_key' => 'ShowUPOnPDF'),
+	'titleshowtotalexludingvatonpdf' => array('type' => array('title'), 'checked' => $titleshowtotalexludingvatonpdf ?? false, 'trans_key' => 'ShowTotalExludingVATOnPDF'),
+	'titleforcepagebreak' => array('type' => array('title'), 'checked' => $titleforcepagebreak ?? false, 'trans_key' => 'ForcePageBreak'),
+	'subtotalshowtotalexludingvatonpdf' => array('type' => array('subtotal'), 'checked' => $subtotalshowtotalexludingvatonpdf ?? false, 'trans_key' => 'ShowTotalExludingVATOnPDF'),
 );
 
 // Line type

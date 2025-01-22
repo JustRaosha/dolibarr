@@ -564,9 +564,48 @@ class pdf_cyan extends ModelePDFPropales
 				$pageposbeforeprintlines = $pdf->getPage();
 				$pagenb = $pageposbeforeprintlines;
 
+				$pdf_sub_options['titleshowuponpdf'] = 1;
+				$pdf_sub_options['titleshowtotalexludingvatonpdf'] = 1;
+
 				for ($i = 0; $i < $nblines; $i++) {
 					$linePosition = $i + 1;
 					$curY = $nexY;
+
+					$sub_options = unserialize($object->lines[$i]->subtotal_options);
+
+					if ($object->lines[$i]->special_code == self::$SPECIAL_CODE) {
+						$level = $object->lines[$i]->qty;
+						unset($pdf_sub_options['titleforcepagebreak']);
+						unset($pdf_sub_options['subtotalshowtotalexludingvatonpdf']);
+						if ($sub_options) {
+							if (in_array('titleshowuponpdf', $sub_options)){
+								$pdf_sub_options['titleshowuponpdf'] = isset($pdf_sub_options['titleshowuponpdf']) && $pdf_sub_options['titleshowuponpdf'] < $level ? $pdf_sub_options['titleshowuponpdf'] : $level;
+							} elseif (isset($pdf_sub_options['titleshowuponpdf']) && abs($level) <= $pdf_sub_options['titleshowuponpdf']) {
+								unset($pdf_sub_options['titleshowuponpdf']);
+							}
+							if (in_array('titleshowtotalexludingvatonpdf', $sub_options)){
+								$pdf_sub_options['titleshowtotalexludingvatonpdf'] = isset($pdf_sub_options['titleshowtotalexludingvatonpdf']) && $pdf_sub_options['titleshowtotalexludingvatonpdf'] < $level ? $pdf_sub_options['titleshowtotalexludingvatonpdf'] : $level;
+							} elseif (isset($pdf_sub_options['titleshowtotalexludingvatonpdf']) && abs($level) <= $pdf_sub_options['titleshowtotalexludingvatonpdf']) {
+								unset($pdf_sub_options['titleshowtotalexludingvatonpdf']);
+							}
+							if (in_array('titleforcepagebreak', $sub_options)){
+								$pdf_sub_options['titleforcepagebreak'] = 1;
+							}
+							if (in_array('subtotalshowtotalexludingvatonpdf', $sub_options)){
+								$pdf_sub_options['subtotalshowtotalexludingvatonpdf'] = 1;
+							}
+						} else {
+							if (isset($pdf_sub_options['titleshowuponpdf']) && abs($level) <= $pdf_sub_options['titleshowuponpdf']) {
+								unset($pdf_sub_options['titleshowuponpdf']);
+							}
+							if (isset($pdf_sub_options['titleshowtotalexludingvatonpdf']) && abs($level) <= $pdf_sub_options['titleshowtotalexludingvatonpdf']) {
+								unset($pdf_sub_options['titleshowtotalexludingvatonpdf']);
+							}
+						}
+					} else {
+						unset($pdf_sub_options['titleforcepagebreak']);
+						unset($pdf_sub_options['subtotalshowtotalexludingvatonpdf']);
+					}
 
 					// in First Check line page break and add page if needed
 					if (isset($object->lines[$i]->pagebreak) && $object->lines[$i]->pagebreak) {
@@ -633,7 +672,7 @@ class pdf_cyan extends ModelePDFPropales
 							$this->printColDescContent($pdf, $curY, 'desc', $object, $i, $outputlangs, $hideref, $hidedesc);
 							$this->setAfterColsLinePositionsData('desc', $pdf->GetY(), $pdf->getPage());
 						} else {
-							if (($curY + 6) > ($this->page_hauteur - $heightforfooter)) {
+							if (($curY + 6) > ($this->page_hauteur - $heightforfooter) || isset($pdf_sub_options['titleforcepagebreak']) && !($pdf->getNumPages() == 1 && $curY == $tab_top + $this->tabTitleHeight)) {
 								$pdf->AddPage();
 								$pdf->setPage($pdf->getNumPages());
 								$curY = $tab_top_newpage;
@@ -681,7 +720,7 @@ class pdf_cyan extends ModelePDFPropales
 					}
 
 					// Unit price before discount
-					if ($this->getColumnStatus('subprice') && $object->lines[$i]->special_code != self::$SPECIAL_CODE) {
+					if ($this->getColumnStatus('subprice') && $object->lines[$i]->special_code != self::$SPECIAL_CODE && isset($pdf_sub_options['titleshowuponpdf'])) {
 						$up_excl_tax = pdf_getlineupexcltax($object, $i, $outputlangs, $hidedetails);
 						$this->printStdColumnContent($pdf, $curY, 'subprice', $up_excl_tax);
 					}
@@ -708,18 +747,16 @@ class pdf_cyan extends ModelePDFPropales
 
 					// Total excl tax line (HT)
 					if ($this->getColumnStatus('totalexcltax')) {
-						if ($object->lines[$i]->special_code != self::$SPECIAL_CODE) {
+						if ($object->lines[$i]->special_code != self::$SPECIAL_CODE && isset($pdf_sub_options['titleshowtotalexludingvatonpdf'])) {
 							$total_excl_tax = pdf_getlinetotalexcltax($object, $i, $outputlangs, $hidedetails);
 							$this->printStdColumnContent($pdf, $curY, 'totalexcltax', $total_excl_tax);
-						} else {
-							if ($object->lines[$i]->qty < 0) {
-								if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
-									$total_excl_tax = $object->getSubtotalLineMulticurrencyAmount($object->lines[$i]);
-								} else {
-									$total_excl_tax = $object->getSubtotalLineAmount($object->lines[$i]);
-								}
-								$this->printStdColumnContent($pdf, $curY, 'totalexcltax', $total_excl_tax);
+						} elseif ($object->lines[$i]->qty < 0 && isset($pdf_sub_options['subtotalshowtotalexludingvatonpdf'])) {
+							if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
+								$total_excl_tax = $object->getSubtotalLineMulticurrencyAmount($object->lines[$i]);
+							} else {
+								$total_excl_tax = $object->getSubtotalLineAmount($object->lines[$i]);
 							}
+							$this->printStdColumnContent($pdf, $curY, 'totalexcltax', $total_excl_tax);
 						}
 					}
 

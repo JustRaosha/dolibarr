@@ -28,15 +28,15 @@ if ($type == 'title') {
 		array('type' => 'hidden', 'name' => 'subtotallinetype', 'value' => $type),
 		array('type' => 'text', 'name' => 'subtotallinedesc', 'label' => $langs->trans("SubtotalLineDesc"), 'moreattr' => 'placeholder="'.$langs->trans("Description").'"'),
 		array('type' => 'select', 'name' => 'subtotallinelevel', 'label' => $langs->trans("SubtotalLineLevel"), 'values' => $depth_array, 'default' => 1, 'select_show_empty' => 0),
-		array('type' => 'checkbox', 'name' => 'showuponpdf', 'label' => $langs->trans("ShowUPOnPDF")),
-		array('type' => 'checkbox', 'name' => 'showtotalexludingvatonpdf', 'label' => $langs->trans("ShowTotalExludingVATOnPDF")),
-		array('type' => 'checkbox', 'name' => 'forcepagebreak', 'label' => $langs->trans("ForcePageBreak")),
+		array('type' => 'checkbox', 'name' => 'titleshowuponpdf', 'label' => $langs->trans("ShowUPOnPDF")),
+		array('type' => 'checkbox', 'name' => 'titleshowtotalexludingvatonpdf', 'label' => $langs->trans("ShowTotalExludingVATOnPDF")),
+		array('type' => 'checkbox', 'name' => 'titleforcepagebreak', 'label' => $langs->trans("ForcePageBreak")),
 	);
 } elseif ($type == 'subtotal') {
 	$formquestion = array(
 		array('type' => 'hidden', 'name' => 'subtotallinetype', 'value' => $type),
 		array('type' => 'select', 'name' => 'subtotaltitleline', 'label' => $langs->trans("CorrespondingTitleLine"), 'values' => $titles, 'select_show_empty' => 0),
-		array('type' => 'checkbox', 'name' => 'showtotalexludingvatonpdf', 'label' => $langs->trans("ShowTotalExludingVATOnPDF")),
+		array('type' => 'checkbox', 'name' => 'subtotalshowtotalexludingvatonpdf', 'label' => $langs->trans("ShowTotalExludingVATOnPDF")),
 	);
 }
 

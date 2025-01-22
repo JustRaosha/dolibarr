@@ -37,12 +37,12 @@ trait CommonSubtotal
 	/**
 	 * Options for subtotals module title lines
 	 */
-	public static $TITLE_OPTIONS = ['showuponpdf', 'showtotalexludingvatonpdf', 'forcepagebreak'];
+	public static $TITLE_OPTIONS = ['titleshowuponpdf', 'titleshowtotalexludingvatonpdf', 'titleforcepagebreak'];
 
 	/**
 	 * Options for subtotals module subtotal lines
 	 */
-	public static $SUBTOTAL_OPTIONS = ['showtotalexludingvatonpdf'];
+	public static $SUBTOTAL_OPTIONS = ['subtotalshowtotalexludingvatonpdf'];
 
 	public function getSubtotalSpecialCode(): int
 	{

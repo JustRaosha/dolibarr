@@ -86,13 +86,13 @@ if ($line->qty > 0) { ?>
 		<?php
 		echo $line->desc;
 		if ($line_options) {
-			if (in_array('showuponpdf', $line_options)) {
+			if (in_array('titleshowuponpdf', $line_options)) {
 				echo '&nbsp;'.img_picto($langs->trans("ShowUPOnPDF"), 'invoicing', 'class="colorwhite"');
 			}
-			if (in_array('showtotalexludingvatonpdf', $line_options)) {
+			if (in_array('titleshowtotalexludingvatonpdf', $line_options)) {
 				echo '&nbsp; <span class="colorwhite" title="'.$langs->trans("ShowTotalExludingVATOnPDF").'">%</span>';
 			}
-			if (in_array('forcepagebreak', $line_options)) {
+			if (in_array('titleforcepagebreak', $line_options)) {
 				echo '&nbsp;'.img_picto($langs->trans("ForcePageBreak"), 'file', 'class="colorwhite"');
 			}
 		}
@@ -131,7 +131,7 @@ if ($line->qty > 0) { ?>
 			<?php
 			echo $line->desc;
 			if ($line_options) {
-				if (in_array('showtotalexludingvatonpdf', $line_options)) {
+				if (in_array('subtotalshowtotalexludingvatonpdf', $line_options)) {
 					echo '&nbsp; <span class="colorwhite" title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
 				}
 			}
