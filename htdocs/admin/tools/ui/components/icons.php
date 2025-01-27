@@ -17,20 +17,23 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/agpl-3.0.html>.
  */
 
-$res=0;
-if (! $res && file_exists("../../main.inc.php")) : $res=@include '../../main.inc.php';
-endif;
-if (! $res && file_exists("../../../main.inc.php")) : $res=@include '../../../main.inc.php';
-endif;
-if (! $res && file_exists("../../../../main.inc.php")) : $res=@include '../../../../main.inc.php';
-endif;
+// Load Dolibarr environment
+require '../../../../main.inc.php';
+
+/**
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
 
 // Protection if external user
-if ($user->socid > 0) : accessforbidden();
-endif;
+if ($user->socid > 0) {
+	accessforbidden();
+}
 
 // Includes
-dol_include_once('admin/tools/ui/class/documentation.class.php');
+require_once DOL_DOCUMENT_ROOT . '/admin/tools/ui/class/documentation.class.php';
 
 // Load documentation translations
 $langs->load('uxdocumentation');
@@ -142,9 +145,9 @@ $documentation->showSidebar(); ?>
 						foreach ($fontAwesomeIcons as $iconData) {
 							$class= $iconData[1]??'fa';
 							if (!empty($iconData[2])) {
-								$class.= ' fa-'.$iconData[2]??'';
+								$class.= ' fa-'.$iconData[2];
 							} else {
-								$class.= ' fa-'.$iconData[0]??'';
+								$class.= ' fa-'.$iconData[0];
 							}
 
 							if (in_array($class, $alreadyDisplay)) {
@@ -183,4 +186,3 @@ $documentation->showSidebar(); ?>
 <?php
 // Output close body + html
 $documentation->docFooter();
-?>
