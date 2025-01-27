@@ -568,7 +568,7 @@ class pdf_eratosthene extends ModelePDFCommandes
 					$linePosition = $i + 1;
 					$curY = $nexY;
 
-					$sub_options = unserialize($object->lines[$i]->subtotal_options);
+					$sub_options = $object->lines[$i]->subtotal_options;
 
 					if ($object->lines[$i]->special_code == self::$SPECIAL_CODE) {
 						$level = $object->lines[$i]->qty;

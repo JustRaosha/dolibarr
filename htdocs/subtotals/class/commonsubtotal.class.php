@@ -44,11 +44,6 @@ trait CommonSubtotal
 	 */
 	public static $SUBTOTAL_OPTIONS = ['subtotalshowtotalexludingvatonpdf'];
 
-	public function getSubtotalSpecialCode(): int
-	{
-		return self::$SPECIAL_CODE;
-	}
-
 	public function isSubtotalLine($line) {
 		if ($line->special_code == self::$SPECIAL_CODE) {
 			return true;

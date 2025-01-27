@@ -78,7 +78,7 @@ if (empty($object) || !is_object($object)) {
 ';
 
 // Handle subtotals line view
-if ($line->special_code == $this->getSubtotalSpecialCode()) :
+if ($line->special_code == CommonSubtotal::$SPECIAL_CODE) :
 include DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_view.tpl.php';
 else :
 global $mysoc;

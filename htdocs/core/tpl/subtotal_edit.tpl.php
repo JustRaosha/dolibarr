@@ -29,7 +29,7 @@
  */
 
 // Options for subtotal
-$sub_options = unserialize($line->subtotal_options);
+$sub_options = $line->subtotal_options;
 
 if ($sub_options) {
 	$titleshowuponpdf = in_array('titleshowuponpdf', $sub_options);
