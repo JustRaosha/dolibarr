@@ -96,12 +96,9 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 	<input type="hidden" id="product_type" name="type" value="<?php echo $line->product_type; ?>">
 	<input type="hidden" id="special_code" name="special_code" value="<?php echo $line->special_code; ?>">
 	<input type="hidden" id="fk_parent_line" name="fk_parent_line" value="<?php echo $line->fk_parent_line; ?>">
+	<input type="hidden" name="action" value="update<?= $line_type ?>line">
 
 	<?php
-
-	$line_edit_mode = $line->qty < 0 ? 'subtotal' : 'title';
-
-	print '<input type="hidden" name="line_edit_mode" value="'.$line_edit_mode.'">';
 
 	$situationinvoicelinewithparent = 0;
 	if ($line->fk_prev_id != null && in_array($object->element, array('facture', 'facturedet'))) {
@@ -126,7 +123,7 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 		print '<input type="text" name="line_desc" class="marginrightonly" id="line_desc" value="';
 		print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $line->description.'"';
 		$disabled = 0;
-		if ($line_edit_mode == 'subtotal') {
+		if ($line_type == 'subtotal') {
 			print ' readonly="readonly"';
 			$disabled = 1;
 		}
@@ -155,7 +152,7 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 
 
 	<td class="center valignmiddle" colspan="4">
-		<input type="submit" class="reposition button buttongen button-save" id="savelinebutton marginbottomonly" name="saveSubtotal" value="<?php echo $langs->trans("Save"); ?>"><br>
+		<input type="submit" class="reposition button buttongen button-save" id="savelinebutton marginbottomonly" name="save" value="<?php echo $langs->trans("Save"); ?>"><br>
 		<input type="submit" class="reposition button buttongen button-cancel" id="cancellinebutton" name="cancel" value="<?php echo $langs->trans("Cancel"); ?>">
 	</td>
 </tr>

@@ -59,7 +59,7 @@ trait CommonSubtotal
 	/**
 	 * Adds a subtotal or a title line to a document
 	 */
-	public function addSubtotalLine($desc, $depth, $options)
+	public function addSubtotalLine($langs, $desc, $depth, $options)
 	{
 		if (empty($desc)) {
 			setEventMessages("TitleNeedDesc", null, 'errors');
@@ -71,8 +71,8 @@ trait CommonSubtotal
 		if (!in_array($current_module, $allowed_types)) {
 			return false; // Unsupported type
 		}
+		$error = 0;
 		$desc = dol_html_entity_decode($desc, ENT_QUOTES);
-		$max_existing_level = 0;
 		$rang = -1;
 		$next_line = false;
 
@@ -94,16 +94,19 @@ trait CommonSubtotal
 		}
 
 		if ($depth>0) {
+			$max_existing_level = 0;
+
 			foreach ($this->lines as $line) {
 				if ($line->special_code == self::$SPECIAL_CODE && $line->qty > $max_existing_level) {
 					$max_existing_level = $line->qty;
 				}
 			}
-		}
 
-		if ($max_existing_level+1 < $depth) {
-			$depth = $max_existing_level+1;
-			setEventMessages("TitleLevelTooHigh", array("TitleCreatedAfterError"), 'errors');
+			if ($max_existing_level+1 < $depth) {
+				$depth = $max_existing_level+1;
+				$this->errors[] = $langs->trans("TitleAddedLevelTooHigh", $depth);
+				$error ++;
+			}
 		}
 
 		// Add the line calling the right module
@@ -207,7 +210,11 @@ trait CommonSubtotal
 			);
 		}
 
-		return $result >= 0 ? $result : -1; // Return line ID or false
+		if ($result < 0) {
+			return $result;
+		}
+
+		return $error > 0 ? 0 : $result;
 	}
 
 	/**
@@ -252,7 +259,7 @@ trait CommonSubtotal
 	/**
 	 * Updates a subtotals line to a document
 	 */
-	public function updateSubtotalLine($lineid, $desc, $depth, $options)
+	public function updateSubtotalLine($langs, $lineid, $desc, $depth, $options)
 	{
 
 		$current_module = $this->element;
@@ -261,6 +268,8 @@ trait CommonSubtotal
 		if (!in_array($current_module, $allowed_types)) {
 			return false; // Unsupported type
 		}
+
+		$error = 0;
 
 		$max_existing_level = 0;
 
@@ -273,8 +282,9 @@ trait CommonSubtotal
 		}
 
 		if ($max_existing_level+1 < $depth) {
-			setEventMessages("TitleLevelTooHigh", null, 'errors');
-			return 0;
+			$depth = $max_existing_level+1;
+			$this->errors[] = $langs->trans("TitleEditedLevelTooHigh", $depth);
+			$error ++;
 		}
 
 		if ($depth>0) {
@@ -286,7 +296,7 @@ trait CommonSubtotal
 					$oldDepth = $line->qty;
 				}
 				if ($line->special_code == self::$SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
-					$this->updateSubtotalLine($line->id, $desc, -$depth, unserialize($line->subtotal_options));
+					$this->updateSubtotalLine($langs, $line->id, $desc, -$depth, unserialize($line->subtotal_options));
 					break;
 				}
 			}
@@ -382,7 +392,11 @@ trait CommonSubtotal
 			);
 		}
 
-		return $result >= 0 ? $result : -1; // Return line ID or false
+		if ($result < 0) {
+			return $result;
+		}
+
+		return $error > 0 ? 0 : $result;
 	}
 
 	/**

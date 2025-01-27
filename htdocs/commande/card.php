@@ -749,82 +749,95 @@ if (empty($reshook)) {
 			}
 			$result = $object->updateline($line->id, $line->desc, $line->subprice, $line->qty, $remise_percent, $tvatx, $line->localtax1_tx, $line->localtax2_tx, 'HT', $line->info_bits, $line->date_start, $line->date_end, $line->product_type, $line->fk_parent_line, 0, $line->fk_fournprice, $line->pa_ht, $line->label, $line->special_code, $line->array_options, $line->fk_unit, $line->multicurrency_subprice);
 		}
-	} elseif ($action == 'confirm_add_line' && $usercancreate) {
-		// Add a new subtotalline
+	} elseif ($action == 'confirm_addtitleline' && $usercancreate) {
 
-		$line_type = GETPOST('subtotallinetype', 'aZ09');
+		// Handling adding a new title line for subtotals module
 
-		// Handling adding line for subtotals module
-		if (in_array($line_type, ['subtotal', 'title'])) {
-			$langs->load('subtotals');
+		$langs->load('subtotals');
 
-			$subtotal_options = array();
+		$desc = GETPOST('subtotallinedesc', 'san_alpha');
+		$depth = GETPOSTINT('subtotallinelevel') ?? 1;
 
-			if ($line_type == 'subtotal') {
-				$choosen_line = GETPOST('subtotaltitleline');
-				foreach ($object->lines as $line) {
-					if ($line->desc == $choosen_line && $object->isSubtotalLine($line)) {
-						$desc = $line->desc;
-						$depth = -$line->qty;
-					}
-				}
-				foreach (Commande::$SUBTOTAL_OPTIONS as $option) {
-					if (GETPOST($option)) {
-						$subtotal_options[] = $option;
-					}
-				}
-			} else {
-				$desc = GETPOST('subtotallinedesc', 'san_alpha');
-				$depth = GETPOSTINT('subtotallinelevel') ?? 1;
-				foreach (Commande::$TITLE_OPTIONS as $option) {
-					if (GETPOST($option)) {
-						$subtotal_options[] = $option;
-					}
-				}
+		$subtotal_options = array();
+
+		foreach (Commande::$TITLE_OPTIONS as $option) {
+			if (GETPOST($option)) {
+				$subtotal_options[] = $option;
 			}
+		}
 
-			// Insert line
-			$result = $object->addSubtotalLine($desc, $depth, $subtotal_options);
+		// Insert line
+		$result = $object->addSubtotalLine($langs, $desc, $depth, $subtotal_options);
 
-			if ($result > 0) {
-				// TODO refresh pdf ?
-//				$ret = $object->fetch($object->id); // Reload to get new records
-//				$object->fetch_thirdparty();
-//
-//				if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
-//					// Define output language
-//					$outputlangs = $langs;
-//					$newlang = GETPOST('lang_id', 'alpha');
-//					if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
-//						$newlang = $object->thirdparty->default_lang;
-//					}
-//					if (!empty($newlang)) {
-//						$outputlangs = new Translate("", $conf);
-//						$outputlangs->setDefaultLang($newlang);
-//					}
-//
-//					$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
-//				}
-
-				unset($_POST['prod_entry_mode']);
-				unset($_POST['subtotal_desc']);
-				unset($_POST['subtotal_depth']);
-				unset($_POST['addsubtotalline']);
-				unset($_POST['type']);
-				unset($_POST['idprod']);
-				unset($_POST['pbq']);
-
-				unset($_POST['date_start']);
-				unset($_POST['date_startday']);
-				unset($_POST['date_startmonth']);
-				unset($_POST['date_startyear']);
-				unset($_POST['date_end']);
-				unset($_POST['date_endday']);
-				unset($_POST['date_endmonth']);
-				unset($_POST['date_endyear']);
-			} else {
-				setEventMessages($object->error, $object->errors, 'errors');
+		if ($result >= 0) {
+			if ($result == 0) {
+				setEventMessages($object->error, $object->errors, 'warnings');
 			}
+			$ret = $object->fetch($object->id); // Reload to get new records
+			$object->fetch_thirdparty();
+
+			if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+				// Define output language
+				$outputlangs = $langs;
+				$newlang = GETPOST('lang_id', 'alpha');
+				if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
+					$newlang = $object->thirdparty->default_lang;
+				}
+				if (!empty($newlang)) {
+					$outputlangs = new Translate("", $conf);
+					$outputlangs->setDefaultLang($newlang);
+				}
+
+				$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+			}
+		} else {
+			setEventMessages($object->error, $object->errors, 'errors');
+		}
+	}  elseif ($action == 'confirm_addsubtotalline' && $usercancreate) {
+
+		// Handling adding a new subtotal line for subtotals module
+
+		$langs->load('subtotals');
+
+		$choosen_line = GETPOST('subtotaltitleline');
+		foreach ($object->lines as $line) {
+			if ($line->desc == $choosen_line && $object->isSubtotalLine($line)) {
+				$desc = $line->desc;
+				$depth = -$line->qty;
+			}
+		}
+
+		$subtotal_options = array();
+
+		foreach (Commande::$SUBTOTAL_OPTIONS as $option) {
+			if (GETPOST($option)) {
+				$subtotal_options[] = $option;
+			}
+		}
+
+		// Insert line
+		$result = $object->addSubtotalLine($langs, $desc, $depth, $subtotal_options);
+
+		if ($result >= 0) {
+			$ret = $object->fetch($object->id); // Reload to get new records
+			$object->fetch_thirdparty();
+
+			if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+				// Define output language
+				$outputlangs = $langs;
+				$newlang = GETPOST('lang_id', 'alpha');
+				if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
+					$newlang = $object->thirdparty->default_lang;
+				}
+				if (!empty($newlang)) {
+					$outputlangs = new Translate("", $conf);
+					$outputlangs->setDefaultLang($newlang);
+				}
+
+				$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+			}
+		} else {
+			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	} elseif ($action == 'addline' && !GETPOST('submitforalllines', 'alpha') && $usercancreate) {		// Add a new line
 		$langs->load('errors');
@@ -1322,68 +1335,90 @@ if (empty($reshook)) {
 				}
 			}
 		}
-	} elseif ($action == 'updateline' && GETPOSTISSET("saveSubtotal") && $usercancreate && !GETPOST('cancel', 'alpha')) {
-		// Update an existing subtotalline
+	} elseif ($action == 'updatetitleline' && GETPOSTISSET("save") && $usercancreate && !GETPOST('cancel', 'alpha')) {
 
-		$line_edit_mode = GETPOST('line_edit_mode', 'aZ09');
+		// Handling updating a title line for subtotals module
 
-		// Handling adding line for subtotals module
-		if (in_array($line_edit_mode, ['subtotal', 'title'])) {
-			$langs->load('subtotals');
+		$langs->load('subtotals');
 
-			$subtotal_options = array();
+		$desc = GETPOST('line_desc') ?? $langs->trans("Title");
+		$depth = GETPOSTINT('line_depth') ?? 1;
 
-			$lineid = GETPOSTINT('lineid');
+		$subtotal_options = array();
 
-			if ($line_edit_mode == 'subtotal') {
-				$desc = GETPOST('line_desc');
-				$depth = GETPOST('line_depth');
-				foreach (Commande::$SUBTOTAL_OPTIONS as $option) {
-					if (GETPOSTISSET($option)) {
-						$subtotal_options[] = $option;
-					}
-				}
-			} else {
-				$desc = GETPOST('line_desc') ?? $langs->trans("Title");
-				$depth = GETPOSTINT('line_depth') ?? 1;
-				foreach (Commande::$TITLE_OPTIONS as $option) {
-					if (GETPOSTISSET($option)) {
-						$subtotal_options[] = $option;
-					}
-				}
+		foreach (Commande::$TITLE_OPTIONS as $option) {
+			if (GETPOSTISSET($option)) {
+				$subtotal_options[] = $option;
 			}
+		}
 
-			// Update line
-			$result = $object->updateSubtotalLine($lineid, $desc, $depth, $subtotal_options);
+		// Update line
+		$result = $object->updateSubtotalLine($langs, GETPOSTINT('lineid'), $desc, $depth, $subtotal_options);
 
-			if ($result > 0) {
-				// TODO refresh pdf ?
-//				$ret = $object->fetch($object->id); // Reload to get new records
-//				$object->fetch_thirdparty();
-//
-//				if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
-//					// Define output language
-//					$outputlangs = $langs;
-//					$newlang = GETPOST('lang_id', 'alpha');
-//					if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
-//						$newlang = $object->thirdparty->default_lang;
-//					}
-//					if (!empty($newlang)) {
-//						$outputlangs = new Translate("", $conf);
-//						$outputlangs->setDefaultLang($newlang);
-//					}
-//
-//					$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
-//				}
-
-				unset($_POST['line_edit_mode']);
-				unset($_POST['line_desc']);
-				unset($_POST['line_depth']);
-				unset($_POST['special_code']);
-				unset($_POST['type']);
-			} else {
-				setEventMessages($object->error, $object->errors, 'errors');
+		if ($result >= 0) {
+			if ($result == 0) {
+				setEventMessages($object->error, $object->errors, 'warnings');
 			}
+			$ret = $object->fetch($object->id); // Reload to get new records
+			$object->fetch_thirdparty();
+
+			if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+				// Define output language
+				$outputlangs = $langs;
+				$newlang = GETPOST('lang_id', 'alpha');
+				if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
+					$newlang = $object->thirdparty->default_lang;
+				}
+				if (!empty($newlang)) {
+					$outputlangs = new Translate("", $conf);
+					$outputlangs->setDefaultLang($newlang);
+				}
+
+				$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+			}
+		} else {
+			setEventMessages($object->error, $object->errors, 'errors');
+		}
+	} elseif ($action == 'updatesubtotalline' && GETPOSTISSET("save") && $usercancreate && !GETPOST('cancel', 'alpha')) {
+
+		// Handling updating a subtotal line for subtotals module
+
+		$langs->load('subtotals');
+
+		$desc = GETPOST('line_desc');
+		$depth = GETPOST('line_depth');
+
+		$subtotal_options = array();
+
+		foreach (Commande::$SUBTOTAL_OPTIONS as $option) {
+			if (GETPOSTISSET($option)) {
+				$subtotal_options[] = $option;
+			}
+		}
+
+		// Update line
+		$result = $object->updateSubtotalLine($langs, GETPOSTINT('lineid'), $desc, $depth, $subtotal_options);
+
+		if ($result > 0) {
+			$ret = $object->fetch($object->id); // Reload to get new records
+			$object->fetch_thirdparty();
+
+			if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+				// Define output language
+				$outputlangs = $langs;
+				$newlang = GETPOST('lang_id', 'alpha');
+				if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
+					$newlang = $object->thirdparty->default_lang;
+				}
+				if (!empty($newlang)) {
+					$outputlangs = new Translate("", $conf);
+					$outputlangs->setDefaultLang($newlang);
+				}
+
+				$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+			}
+		} else {
+			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	} elseif ($action == 'updateline' && $usercancreate && GETPOST('save')) {
 		// Update a line

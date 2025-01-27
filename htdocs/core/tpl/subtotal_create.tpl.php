@@ -25,7 +25,6 @@ if ($type == 'subtotal' && empty($titles)) {
 
 if ($type == 'title') {
 	$formquestion = array(
-		array('type' => 'hidden', 'name' => 'subtotallinetype', 'value' => $type),
 		array('type' => 'text', 'name' => 'subtotallinedesc', 'label' => $langs->trans("SubtotalLineDesc"), 'moreattr' => 'placeholder="'.$langs->trans("Description").'"'),
 		array('type' => 'select', 'name' => 'subtotallinelevel', 'label' => $langs->trans("SubtotalLineLevel"), 'values' => $depth_array, 'default' => 1, 'select_show_empty' => 0),
 		array('type' => 'checkbox', 'name' => 'titleshowuponpdf', 'label' => $langs->trans("ShowUPOnPDF")),
@@ -34,7 +33,6 @@ if ($type == 'title') {
 	);
 } elseif ($type == 'subtotal') {
 	$formquestion = array(
-		array('type' => 'hidden', 'name' => 'subtotallinetype', 'value' => $type),
 		array('type' => 'select', 'name' => 'subtotaltitleline', 'label' => $langs->trans("CorrespondingTitleLine"), 'values' => $titles, 'select_show_empty' => 0),
 		array('type' => 'checkbox', 'name' => 'subtotalshowtotalexludingvatonpdf', 'label' => $langs->trans("ShowTotalExludingVATOnPDF")),
 	);
@@ -50,4 +48,4 @@ if ($this->element == 'facture') {
 
 $form_title = $type == 'title' ? $langs->trans('AddTitleLine') : $langs->trans('AddSubtotalLine');
 
-return $form->formconfirm($page, $form_title, '', 'confirm_add_line', $formquestion, 'yes', 1);
+return $form->formconfirm($page, $form_title, '', 'confirm_add'.$type.'line', $formquestion, 'yes', 1);
