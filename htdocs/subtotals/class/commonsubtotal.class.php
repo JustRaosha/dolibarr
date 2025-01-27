@@ -143,7 +143,7 @@ trait CommonSubtotal
 				0, 						// PU ht devise
 				'', 					// Ref ext
 				0, 						// Noupdateafterinsertline
-				serialize($options) 	// Subtotal options
+				$options 				// Subtotal options
 			);
 		} elseif ($current_module== 'propal') {
 			$result = $this->addline(
@@ -174,7 +174,7 @@ trait CommonSubtotal
 				0, 						// PU ht devise
 				0, 						// FK remise except
 				0, 						// Noupdateafterinsertline
-				serialize($options) 	// Subtotal options
+				$options 				// Subtotal options
 			);
 		} elseif ($current_module== 'commande') {
 			$result = $this->addline(
@@ -206,7 +206,7 @@ trait CommonSubtotal
 				0 , 					// PU ht devise
 				'' , 					// Ref ext
 				0 , 					// Noupdateafterinsertline
-				serialize($options)		// Subtotal options
+				$options				// Subtotal options
 			);
 		}
 
@@ -296,7 +296,7 @@ trait CommonSubtotal
 					$oldDepth = $line->qty;
 				}
 				if ($line->special_code == self::$SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
-					$this->updateSubtotalLine($langs, $line->id, $desc, -$depth, unserialize($line->subtotal_options));
+					$this->updateSubtotalLine($langs, $line->id, $desc, -$depth, $line->subtotal_options);
 					break;
 				}
 			}
@@ -331,7 +331,7 @@ trait CommonSubtotal
 				0, 						// Notrigger
 				'', 					// Ref ext
 				0, 						// Rang
-				serialize($options) 	// Subtotal_options
+				$options 				// Subtotal_options
 			);
 		} elseif ($current_module== 'propal') {
 			$result = $this->updateline(
@@ -359,7 +359,7 @@ trait CommonSubtotal
 				0, 						// PU ht devise
 				0, 						// Notrigger
 				0,						// Rang
-				serialize($options) 	// Subtotal options
+				$options 				// Subtotal options
 			);
 		} elseif ($current_module== 'commande') {
 			$result = $this->updateline(
@@ -388,7 +388,7 @@ trait CommonSubtotal
 				0, 						// Notrigger
 				'', 					// Ref ext
 				0, 						// Rang
-				serialize($options) 	// Subtotal options
+				$options 				// Subtotal options
 			);
 		}
 

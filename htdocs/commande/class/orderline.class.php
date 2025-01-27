@@ -148,7 +148,7 @@ class OrderLine extends CommonOrderLine
 	/**
 	 * @var string Serialized subtotal options
 	 */
-	public mixed $subtotal_options;
+	public $subtotal_options = [];
 
 	/**
 	 *      Constructor
@@ -238,6 +238,8 @@ class OrderLine extends CommonOrderLine
 			$this->multicurrency_total_ht	= $objp->multicurrency_total_ht;
 			$this->multicurrency_total_tva	= $objp->multicurrency_total_tva;
 			$this->multicurrency_total_ttc	= $objp->multicurrency_total_ttc;
+
+			$this->subtotal_options 	= unserialize($objp->subtotal_options);
 
 			$this->fetch_optionals();
 
@@ -459,7 +461,7 @@ class OrderLine extends CommonOrderLine
 		$sql .= ", ".price2num($this->multicurrency_total_ht, 'CT');
 		$sql .= ", ".price2num($this->multicurrency_total_tva, 'CT');
 		$sql .= ", ".price2num($this->multicurrency_total_ttc, 'CT');
-		$sql .= ", '".$this->subtotal_options."'";
+		$sql .= ", '".$this->db->escape(serialize($this->subtotal_options))."'";
 		$sql .= ')';
 
 		dol_syslog(get_class($this)."::insert", LOG_DEBUG);
@@ -618,7 +620,7 @@ class OrderLine extends CommonOrderLine
 			$sql .= ", rang=".((int) $this->rang);
 		}
 		$sql .= " , fk_unit=".(!$this->fk_unit ? 'NULL' : $this->fk_unit);
-		$sql .= ", subtotal_options='".$this->subtotal_options."'";
+		$sql .= ", subtotal_options='".$this->db->escape(serialize($this->subtotal_options))."'";
 
 		// Multicurrency
 		$sql .= " , multicurrency_subprice=".price2num($this->multicurrency_subprice);

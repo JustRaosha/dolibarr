@@ -183,7 +183,7 @@ class FactureLigne extends CommonInvoiceLine
 	/**
 	 * @var string Serialized subtotal options
 	 */
-	public mixed $subtotal_options;
+	public $subtotal_options = [];
 
 
 	/**
@@ -282,6 +282,8 @@ class FactureLigne extends CommonInvoiceLine
 			$this->multicurrency_total_ht = $objp->multicurrency_total_ht;
 			$this->multicurrency_total_tva = $objp->multicurrency_total_tva;
 			$this->multicurrency_total_ttc = $objp->multicurrency_total_ttc;
+
+			$this->subtotal_options 	= unserialize($objp->subtotal_options);
 
 			$this->fetch_optionals();
 
@@ -459,7 +461,7 @@ class FactureLigne extends CommonInvoiceLine
 		$sql .= ", ".price2num($this->multicurrency_total_ttc);
 		$sql .= ", '".$this->db->escape($this->batch)."'";
 		$sql .= ", ".((int) $this->fk_warehouse);
-		$sql .= ", '".$this->subtotal_options."'";
+		$sql .= ", '".$this->db->escape(serialize($this->subtotal_options))."'";
 		$sql .= ')';
 
 		dol_syslog(get_class($this)."::insert", LOG_DEBUG);
@@ -667,7 +669,7 @@ class FactureLigne extends CommonInvoiceLine
 		$sql .= ", situation_percent = ".((float) $this->situation_percent);
 		$sql .= ", fk_unit = ".(!$this->fk_unit ? 'NULL' : $this->fk_unit);
 		$sql .= ", fk_user_modif = ".((int) $user->id);
-		$sql .= ", subtotal_options='".$this->subtotal_options."'";
+		$sql .= ", subtotal_options='".$this->db->escape(serialize($this->subtotal_options))."'";
 
 		// Multicurrency
 		$sql .= ", multicurrency_subprice=".price2num($this->multicurrency_subprice);

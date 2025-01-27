@@ -661,7 +661,7 @@ class Propal extends CommonObject
 		$pu_ht_devise = 0,
 		$fk_remise_except = 0,
 		$noupdateafterinsertline = 0,
-		$subtotal_options = ''
+		$subtotal_options = []
 	) {
 		global $mysoc, $conf, $langs;
 
@@ -908,7 +908,7 @@ class Propal extends CommonObject
 	 *	@param       int			$rang   line rank
 	 *  @return     int     		        		0 if OK, <0 if KO
 	 */
-	public function updateline($rowid, $pu, $qty, $remise_percent, $txtva, $txlocaltax1 = 0.0, $txlocaltax2 = 0.0, $desc = '', $price_base_type = 'HT', $info_bits = 0, $special_code = 0, $fk_parent_line = 0, $skip_update_total = 0, $fk_fournprice = 0, $pa_ht = 0, $label = '', $type = 0, $date_start = '', $date_end = '', $array_options = array(), $fk_unit = null, $pu_ht_devise = 0, $notrigger = 0, $rang = 0, $subtotal_options = '')
+	public function updateline($rowid, $pu, $qty, $remise_percent, $txtva, $txlocaltax1 = 0.0, $txlocaltax2 = 0.0, $desc = '', $price_base_type = 'HT', $info_bits = 0, $special_code = 0, $fk_parent_line = 0, $skip_update_total = 0, $fk_fournprice = 0, $pa_ht = 0, $label = '', $type = 0, $date_start = '', $date_end = '', $array_options = array(), $fk_unit = null, $pu_ht_devise = 0, $notrigger = 0, $rang = 0, $subtotal_options = [])
 	{
 		global $mysoc, $langs;
 
@@ -2021,7 +2021,7 @@ class Propal extends CommonObject
 				$line->multicurrency_total_tva 	= $objp->multicurrency_total_tva;
 				$line->multicurrency_total_ttc 	= $objp->multicurrency_total_ttc;
 
-				$line->subtotal_options = $objp->subtotal_options;
+				$line->subtotal_options = unserialize($objp->subtotal_options);
 
 				$line->fetch_optionals();
 
@@ -3629,7 +3629,7 @@ class Propal extends CommonObject
 				$line->product_ref = 'SPECIMEN';
 			}
 
-			$line->subtotal_options = '';
+			$line->subtotal_options = [];
 
 			$this->lines[$xnbp] = $line;
 
