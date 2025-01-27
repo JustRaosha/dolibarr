@@ -3302,7 +3302,8 @@ if ($action == 'create') {
 				include DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_ajaxrow.tpl.php';
 			} else {
 				include DOL_DOCUMENT_ROOT . '/core/tpl/ajaxrow.tpl.php';
-			}		}
+			}
+		}
 
 		print '<div class="div-table-responsive-no-min">';
 		if (!empty($object->lines) || ($object->status == Propal::STATUS_DRAFT && $usercancreate && $action != 'selectlines' && $action != 'editline')) {
