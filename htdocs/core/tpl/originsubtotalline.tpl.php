@@ -57,7 +57,7 @@ if (!empty($selectedLines) && !in_array($this->tpl['id'], $selectedLines)) {
 	$selected = 0;
 }
 print '<td class="center">';
-print '<input id="cb'.$this->tpl['id'].'" class="flat" type="checkbox" name="toselect[]" value="'.$this->tpl['id'].'"'.($selected ? ' checked="checked"' : '').'>';
+print '<input id="cb'.$this->tpl['id'].'" class="flat checkforselect" type="checkbox" name="toselect[]" value="'.$this->tpl['id'].'"'.($selected ? ' checked="checked"' : '').'>';
 print '</td>';
 print '</tr>'."\n";
 ?>
