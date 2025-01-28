@@ -60,7 +60,7 @@ if (empty($object) || !is_object($object)) {
 ';
 
 // Handle subtotals line edit
-if ($line->special_code == CommonSubtotal::$SPECIAL_CODE) :
+if ($line->special_code == SUBTOTALS_SPECIAL_CODE) :
 	include DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_edit.tpl.php';
 else :
 

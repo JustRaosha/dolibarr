@@ -18,17 +18,16 @@
  * or see https://www.gnu.org/
  */
 
+if (!defined('SUBTOTALS_SPECIAL_CODE')) {
+	define('SUBTOTALS_SPECIAL_CODE', 81);
+}
+
 /**
  * Trait CommonSubtotal
  * add subtotals lines
  */
 trait CommonSubtotal
 {
-	/**
-	 * Special ode for subtotals module lines
-	 */
-	public static $SPECIAL_CODE = 81;
-
 	/**
 	 * Type for subtotals module lines
 	 */
@@ -45,7 +44,7 @@ trait CommonSubtotal
 	public static $SUBTOTAL_OPTIONS = ['subtotalshowtotalexludingvatonpdf'];
 
 	public function isSubtotalLine($line) {
-		if ($line->special_code == self::$SPECIAL_CODE) {
+		if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
 			return true;
 		}
 		return false;
@@ -81,7 +80,7 @@ trait CommonSubtotal
 					$next_line = false;
 					continue;
 				}
-				if ($next_line && $line->special_code == self::$SPECIAL_CODE && abs($line->qty) <= abs($depth)) {
+				if ($next_line && $line->special_code == SUBTOTALS_SPECIAL_CODE && abs($line->qty) <= abs($depth)) {
 					$rang = $line->rang;
 					break;
 				}
@@ -92,7 +91,7 @@ trait CommonSubtotal
 			$max_existing_level = 0;
 
 			foreach ($this->lines as $line) {
-				if ($line->special_code == self::$SPECIAL_CODE && $line->qty > $max_existing_level) {
+				if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty > $max_existing_level) {
 					$max_existing_level = $line->qty;
 				}
 			}
@@ -124,7 +123,7 @@ trait CommonSubtotal
 				0,						// PU ttc
 				self::$PRODUCT_TYPE,	// Type
 				$rang,					// Rang
-				self::$SPECIAL_CODE,	// Special code
+				SUBTOTALS_SPECIAL_CODE,	// Special code
 				'', 					// Origin
 				0, 						// Origin_id
 				0, 						// FK parent line
@@ -155,7 +154,7 @@ trait CommonSubtotal
 				0,						// Info bits
 				self::$PRODUCT_TYPE,	// Type
 				$rang,					// Rang
-				self::$SPECIAL_CODE,	// Special code
+				SUBTOTALS_SPECIAL_CODE,	// Special code
 				0, 						// FK parent line
 				0, 						// FK fournprice
 				0, 						// PA ht
@@ -189,7 +188,7 @@ trait CommonSubtotal
 				'',						// Date end
 				self::$PRODUCT_TYPE,	// Type
 				$rang,					// Rang
-				self::$SPECIAL_CODE,	// Special code
+				SUBTOTALS_SPECIAL_CODE,	// Special code
 				0, 						// FK parent line
 				null , 					// FK fournprice
 				0 , 					// PA ht
@@ -232,7 +231,7 @@ trait CommonSubtotal
 					$oldDesc = $line->desc;
 					$oldDepth = $line->qty;
 				}
-				if ($line->special_code == self::$SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
+				if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
 					$this->deleteSubtotalLine($line->id, false, $user);
 					break;
 				}
@@ -270,7 +269,7 @@ trait CommonSubtotal
 
 		if ($depth>0) {
 			foreach ($this->lines as $line) {
-				if ($line->special_code == self::$SPECIAL_CODE && $line->qty > $max_existing_level && $line->id != $lineid) {
+				if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty > $max_existing_level && $line->id != $lineid) {
 					$max_existing_level = $line->qty;
 				}
 			}
@@ -290,7 +289,7 @@ trait CommonSubtotal
 					$oldDesc = $line->desc;
 					$oldDepth = $line->qty;
 				}
-				if ($line->special_code == self::$SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
+				if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
 					$this->updateSubtotalLine($langs, $line->id, $desc, -$depth, $line->subtotal_options);
 					break;
 				}
@@ -318,7 +317,7 @@ trait CommonSubtotal
 				null,					// FK fournprice
 				0,						// PA ht
 				'',						// Label
-				self::$SPECIAL_CODE,	// Special code
+				SUBTOTALS_SPECIAL_CODE,	// Special code
 				array(), 				// Array options
 				100, 					// Situation percent
 				null,					// FK unit
@@ -340,7 +339,7 @@ trait CommonSubtotal
 				$desc,					// Description
 				'',						// Price base type
 				0,						// Info bits
-				self::$SPECIAL_CODE, 	// Special code
+				SUBTOTALS_SPECIAL_CODE, 	// Special code
 				0, 						// FK parent line
 				0, 						// Skip update total
 				0, 						// FK fournprice
@@ -376,7 +375,7 @@ trait CommonSubtotal
 				0, 						// FK fournprice
 				0, 						// PA ht
 				'',						// Label
-				self::$SPECIAL_CODE, 	// Special code
+				SUBTOTALS_SPECIAL_CODE, 	// Special code
 				array(), 				// Array options
 				null, 					// FK unit
 				0, 						// PU ht devise
@@ -403,7 +402,7 @@ trait CommonSubtotal
 		$linerang -= 1;
 
 		for ($i = $linerang+1; $i < count($this->lines)+1; $i++) {
-			if ($this->lines[$i]->special_code == self::$SPECIAL_CODE) {
+			if ($this->lines[$i]->special_code == SUBTOTALS_SPECIAL_CODE) {
 				if (abs($this->lines[$i]->qty) <= (int)$this->lines[$linerang]->qty) {
 					return 1;
 				}
@@ -494,7 +493,7 @@ trait CommonSubtotal
 	{
 		$final_amount = 0;
 		for ($i = $line->rang-1; $i > 0; $i--) {
-			if ($this->lines[$i-1]->special_code == self::$SPECIAL_CODE && $this->lines[$i-1]->qty>0) {
+			if ($this->lines[$i-1]->special_code == SUBTOTALS_SPECIAL_CODE && $this->lines[$i-1]->qty>0) {
 				if ($this->lines[$i-1]->qty <= abs($line->qty)) {
 					return price($final_amount);
 				}
@@ -516,7 +515,7 @@ trait CommonSubtotal
 	{
 		$final_amount = 0;
 		for ($i = $line->rang-1; $i > 0; $i--) {
-			if ($this->lines[$i-1]->special_code == self::$SPECIAL_CODE && $this->lines[$i-1]->qty>0) {
+			if ($this->lines[$i-1]->special_code == SUBTOTALS_SPECIAL_CODE && $this->lines[$i-1]->qty>0) {
 				if ($this->lines[$i-1]->qty <= abs($line->qty)) {
 					return price($final_amount);
 				}
@@ -574,10 +573,10 @@ trait CommonSubtotal
 	public function getPossibleTitles() {
 		$titles = array();
 		foreach ($this->lines as $line) {
-			if ($line->special_code == self::$SPECIAL_CODE && $line->qty > 0) {
+			if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty > 0) {
 				$titles[$line->desc] = $line->desc;
 			}
-			if ($line->special_code == self::$SPECIAL_CODE && $line->qty < 0) {
+			if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty < 0) {
 				unset($titles[$line->desc]);
 			}
 		}

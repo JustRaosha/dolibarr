@@ -37,7 +37,6 @@ include_once DOL_DOCUMENT_ROOT."/core/modules/DolibarrModules.class.php";
  */
 class modSubtotals extends DolibarrModules
 {
-	public const SPECIAL_CODE = 81;
 	/**
 	 *  Constructor. Define names, constants, directories, boxes, permissions
 	 *
@@ -51,7 +50,7 @@ class modSubtotals extends DolibarrModules
 
 		// Id for module (must be unique).
 		// Use here a free id (See in Home -> System information -> Dolibarr for list of used modules id).
-		$this->numero = self::SPECIAL_CODE;
+		$this->numero = SUBTOTALS_SPECIAL_CODE;
 		// Key text used to identify module (for permissions, menus, etc...)
 		$this->rights_class = 'subtotals';
 
