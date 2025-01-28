@@ -2207,8 +2207,9 @@ if (empty($reshook)) {
 		$subtotal_options = array();
 
 		foreach (Facture::$TITLE_OPTIONS as $option) {
-			if (GETPOST($option)) {
-				$subtotal_options[] = $option;
+			$value = GETPOST($option);
+			if ($value) {
+				$subtotal_options[$option] = $value == 'on' ? 1 : $value;
 			}
 		}
 
@@ -2256,8 +2257,9 @@ if (empty($reshook)) {
 		$subtotal_options = array();
 
 		foreach (Facture::$SUBTOTAL_OPTIONS as $option) {
-			if (GETPOST($option)) {
-				$subtotal_options[] = $option;
+			$value = GETPOST($option);
+			if ($value) {
+				$subtotal_options[$option] = $value == 'on' ? 1 : $value;
 			}
 		}
 
@@ -2744,8 +2746,9 @@ if (empty($reshook)) {
 		$subtotal_options = array();
 
 		foreach (Facture::$TITLE_OPTIONS as $option) {
-			if (GETPOSTISSET($option)) {
-				$subtotal_options[] = $option;
+			$value = GETPOST($option);
+			if ($value) {
+				$subtotal_options[$option] = $value == 'on' ? 1 : $value;
 			}
 		}
 
@@ -2788,8 +2791,9 @@ if (empty($reshook)) {
 		$subtotal_options = array();
 
 		foreach (Facture::$SUBTOTAL_OPTIONS as $option) {
-			if (GETPOSTISSET($option)) {
-				$subtotal_options[] = $option;
+			$value = GETPOST($option);
+			if ($value) {
+				$subtotal_options[$option] = $value == 'on' ? 1 : $value;
 			}
 		}
 

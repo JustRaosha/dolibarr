@@ -31,18 +31,16 @@
 // Options for subtotal
 $sub_options = $line->subtotal_options;
 
-if ($sub_options) {
-	$titleshowuponpdf = in_array('titleshowuponpdf', $sub_options);
-	$titleshowtotalexludingvatonpdf = in_array('titleshowtotalexludingvatonpdf', $sub_options);
-	$titleforcepagebreak = in_array('titleforcepagebreak', $sub_options);
-	$subtotalshowtotalexludingvatonpdf = in_array('subtotalshowtotalexludingvatonpdf', $sub_options);
-}
+$titleshowuponpdf = !empty($sub_options['titleshowuponpdf']);
+$titleshowtotalexludingvatonpdf = !empty($sub_options['titleshowtotalexludingvatonpdf']);
+$titleforcepagebreak = !empty($sub_options['titleforcepagebreak']);
+$subtotalshowtotalexludingvatonpdf = !empty($sub_options['subtotalshowtotalexludingvatonpdf']);
 
 $line_options = array(
-	'titleshowuponpdf' => array('type' => array('title'), 'checked' => $titleshowuponpdf ?? false, 'trans_key' => 'ShowUPOnPDF'),
-	'titleshowtotalexludingvatonpdf' => array('type' => array('title'), 'checked' => $titleshowtotalexludingvatonpdf ?? false, 'trans_key' => 'ShowTotalExludingVATOnPDF'),
-	'titleforcepagebreak' => array('type' => array('title'), 'checked' => $titleforcepagebreak ?? false, 'trans_key' => 'ForcePageBreak'),
-	'subtotalshowtotalexludingvatonpdf' => array('type' => array('subtotal'), 'checked' => $subtotalshowtotalexludingvatonpdf ?? false, 'trans_key' => 'ShowTotalExludingVATOnPDF'),
+	'titleshowuponpdf' => array('type' => array('title'), 'value' => 'on', 'checked' => $titleshowuponpdf ?? false, 'trans_key' => 'ShowUPOnPDF'),
+	'titleshowtotalexludingvatonpdf' => array('type' => array('title'), 'value' => 'on', 'checked' => $titleshowtotalexludingvatonpdf ?? false, 'trans_key' => 'ShowTotalExludingVATOnPDF'),
+	'titleforcepagebreak' => array('type' => array('title'), 'value' => 'on', 'checked' => $titleforcepagebreak ?? false, 'trans_key' => 'ForcePageBreak'),
+	'subtotalshowtotalexludingvatonpdf' => array('type' => array('subtotal'), 'value' => 'on', 'checked' => $subtotalshowtotalexludingvatonpdf ?? false, 'trans_key' => 'ShowTotalExludingVATOnPDF'),
 );
 
 // Line type
@@ -136,9 +134,10 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 		print '<div><ul class="ecmjqft">';
 		foreach ($line_options as $key => $value) {
 			if (in_array($line_type, $value['type'])) {
-				print '<li><input id="'.$key.'" type="checkbox" name="'.$key.'" value="" ';
+				print '<li><label for="'.$key.'">'.$langs->trans($value['trans_key']).'</label>';
+				print '<input style="float: left;" id="'.$key.'" type="checkbox" name="'.$key.'" value="'.$value['value'].'" ';
 				print $value['checked'] ? 'checked' : '';
-				print '>'.$langs->trans($value['trans_key']).'</input></li>';
+				print '></li>';
 			}
 		}
 		print '</ul></div></td>';
