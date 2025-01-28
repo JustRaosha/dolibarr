@@ -43,27 +43,21 @@ trait CommonSubtotal
 	 */
 	public static $SUBTOTAL_OPTIONS = ['subtotalshowtotalexludingvatonpdf'];
 
-	public function isSubtotalLine($line) {
-		if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * Adds a subtotal or a title line to a document
 	 */
 	public function addSubtotalLine($langs, $desc, $depth, $options)
 	{
 		if (empty($desc)) {
-			setEventMessages("TitleNeedDesc", null, 'errors');
-			return 0;
+			$this->errors[] = $langs->trans("TitleNeedDesc");
+			return -1;
 		}
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
-			return false; // Unsupported type
+			$this->errors[] = $langs->trans("UnsupportedModuleError");
+			return -1; // Unsupported type
 		}
 		$error = 0;
 		$desc = dol_html_entity_decode($desc, ENT_QUOTES);
@@ -220,7 +214,8 @@ trait CommonSubtotal
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
-			return false; // Unsupported type
+			$this->errors[] = $langs->trans("UnsupportedModuleError");
+			return -1; // Unsupported type
 		}
 
 		if ($correspondingstline) {
@@ -260,7 +255,8 @@ trait CommonSubtotal
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
-			return false; // Unsupported type
+			$this->errors[] = $langs->trans("UnsupportedModuleError");
+			return -1; // Unsupported type
 		}
 
 		$error = 0;

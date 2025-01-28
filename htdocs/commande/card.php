@@ -801,7 +801,7 @@ if (empty($reshook)) {
 
 		$choosen_line = GETPOST('subtotaltitleline');
 		foreach ($object->lines as $line) {
-			if ($line->desc == $choosen_line && $object->isSubtotalLine($line)) {
+			if ($line->desc == $choosen_line && $line->special_code == SUBTOTALS_SPECIAL_CODE) {
 				$desc = $line->desc;
 				$depth = -$line->qty;
 			}

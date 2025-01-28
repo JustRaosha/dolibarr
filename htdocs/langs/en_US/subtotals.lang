@@ -45,6 +45,7 @@ PreviousTitleLevelTooHigh=Previous title is two level or more greater than moved
 STLineUnderCorrespondingTitleDesc=Subtotal line must be under a title with the same level that has the same description.
 STLineUnderCorrespondingTitle=Subtotal line must be under a title of the same level and the same description.
 STLineUnderTitle=Subtotal line must be under its title
+UnsupportedModuleError=You can't add a subtotals line in unsupported module
 
 #
 # PDF
