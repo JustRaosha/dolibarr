@@ -104,7 +104,7 @@ if ($line->qty > 0) { ?>
 			print '<div class="inline-block nowraponall">';
 			print $form->load_tva('vatforblocklines', '', $seller, $buyer, 0, $line->info_bits, $line->product_type, false, 1, $type_tva);
 			print '<input type="hidden" name="lineid" value="'.$line->id.'">';
-			print '<input class="inline-block button smallpaddingimp" type="submit" name="submitforalllines" value="'.$langs->trans("Update").'">';
+			print '<input class="inline-block button smallpaddingimp" type="submit" name="updateallvatlinesblock" value="'.$langs->trans("Update").'">';
 			print '</div>';
 		} else {
 			print '<a class="editfielda reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&mode=vatforblocklines&lineid='.$line->id.'">'.img_edit($langs->trans("ApplyVATForBlock")).'</a>';
@@ -118,7 +118,7 @@ if ($line->qty > 0) { ?>
 			print '<div class="inline-block nowraponall">';
 			print '<input type="text" class="flat right width40" name="discountforblocklines" id="discountforblocklines" value="0"><span class="hideonsmartphone">%</span>';
 			print '<input type="hidden" name="lineid" value="'.$line->id.'">';
-			print '<input class="inline-block button smallpaddingimp" type="submit" name="submitforalllines" value="'.$langs->trans("Update").'">';
+			print '<input class="inline-block button smallpaddingimp" type="submit" name="updatealldiscountlinesblock" value="'.$langs->trans("Update").'">';
 			print '</div>';
 		} else {
 			print '<a class="editfielda reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&mode=discountforblocklines&lineid='.$line->id.'">'.img_edit($langs->trans("ApplyDiscountForBlock")).'</a>';

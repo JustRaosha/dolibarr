@@ -960,10 +960,10 @@ if (empty($reshook)) {
 				setEventMessages($langs->trans('ErrorsOnXLines', $error), null, 'errors');
 			}
 		}
-	} elseif ($action == 'addline' && GETPOST('submitforalllines', 'alpha') && GETPOST('vatforblocklines', 'alpha') !== '' && $usercancreate) {
+	} elseif ($action == 'addline' && GETPOST('updateallvatlinesblock', 'alpha') && GETPOST('vatforblocklines', 'alpha') !== '' && $usercancreate) {
 		$tx_tva = GETPOST('vatforblocklines') ? GETPOST('vatforblocklines') : 0;
 		$object->updateSubtotalLineBlockLines($object->getRangOfLine($lineid), 'tva', $tx_tva);
-	} elseif ($action == 'addline' && GETPOST('submitforalllines', 'alpha') && GETPOST('discountforblocklines', 'alpha') !== '' && $usercancreate) {
+	} elseif ($action == 'addline' && GETPOST('updatealldiscountlinesblock', 'alpha') && GETPOST('discountforblocklines', 'alpha') !== '' && $usercancreate) {
 		$discount = GETPOST('discountforblocklines') ? GETPOST('discountforblocklines') : 0;
 		$object->updateSubtotalLineBlockLines($object->getRangOfLine($lineid), 'discount', $discount);
 	}
