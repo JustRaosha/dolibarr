@@ -41,17 +41,12 @@ require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/subtotals/class/commonsubtotal.class.php';
-
 
 /**
  *	Class to manage PDF invoice template sponge
  */
 class pdf_sponge extends ModelePDFFactures
 {
-
-	use CommonSubtotal;
-
 	/**
 	 * @var DoliDB Database handler
 	 */
@@ -716,7 +711,7 @@ class pdf_sponge extends ModelePDFFactures
 
 					$sub_options = $object->lines[$i]->subtotal_options;
 
-					if ($object->lines[$i]->special_code == self::$SPECIAL_CODE) {
+					if ($object->lines[$i]->special_code == CommonSubtotal::$SPECIAL_CODE) {
 						$level = $object->lines[$i]->qty;
 						unset($pdf_sub_options['titleforcepagebreak']);
 						unset($pdf_sub_options['subtotalshowtotalexludingvatonpdf']);
@@ -811,7 +806,7 @@ class pdf_sponge extends ModelePDFFactures
 
 					// Description of product line
 					if ($this->getColumnStatus('desc')) {
-						if ($object->lines[$i]->special_code != self::$SPECIAL_CODE) {
+						if ($object->lines[$i]->special_code != CommonSubtotal::$SPECIAL_CODE) {
 							$this->printColDescContent($pdf, $curY, 'desc', $object, $i, $outputlangs, $hideref, $hidedesc);
 							$this->setAfterColsLinePositionsData('desc', $pdf->GetY(), $pdf->getPage());
 						} else {
@@ -856,45 +851,45 @@ class pdf_sponge extends ModelePDFFactures
 					}
 
 					// VAT Rate
-					if ($this->getColumnStatus('vat') && $object->lines[$i]->special_code != self::$SPECIAL_CODE) {
+					if ($this->getColumnStatus('vat') && $object->lines[$i]->special_code != CommonSubtotal::$SPECIAL_CODE) {
 						$vat_rate = pdf_getlinevatrate($object, $i, $outputlangs, $hidedetails);
 						$this->printStdColumnContent($pdf, $curY, 'vat', $vat_rate);
 					}
 
 					// Unit price before discount
-					if ($this->getColumnStatus('subprice') && $object->lines[$i]->special_code != self::$SPECIAL_CODE && isset($pdf_sub_options['titleshowuponpdf'])) {
+					if ($this->getColumnStatus('subprice') && $object->lines[$i]->special_code != CommonSubtotal::$SPECIAL_CODE && isset($pdf_sub_options['titleshowuponpdf'])) {
 						$up_excl_tax = pdf_getlineupexcltax($object, $i, $outputlangs, $hidedetails);
 						$this->printStdColumnContent($pdf, $curY, 'subprice', $up_excl_tax);
 					}
 
 					// Quantity
 					// Enough for 6 chars
-					if ($this->getColumnStatus('qty') && $object->lines[$i]->special_code != self::$SPECIAL_CODE) {
+					if ($this->getColumnStatus('qty') && $object->lines[$i]->special_code != CommonSubtotal::$SPECIAL_CODE) {
 						$qty = pdf_getlineqty($object, $i, $outputlangs, $hidedetails);
 						$this->printStdColumnContent($pdf, $curY, 'qty', $qty);
 					}
 
 					// Situation progress
-					if ($this->getColumnStatus('progress') && $object->lines[$i]->special_code != self::$SPECIAL_CODE) {
+					if ($this->getColumnStatus('progress') && $object->lines[$i]->special_code != CommonSubtotal::$SPECIAL_CODE) {
 						$progress = pdf_getlineprogress($object, $i, $outputlangs, $hidedetails);
 						$this->printStdColumnContent($pdf, $curY, 'progress', $progress);
 					}
 
 					// Unit
-					if ($this->getColumnStatus('unit') && $object->lines[$i]->special_code != self::$SPECIAL_CODE) {
+					if ($this->getColumnStatus('unit') && $object->lines[$i]->special_code != CommonSubtotal::$SPECIAL_CODE) {
 						$unit = pdf_getlineunit($object, $i, $outputlangs, $hidedetails);
 						$this->printStdColumnContent($pdf, $curY, 'unit', $unit);
 					}
 
 					// Discount on line
-					if ($this->getColumnStatus('discount') && $object->lines[$i]->remise_percent && $object->lines[$i]->special_code != self::$SPECIAL_CODE) {
+					if ($this->getColumnStatus('discount') && $object->lines[$i]->remise_percent && $object->lines[$i]->special_code != CommonSubtotal::$SPECIAL_CODE) {
 						$remise_percent = pdf_getlineremisepercent($object, $i, $outputlangs, $hidedetails);
 						$this->printStdColumnContent($pdf, $curY, 'discount', $remise_percent);
 					}
 
 					// Total excl tax line (HT)
 					if ($this->getColumnStatus('totalexcltax')) {
-						if ($object->lines[$i]->special_code != self::$SPECIAL_CODE && isset($pdf_sub_options['titleshowtotalexludingvatonpdf'])) {
+						if ($object->lines[$i]->special_code != CommonSubtotal::$SPECIAL_CODE && isset($pdf_sub_options['titleshowtotalexludingvatonpdf'])) {
 							$total_excl_tax = pdf_getlinetotalexcltax($object, $i, $outputlangs, $hidedetails);
 							$this->printStdColumnContent($pdf, $curY, 'totalexcltax', $total_excl_tax);
 						} elseif ($object->lines[$i]->qty < 0 && isset($pdf_sub_options['subtotalshowtotalexludingvatonpdf'])) {
