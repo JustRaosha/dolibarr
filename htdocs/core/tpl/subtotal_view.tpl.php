@@ -100,28 +100,32 @@ if ($line->qty > 0) { ?>
 	</td>
 	<td class="linecolvat nowrap right">
 		<?php
-		if (GETPOST('mode', 'aZ09') == 'vatforblocklines' && GETPOST('lineid') == $line->id) {
-			print '<div class="inline-block nowraponall">';
-			print $form->load_tva('vatforblocklines', '', $seller, $buyer, 0, $line->info_bits, $line->product_type, false, 1, $type_tva);
-			print '<input type="hidden" name="lineid" value="'.$line->id.'">';
-			print '<input class="inline-block button smallpaddingimp" type="submit" name="updateallvatlinesblock" value="'.$langs->trans("Update").'">';
-			print '</div>';
-		} else {
-			print '<a class="editfielda reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&mode=vatforblocklines&lineid='.$line->id.'">'.img_edit($langs->trans("ApplyVATForBlock")).'</a>';
+		if ($this->status == 0) {
+			if (GETPOST('mode', 'aZ09') == 'vatforblocklines' && GETPOST('lineid') == $line->id) {
+				print '<div class="inline-block nowraponall">';
+				print $form->load_tva('vatforblocklines', '', $seller, $buyer, 0, $line->info_bits, $line->product_type, false, 1, $type_tva);
+				print '<input type="hidden" name="lineid" value="' . $line->id . '">';
+				print '<input class="inline-block button smallpaddingimp" type="submit" name="updateallvatlinesblock" value="' . $langs->trans("Update") . '">';
+				print '</div>';
+			} else {
+				print '<a class="editfielda reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=vatforblocklines&lineid=' . $line->id . '">' . img_edit($langs->trans("ApplyVATForBlock")) . '</a>';
+			}
 		}
 		?>
 	</td>
 	<td class="linecollabel" colspan="<?= $colspan - 2 ?>"></td>
 	<td class="linecoldiscount right">
 		<?php
-		if (GETPOST('mode', 'aZ09') == 'discountforblocklines' && GETPOST('lineid') == $line->id) {
-			print '<div class="inline-block nowraponall">';
-			print '<input type="text" class="flat right width40" name="discountforblocklines" id="discountforblocklines" value="0"><span class="hideonsmartphone">%</span>';
-			print '<input type="hidden" name="lineid" value="'.$line->id.'">';
-			print '<input class="inline-block button smallpaddingimp" type="submit" name="updatealldiscountlinesblock" value="'.$langs->trans("Update").'">';
-			print '</div>';
-		} else {
-			print '<a class="editfielda reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&mode=discountforblocklines&lineid='.$line->id.'">'.img_edit($langs->trans("ApplyDiscountForBlock")).'</a>';
+		if ($this->status == 0) {
+			if (GETPOST('mode', 'aZ09') == 'discountforblocklines' && GETPOST('lineid') == $line->id) {
+				print '<div class="inline-block nowraponall">';
+				print '<input type="text" class="flat right width40" name="discountforblocklines" id="discountforblocklines" value="0"><span class="hideonsmartphone">%</span>';
+				print '<input type="hidden" name="lineid" value="' . $line->id . '">';
+				print '<input class="inline-block button smallpaddingimp" type="submit" name="updatealldiscountlinesblock" value="' . $langs->trans("Update") . '">';
+				print '</div>';
+			} else {
+				print '<a class="editfielda reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=discountforblocklines&lineid=' . $line->id . '">' . img_edit($langs->trans("ApplyDiscountForBlock")) . '</a>';
+			}
 		}
 		?>
 	</td>
@@ -152,36 +156,44 @@ if ($line->qty > 0) { ?>
 		?>
 <?php }
 
-// Edit picto
-echo '<td class="linecoledit center">';
-echo '<a class="editfielda reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=editline&token='.newToken().'&lineid='.$line->id.'">'.img_edit().'</a>';
-echo '</td>';
-
-// Delete picto
-echo '<td class="linecoldelete center">';
-echo '<a class="reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=ask_subtotal_deleteline&token='.newToken().'&lineid='.$line->id;
-if ($line->qty > 0) {
-	echo '&type=title';
-}
-echo '">'.img_delete().'</a>';
-echo '</td>';
-
-// Move up-down picto
-if ($num > 1 && $conf->browser->layout != 'phone' && ((property_exists($this, 'situation_counter') && $this->situation_counter == 1) || empty($this->situation_cycle_ref)) && empty($disablemove)) {
-	echo '<td class="linecolmove tdlineupdown center">';
-	if ($i > 0) {
-		echo '<a class="lineupdown" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=up&token='.newToken().'&rowid='.$line->id.'">';
-		echo img_up('default', 0, 'imgupforline');
-		echo '</a>';
-	}
-	if ($i < $num - 1) {
-		echo '<a class="lineupdown" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=down&token='.newToken().'&rowid='.$line->id.'">';
-		echo img_down('default', 0, 'imgdownforline');
-		echo '</a>';
-	}
+if ($this->status == 0) {
+	// Edit picto
+	echo '<td class="linecoledit center">';
+	echo '<a class="editfielda reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=editline&token='.newToken().'&lineid='.$line->id.'">'.img_edit().'</a>';
 	echo '</td>';
+
+	// Delete picto
+	echo '<td class="linecoldelete center">';
+	echo '<a class="reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=ask_subtotal_deleteline&token='.newToken().'&lineid='.$line->id;
+	if ($line->qty > 0) {
+		echo '&type=title';
+	}
+	echo '">'.img_delete().'</a>';
+	echo '</td>';
+
+	// Move up-down picto
+	if ($num > 1 && $conf->browser->layout != 'phone' && ((property_exists($this, 'situation_counter') && $this->situation_counter == 1) || empty($this->situation_cycle_ref)) && empty($disablemove)) {
+		echo '<td class="linecolmove tdlineupdown center">';
+		if ($i > 0) {
+			echo '<a class="lineupdown" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=up&token='.newToken().'&rowid='.$line->id.'">';
+			echo img_up('default', 0, 'imgupforline');
+			echo '</a>';
+		}
+		if ($i < $num - 1) {
+			echo '<a class="lineupdown" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=down&token='.newToken().'&rowid='.$line->id.'">';
+			echo img_down('default', 0, 'imgdownforline');
+			echo '</a>';
+		}
+		echo '</td>';
+	} else {
+		echo '<td '.(($conf->browser->layout != 'phone' && empty($disablemove)) ? ' class="linecolmove tdlineupdown center"' : ' class="linecolmove center"').'></td>';
+	}
 } else {
-	echo '<td '.(($conf->browser->layout != 'phone' && empty($disablemove)) ? ' class="linecolmove tdlineupdown center"' : ' class="linecolmove center"').'></td>';
+	$colspan = 3;
+	if (isModEnabled('asset') && $object->element == 'invoice_supplier') {
+		$colspan++;
+	}
+	print '<td colspan="'.$colspan.'"></td>';
 }
 echo '</tr>';
 echo '<!-- END PHP TEMPLATE subtotal_view.tpl.php -->';
