@@ -26,42 +26,39 @@ if (empty($conf) || !is_object($conf)) {
 	print "Error, template page can't be called as URL";
 	exit(1);
 }
-
 ?>
 
 <!-- BEGIN PHP TEMPLATE originproductline.tpl.php -->
 <?php
-// Handle subtotals line edit
-if ($line->special_code == SUBTOTALS_SPECIAL_CODE) :
-	include DOL_DOCUMENT_ROOT.'/core/tpl/originsubtotalline.tpl.php';
-else :
 '@phan-var-force CommonObject $this';
-print '<tr data-id="'.$this->tpl['id'].'" class="oddeven'.(empty($this->tpl['strike']) ? '' : ' strikefordisabled').'">';
-print '<td class="linecolref">'.$this->tpl['label'].'</td>';
-print '<td class="linecoldescription">'.$this->tpl['description'].'</td>';
-print '<td class="linecolvat right">'.$this->tpl['vat_rate'].'</td>';
-print '<td class="linecoluht right">'.$this->tpl['price'].'</td>';
+print '<tr data-id="'.$this->tpl['id'].'" class="'.(empty($this->tpl['strike']) ? '' : ' strikefordisabled').'" style="background:#'.$this->getSubtotalColors($line->qty).'">';
+print '<td class="linecolref">'.$this->tpl['description'].'</td>';
+print '<td class="linecoldescription"></td>';
+print '<td class="linecolvat right"></td>';
+print '<td class="linecoluht right"></td>';
 if (isModEnabled("multicurrency")) {
-	print '<td class="linecoluht_currency right">'.$this->tpl['multicurrency_price'].'</td>';
+	print '<td class="linecoluht_currency right">'.$this->getSubtotalLineMulticurrencyAmount($line).'</td>';
 }
 
-print '<td class="linecolqty right">'.$this->tpl['qty'].'</td>';
+print '<td class="linecolqty right"></td>';
 if (getDolGlobalString('PRODUCT_USE_UNITS')) {
-	print '<td class="linecoluseunit left">'.$langs->trans($this->tpl['unit']).'</td>';
+	print '<td class="linecoluseunit left"></td>';
 }
 
-print '<td class="linecoldiscount right">'.$this->tpl['remise_percent'].'</td>';
-print '<td class="linecolht right">'.$this->tpl['total_ht'].'</td>';
+print '<td class="linecoldiscount right"></td>';
+if ($this->tpl['qty'] < 0) {
+	print '<td class="linecolht right">'.$this->getSubtotalLineAmount($line).'</td>';
+} else {
+	print '<td class="linecolht right"></td>';
+}
 
 $selected = 1;
 if (!empty($selectedLines) && !in_array($this->tpl['id'], $selectedLines)) {
 	$selected = 0;
 }
 print '<td class="center">';
-print '<input id="cb'.$this->tpl['id'].'" class="flat checkforselect" type="checkbox" name="toselect[]" value="'.$this->tpl['id'].'"'.($selected ? ' checked="checked"' : '').'>';
+print '<input id="cb'.$this->tpl['id'].'" class="flat" type="checkbox" name="toselect[]" value="'.$this->tpl['id'].'"'.($selected ? ' checked="checked"' : '').'>';
 print '</td>';
 print '</tr>'."\n";
 ?>
 <!-- END PHP TEMPLATE originproductline.tpl.php -->
-
-<?php endif; ?>
