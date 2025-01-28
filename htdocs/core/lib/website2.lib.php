@@ -322,14 +322,14 @@ function dolSavePageContent($filetpl, Website $object, WebsitePage $objectpage, 
 		$tplcontent .= "// Now fix the content for SEO or multilanguage\n";
 		// Old method for custom SEO
 		if (strpos($objectpage->content, '$__PAGE__KEYWORDS__') !== false) {
-			$tplcontent .= '$tmp = preg_replace("/^<meta name=\"keywords\" content=\".*?\" \/>/ms", "<meta name=\"keywords\" content=\"" . dolPrintHTMLForAttribute($__PAGE__KEYWORDS__, 1) . "\"  />", $tmp);'."\n";
+			$tplcontent .= '$tmp = preg_replace("/^<meta name=\"keywords\" content=\".*?\" \/>/ms", "<meta name=\"keywords\" content=\"" . dolPrintHTMLForAttribute($__PAGE__KEYWORDS__ ?? "", 1) . "\"  />", $tmp);'."\n";
 		}
 		if (strpos($objectpage->content, '$__PAGE__TITLE__') !== false) {
-			$tplcontent .= '$tmp = preg_replace("/^<title>.*?<\/title>/ms", "<title>" . dolPrintHTMLForAttribute($__PAGE__TITLE__, 1) . "</title>", $tmp);'."\n";
-			$tplcontent .= '$tmp = preg_replace("/^<meta name=\"title\" content=\".*?\" \/>/ms", "<meta name=\"title\" content=\"" . dolPrintHTMLForAttribute($__PAGE__TITLE__, 1) . "\"  />", $tmp);'."\n";
+			$tplcontent .= '$tmp = preg_replace("/^<title>.*?<\/title>/ms", "<title>" . dolPrintHTMLForAttribute($__PAGE__TITLE__ ?? "", 1) . "</title>", $tmp);'."\n";
+			$tplcontent .= '$tmp = preg_replace("/^<meta name=\"title\" content=\".*?\" \/>/ms", "<meta name=\"title\" content=\"" . dolPrintHTMLForAttribute($__PAGE__TITLE__ ?? "", 1) . "\"  />", $tmp);'."\n";
 		}
 		if (strpos($objectpage->content, '$__PAGE__DESC__') !== false) {
-			$tplcontent .= '$tmp = preg_replace("/^<meta name=\"description\" content=\".*?\" \/>/ms", "<meta name=\"description\" content=\"" . dolPrintHTMLForAttribute($__PAGE__DESC__, 1) . "\"  />", $tmp);'."\n";
+			$tplcontent .= '$tmp = preg_replace("/^<meta name=\"description\" content=\".*?\" \/>/ms", "<meta name=\"description\" content=\"" . dolPrintHTMLForAttribute($__PAGE__DESC__ ?? "", 1) . "\"  />", $tmp);'."\n";
 		}
 		// New method for custom SEO
 		if (strpos($objectpage->content, 'define("__SEO_PAGE_LANG__"') !== false) {

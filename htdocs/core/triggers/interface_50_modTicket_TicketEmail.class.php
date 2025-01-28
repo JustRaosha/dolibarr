@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2014-2016  Jean-François Ferry	<hello@librethic.io>
  * Copyright (C) 2016       Christophe Battarel <christophe@altairis.fr>
@@ -87,6 +88,7 @@ class InterfaceTicketEmail extends DolibarrTriggers
 								$body_assignee = 'TicketAssignedEmailBody';
 								$see_ticket_assignee = 'SeeThisTicketIntomanagementInterface';
 
+								$old_MAIN_MAIL_AUTO_COPY_TO = null;  // For static analysis
 								if (getDolGlobalString('TICKET_DISABLE_MAIL_AUTOCOPY_TO')) {
 									$old_MAIN_MAIL_AUTOCOPY_TO = getDolGlobalString('MAIN_MAIL_AUTOCOPY_TO');
 									$conf->global->MAIN_MAIL_AUTOCOPY_TO = '';
