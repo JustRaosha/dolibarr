@@ -43,6 +43,10 @@ if (empty($object) || !is_object($object)) {
 	print "Error, template page ".basename(__FILE__)." can't be called with no object defined.";
 	exit;
 }
+'
+@phan-var-force ?string $fk_element
+@phan-var-force ?Task[] $tasksarray
+';
 
 ?>
 
