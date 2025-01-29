@@ -222,7 +222,7 @@ trait CommonSubtotal
 	 * @param Translate	$langs					Translation.
 	 * @param int		$id						ID of the line to delete
 	 * @param boolean	$correspondingstline	If true, also deletes the corresponding subtotal line
-	 * @param User		$userUser				performing the deletion (used for permissions in some modules)
+	 * @param User		$user					performing the deletion (used for permissions in some modules)
 	 * @return int								ID of deleted line if successful, -1 on error
 	 */
 	public function deleteSubtotalLine($langs, $id, $correspondingstline = false, $user = null)
