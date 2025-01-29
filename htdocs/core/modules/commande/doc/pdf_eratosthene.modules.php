@@ -682,7 +682,7 @@ class pdf_eratosthene extends ModelePDFCommandes
 								$object->lines[$i]->desc = $langs->trans("SubtotalOf", $object->lines[$i]->desc);
 								if ($previous_align == 'L') {
 									$this->cols['desc']['content']['align'] = 'R';
-								} else {
+								} elseif ($previous_align == 'R') {
 									$this->cols['desc']['content']['align'] = 'L';
 								}
 							}
