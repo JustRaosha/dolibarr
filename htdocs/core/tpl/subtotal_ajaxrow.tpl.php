@@ -201,7 +201,7 @@ function checkLinePosition(row, inital_table) {
 					break;
 				} else if (currentRowLevel1 > 0 && currentRowLevel1 < rowLevel) {
 					if (rowLevel - currentRowLevel1 > 1) {
-						$("#notification-message").text("<?= $langs->trans("PreviousTitleLevelTooHigh"); ?>");
+						$("#notification-message").text("<?php echo $langs->trans("PreviousTitleLevelTooHigh"); ?>");
 						cancelLineMove = true;
 						break;
 					}
@@ -212,7 +212,7 @@ function checkLinePosition(row, inital_table) {
 						if (tbody[j].dataset.desc !== undefined) {
 							const currentRowLevel2 = parseInt(tbody[j].dataset.level, 10);
 							if (tbody[i].dataset.desc === tbody[j].dataset.desc && currentRowLevel1 === -currentRowLevel2) {
-								$("#notification-message").text("<?= $langs->trans("TitleUnderSameLevelSTLine"); ?>");
+								$("#notification-message").text("<?php echo $langs->trans("TitleUnderSameLevelSTLine"); ?>");
 								cancelLineMove = true;
 								break;
 							}
@@ -223,7 +223,7 @@ function checkLinePosition(row, inital_table) {
 						if (tbody[j].dataset.desc !== undefined) {
 							const currentRowLevel2 = parseInt(tbody[j].dataset.level, 10);
 							if (row.dataset.desc !== tbody[j].dataset.desc && currentRowLevel2 <= -rowLevel) {
-								$("#notification-message").text("<?= $langs->trans("TitleAfterStLineOfSameLevelTitle"); ?>");
+								$("#notification-message").text("<?php echo $langs->trans("TitleAfterStLineOfSameLevelTitle"); ?>");
 								cancelLineMove = true;
 								break;
 							}
@@ -233,7 +233,7 @@ function checkLinePosition(row, inital_table) {
 				} else if (currentRowLevel1 < -rowLevel) {
 					ignore_level = currentRowLevel1;
 				} else {
-					$("#notification-message").text("<?= $langs->trans("TitleUnderSameLevelOrGreater"); ?>");
+					$("#notification-message").text("<?php echo $langs->trans("TitleUnderSameLevelOrGreater"); ?>");
 					cancelLineMove = true;
 					break;
 				}
@@ -245,11 +245,11 @@ function checkLinePosition(row, inital_table) {
 						found_title = true;
 						break;
 					}else if (-rowLevel === currentRowLevel1) {
-						$("#notification-message").text("<?= $langs->trans("STLineUnderCorrespondingTitleDesc"); ?>");
+						$("#notification-message").text("<?php echo $langs->trans("STLineUnderCorrespondingTitleDesc"); ?>");
 						cancelLineMove = true;
 						break;
 					} else if (-rowLevel > currentRowLevel1) {
-						$("#notification-message").text("<?= $langs->trans("STLineUnderCorrespondingTitle"); ?>");
+						$("#notification-message").text("<?php echo $langs->trans("STLineUnderCorrespondingTitle"); ?>");
 						cancelLineMove = true;
 						break;
 					}
@@ -258,7 +258,7 @@ function checkLinePosition(row, inital_table) {
 		}
 	}
 	if (!found_title) {
-		$("#notification-message").text("<?= $langs->trans("STLineUnderTitle"); ?>");
+		$("#notification-message").text("<?php echo $langs->trans("STLineUnderTitle"); ?>");
 		cancelLineMove = true;
 	}
 

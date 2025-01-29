@@ -94,7 +94,7 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 	<input type="hidden" id="product_type" name="type" value="<?php echo $line->product_type; ?>">
 	<input type="hidden" id="special_code" name="special_code" value="<?php echo $line->special_code; ?>">
 	<input type="hidden" id="fk_parent_line" name="fk_parent_line" value="<?php echo $line->fk_parent_line; ?>">
-	<input type="hidden" name="action" value="update<?= $line_type ?>line">
+	<input type="hidden" name="action" value="update<?php echo $line_type ?>line">
 
 	<?php
 

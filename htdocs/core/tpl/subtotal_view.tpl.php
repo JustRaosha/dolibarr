@@ -82,7 +82,7 @@ if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 
 if ($line->qty > 0) { ?>
 		<?php $colspan = isModEnabled('multicurrency') && $this->multicurrency_code != $conf->currency ? $colspan+2 : $colspan+1 ?>
-	<td class="linecollabel"><?=str_repeat('&nbsp;', ($line->qty-1)*8);?>
+	<td class="linecollabel"><?php echo str_repeat('&nbsp;', ($line->qty-1)*8);?>
 		<?php
 		echo $line->desc;
 		if ($line_options) {
@@ -108,12 +108,13 @@ if ($line->qty > 0) { ?>
 				print '<input class="inline-block button smallpaddingimp" type="submit" name="updateallvatlinesblock" value="' . $langs->trans("Update") . '">';
 				print '</div>';
 			} else {
+				// TODO : change color if (colorIsLight($this->getSubtotalColors($line->qty)))
 				print '<a class="editfielda reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=vatforblocklines&lineid=' . $line->id . '">' . img_edit($langs->trans("ApplyVATForBlock")) . '</a>';
 			}
 		}
 		?>
 	</td>
-	<td class="linecollabel" colspan="<?= $colspan - 2 ?>"></td>
+	<td class="linecollabel" colspan="<?php echo $colspan - 2 ?>"></td>
 	<td class="linecoldiscount right">
 		<?php
 		if ($this->status == 0) {
@@ -124,14 +125,15 @@ if ($line->qty > 0) { ?>
 				print '<input class="inline-block button smallpaddingimp" type="submit" name="updatealldiscountlinesblock" value="' . $langs->trans("Update") . '">';
 				print '</div>';
 			} else {
-				print '<a class="editfielda reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=discountforblocklines&lineid=' . $line->id . '">' . img_edit($langs->trans("ApplyDiscountForBlock")) . '</a>';
+				// TODO : change color if (colorIsLight($this->getSubtotalColors($line->qty)))
+				print '<a class="editfielda reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=discountforblocklines&lineid=' . $line->id . '">' . img_edit($langs->trans("ApplyDiscountForBlock"), 0, "style=\"color: #111\"") . '</a>';
 			}
 		}
 		?>
 	</td>
-	<td class="linecollabel" colspan="<?= $colspan - 4 ?>"></td>
+	<td class="linecollabel" colspan="<?php echo $colspan - 4 ?>"></td>
 <?php } elseif ($line->qty < 0) {?>
-		<td class="linecollabel nowrap right" colspan="<?= $colspan + 2 ?>">
+		<td class="linecollabel nowrap right" colspan="<?php echo $colspan + 2 ?>">
 			<?php
 			echo $line->desc;
 			if (!empty($line_options['subtotalshowtotalexludingvatonpdf'])) {

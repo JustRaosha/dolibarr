@@ -305,7 +305,7 @@ if (empty($reshook)) {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	} elseif ($action == 'confirm_delete_subtotalline' && $confirm == 'yes' && $usercancreate) {
-		$result = $object->deleteSubtotalLine(GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline'), $user);
+		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline'), $user);
 		if ($result > 0) {
 			// reorder lines
 			$object->line_order(true);
@@ -730,7 +730,7 @@ if (empty($reshook)) {
 		$localtax1_rate = get_localtax($vat_rate, 1, $object->thirdparty, $mysoc);
 		$localtax2_rate = get_localtax($vat_rate, 2, $object->thirdparty, $mysoc);
 		foreach ($object->lines as $line) {
-			if ($line->special_code == SUBTOTALS_SPECIAL_CODE){
+			if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
 				continue;
 			}
 			$result = $object->updateline($line->id, $line->desc, $line->subprice, $line->qty, $line->remise_percent, $vat_rate, $localtax1_rate, $localtax2_rate, 'HT', $line->info_bits, $line->date_start, $line->date_end, $line->product_type, $line->fk_parent_line, 0, $line->fk_fournprice, $line->pa_ht, $line->label, $line->special_code, $line->array_options, $line->fk_unit, $line->multicurrency_subprice);
@@ -740,7 +740,7 @@ if (empty($reshook)) {
 		$remise_percent = (GETPOST('remiseforalllines') ? GETPOST('remiseforalllines') : 0);
 		$remise_percent = str_replace('*', '', $remise_percent);
 		foreach ($object->lines as $line) {
-			if ($line->special_code == SUBTOTALS_SPECIAL_CODE){
+			if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
 				continue;
 			}
 			$tvatx = $line->tva_tx;
@@ -750,7 +750,6 @@ if (empty($reshook)) {
 			$result = $object->updateline($line->id, $line->desc, $line->subprice, $line->qty, $remise_percent, $tvatx, $line->localtax1_tx, $line->localtax2_tx, 'HT', $line->info_bits, $line->date_start, $line->date_end, $line->product_type, $line->fk_parent_line, 0, $line->fk_fournprice, $line->pa_ht, $line->label, $line->special_code, $line->array_options, $line->fk_unit, $line->multicurrency_subprice);
 		}
 	} elseif ($action == 'confirm_addtitleline' && $usercancreate) {
-
 		// Handling adding a new title line for subtotals module
 
 		$langs->load('subtotals');
@@ -794,8 +793,7 @@ if (empty($reshook)) {
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
-	}  elseif ($action == 'confirm_addsubtotalline' && $usercancreate) {
-
+	} elseif ($action == 'confirm_addsubtotalline' && $usercancreate) {
 		// Handling adding a new subtotal line for subtotals module
 
 		$langs->load('subtotals');
@@ -1338,7 +1336,6 @@ if (empty($reshook)) {
 			}
 		}
 	} elseif ($action == 'updatetitleline' && GETPOSTISSET("save") && $usercancreate && !GETPOST('cancel', 'alpha')) {
-
 		// Handling updating a title line for subtotals module
 
 		$langs->load('subtotals');
@@ -1383,7 +1380,6 @@ if (empty($reshook)) {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	} elseif ($action == 'updatesubtotalline' && GETPOSTISSET("save") && $usercancreate && !GETPOST('cancel', 'alpha')) {
-
 		// Handling updating a subtotal line for subtotals module
 
 		$langs->load('subtotals');
@@ -2756,7 +2752,7 @@ if ($action == 'create' && $usercancreate) {
 			$langs->load("subtotals");
 			$title = "DeleteSubtotalLine";
 			$question = "ConfirmDeleteSubtotalLine";
-			if (GETPOST('type') == 'title'){
+			if (GETPOST('type') == 'title') {
 				$formconfirm = array(array('type' => 'checkbox', 'name' => 'deletecorrespondingsubtotalline', 'label' => $langs->trans("DeleteCorrespondingSubtotalLine"), 'value' => 0));
 				$title = "DeleteTitleLine";
 				$question = "ConfirmDeleteTitleLine";
@@ -3268,7 +3264,6 @@ if ($action == 'create' && $usercancreate) {
 
 				// Subtotal
 				if ($object->status == Commande::STATUS_DRAFT && isModEnabled('subtotals') && getDolGlobalString('SUBTOTAL_TITLE_'.strtoupper($object->element))) {
-
 					$langs->load('subtotals');
 
 					// Array of the subbuttons

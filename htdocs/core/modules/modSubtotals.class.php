@@ -120,7 +120,6 @@ class modSubtotals extends DolibarrModules
 
 		// Exports
 		$r = 0;
-
 	}
 
 	/**

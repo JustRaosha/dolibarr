@@ -196,7 +196,6 @@ if (empty($conf->use_javascript_ajax)) {
 	}
 
 	print '</table>'."\n";
-
 }
 
 print '<div class="center">';

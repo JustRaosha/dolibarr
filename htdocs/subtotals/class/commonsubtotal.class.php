@@ -29,22 +29,32 @@ if (!defined('SUBTOTALS_SPECIAL_CODE')) {
 trait CommonSubtotal
 {
 	/**
+	 * @var int
 	 * Type for subtotals module lines
 	 */
 	public static $PRODUCT_TYPE = 9;
 
 	/**
+	 * @var array<string>
 	 * Options for subtotals module title lines
 	 */
 	public static $TITLE_OPTIONS = ['titleshowuponpdf', 'titleshowtotalexludingvatonpdf', 'titleforcepagebreak'];
 
 	/**
+	 * @var array<string>
 	 * Options for subtotals module subtotal lines
 	 */
 	public static $SUBTOTAL_OPTIONS = ['subtotalshowtotalexludingvatonpdf'];
 
 	/**
-	 * Adds a subtotal or a title line to a document
+	 * Adds a subtotals line to a document.
+	 * This function inserts a subtotal line based on the given parameters.
+	 *
+	 * @param Translate					$langs  	Translation.
+	 * @param string					$desc		Description of the line.
+	 * @param int						$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
+	 * @param array<string,int|float>	$options	Subtotal options for pdf view
+	 * @return int									ID of the added line if successful, 0 on warning, -1 on error
 	 */
 	public function addSubtotalLine($langs, $desc, $depth, $options)
 	{
@@ -206,9 +216,15 @@ trait CommonSubtotal
 	}
 
 	/**
-	 * Delete a subtotal or a title line to a document
+	 * Deletes a subtotal or a title line from a document.
+	 * If the corresponding subtotal line exists and second parameter true, it will also be deleted.
+	 *
+	 * @param int      $id                  ID of the line to delete
+	 * @param boolean  $correspondingstline If true, also deletes the corresponding subtotal line
+	 * @param User     $user                User performing the deletion (used for permissions in some modules)
+	 * @return int                          ID of deleted line if successful, -1 on error
 	 */
-	public function deleteSubtotalLine($id, $correspondingstline = false, $user = null)
+	public function deleteSubtotalLine($langs, $id, $correspondingstline = false, $user = null)
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
@@ -227,7 +243,7 @@ trait CommonSubtotal
 					$oldDepth = $line->qty;
 				}
 				if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
-					$this->deleteSubtotalLine($line->id, false, $user);
+					$this->deleteSubtotalLine($langs, $line->id, false, $user);
 					break;
 				}
 			}
@@ -246,7 +262,16 @@ trait CommonSubtotal
 	}
 
 	/**
-	 * Updates a subtotals line to a document
+	 * Updates a subtotal line of a document.
+	 * This function updates a subtotals line based on its id and the given parameters.
+	 * Updating a title line updates the corresponding subtotal line except options.
+	 *
+	 * @param Translate					$langs  	Translation.
+	 * @param int						$lineid  	ID of the line to update.
+	 * @param string					$desc		Description of the line.
+	 * @param int						$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
+	 * @param array<string,int|float>	$options	Subtotal options for pdf view
+	 * @return int									ID of the added line if successful, 0 on warning, -1 on error
 	 */
 	public function updateSubtotalLine($langs, $lineid, $desc, $depth, $options)
 	{
@@ -390,7 +415,12 @@ trait CommonSubtotal
 	}
 
 	/**
-	 * Updates a block of subtotals line of a document
+	 * Updates a block of lines of a document.
+	 *
+	 * @param int		$linerang	Rang of the line to start from.
+	 * @param string	$mode		Column to change (discount or vat).
+	 * @param int		$value		Value of the change.
+	 * @return int					Return integer < 0 if KO, 1 if OK
 	 */
 	public function updateSubtotalLineBlockLines($linerang, $mode, $value)
 	{
@@ -474,6 +504,9 @@ trait CommonSubtotal
 						$this->lines[$i]->fk_unit,
 						$this->lines[$i]->multicurrency_subprice);
 				}
+				if ($result < 0) {
+					return $result;
+				}
 			}
 		}
 	}
@@ -483,7 +516,7 @@ trait CommonSubtotal
 	 * until a title line of the same level is found
 	 *
 	 * @param object	$line
-	 * @return int		$total_ht
+	 * @return string	$total_ht
 	 */
 	public function getSubtotalLineAmount($line)
 	{
@@ -505,7 +538,7 @@ trait CommonSubtotal
 	 * until a title line of the same level is found
 	 *
 	 * @param object	$line
-	 * @return int		$total_ht
+	 * @return string	$total_ht
 	 */
 	public function getSubtotalLineMulticurrencyAmount($line)
 	{
@@ -525,12 +558,12 @@ trait CommonSubtotal
 	/**
 	 * Returns a form array to add a subtotal or title line
 	 *
-	 * @param Form $form
-	 * @param Translate $langs
-	 * @param string $type 'title' or 'subtotal'
+	 * @param Form $form		Form class to use in template.
+	 * @param Translate $langs	Translation.
+	 * @param string $type 		Type to show form to add a 'title' or 'subtotal' line.
 	 * @return string $formconfirm
 	 */
-	public function getSubtotalForm($form, $langs, $type, $seller)
+	public function getSubtotalForm($form, $langs, $type)
 	{
 		$langs->load('subtotals');
 

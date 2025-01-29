@@ -319,7 +319,7 @@ if (empty($reshook)) {
 		$object->fetch($id);
 		$object->fetch_thirdparty();
 
-		$result = $object->deleteSubtotalLine(GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline'));
+		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline'));
 		if ($result > 0) {
 			// reorder lines
 			$object->line_order(true);
@@ -1036,7 +1036,7 @@ if (empty($reshook)) {
 		$remise_percent = (GETPOST('remiseforalllines') ? GETPOST('remiseforalllines') : 0);
 		$remise_percent = str_replace('*', '', $remise_percent);
 		foreach ($object->lines as $key => $line) {
-			if ($line->special_code == SUBTOTALS_SPECIAL_CODE){
+			if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
 				continue;
 			}
 			$tvatx = $line->tva_tx;
@@ -1083,7 +1083,6 @@ if (empty($reshook)) {
 			// $line->multicurrency_subprice = $multicurrency_subprice;
 		}
 	} elseif ($action == 'confirm_addtitleline' && $usercancreate) {
-
 		// Handling adding a new title line for subtotals module
 
 		$langs->load('subtotals');
@@ -1127,8 +1126,7 @@ if (empty($reshook)) {
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
-	}  elseif ($action == 'confirm_addsubtotalline' && $usercancreate) {
-
+	} elseif ($action == 'confirm_addsubtotalline' && $usercancreate) {
 		// Handling adding a new subtotal line for subtotals module
 
 		$langs->load('subtotals');
@@ -1665,7 +1663,6 @@ if (empty($reshook)) {
 			}
 		}
 	} elseif ($action == 'updatetitleline' && GETPOSTISSET("save") && $usercancreate && !GETPOST('cancel', 'alpha')) {
-
 		// Handling updating a title line for subtotals module
 
 		$langs->load('subtotals');
@@ -1710,7 +1707,6 @@ if (empty($reshook)) {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	} elseif ($action == 'updatesubtotalline' && GETPOSTISSET("save") && $usercancreate && !GETPOST('cancel', 'alpha')) {
-
 		// Handling updating a subtotal line for subtotals module
 
 		$langs->load('subtotals');
@@ -2792,7 +2788,7 @@ if ($action == 'create') {
 		$langs->load("subtotals");
 		$title = "DeleteSubtotalLine";
 		$question = "ConfirmDeleteSubtotalLine";
-		if (GETPOST('type') == 'title'){
+		if (GETPOST('type') == 'title') {
 			$formconfirm = array(array('type' => 'checkbox', 'name' => 'deletecorrespondingsubtotalline', 'label' => $langs->trans("DeleteCorrespondingSubtotalLine"), 'value' => 0));
 			$title = "DeleteTitleLine";
 			$question = "ConfirmDeleteTitleLine";
@@ -3361,7 +3357,6 @@ if ($action == 'create') {
 			if ($action != 'editline') {
 				// Subtotal
 				if ($object->status == Propal::STATUS_DRAFT && isModEnabled('subtotals') && getDolGlobalString('SUBTOTAL_TITLE_'.strtoupper($object->element))) {
-
 					$langs->load('subtotals');
 
 					// Array of the subbuttons
