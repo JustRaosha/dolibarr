@@ -88,10 +88,16 @@ for ($i = 0; $i < $max_depth; $i++) {
 if (preg_match('/^SUBTOTAL_.*$/', $action)) {
 	if (preg_match('/^.*_MAX_DEPTH$/', $action)) {
 		dolibarr_set_const($db, $action, GETPOST($action), 'int', 0, '', $conf->entity);
+		header("Location: ".$_SERVER['PHP_SELF']);
+		setEventMessages($langs->trans("SetupSaved"), null);
+		exit;
 	} else {
 		$value = getDolGlobalInt($action, 0);
 		$value == 0 ? $value = 1 : $value = 0;
 		dolibarr_set_const($db, $action, $value, 'chaine', 0, '', $conf->entity);
+		header("Location: ".$_SERVER['PHP_SELF']);
+		setEventMessages($langs->trans("SetupSaved"), null);
+		exit;
 	}
 }
 
