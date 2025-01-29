@@ -816,9 +816,13 @@ if (empty($reshook)) {
 		}
 
 		// Insert line
-		$result = $object->addSubtotalLine($langs, $desc, $depth, $subtotal_options);
+		if (isset($desc) && isset($depth)) {
+			$result = $object->addSubtotalLine($langs, $desc, $depth, $subtotal_options);
+		} else {
+			$this->errors[] = $langs->trans("CorrespondingTitleNotFound");
+		}
 
-		if ($result >= 0) {
+		if (isset($result) && $result >= 0) {
 			$ret = $object->fetch($object->id); // Reload to get new records
 			$object->fetch_thirdparty();
 
@@ -2772,9 +2776,9 @@ if ($action == 'create' && $usercancreate) {
 
 		// Subtotal line form
 		if ($action == 'add_title_line') {
-			$formconfirm = $object->getSubtotalForm($form, $langs, 'title', $soc);
+			$formconfirm = $object->getSubtotalForm($form, $langs, 'title');
 		} elseif ($action == 'add_subtotal_line') {
-			$formconfirm = $object->getSubtotalForm($form, $langs, 'subtotal', $soc);
+			$formconfirm = $object->getSubtotalForm($form, $langs, 'subtotal');
 		}
 
 		// Call Hook formConfirm

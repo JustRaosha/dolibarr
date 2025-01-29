@@ -151,7 +151,7 @@ class OrderLine extends CommonOrderLine
 	public $packaging;
 
 	/**
-	 * @var string Serialized subtotal options
+	 * @var array Serialized subtotal options
 	 */
 	public $subtotal_options = [];
 

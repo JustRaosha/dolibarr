@@ -64,8 +64,8 @@ $modules = array(
 // Conditions for the option to be offered
 $conditions = array(
 	'PROPAL' => (isModEnabled("propal")),
-	'COMMANDE' => (isModEnabled("commande")),
-	'FACTURE' => (isModEnabled("facture")),
+	'COMMANDE' => (isModEnabled("order")),
+	'FACTURE' => (isModEnabled("invoice")),
 );
 
 $max_depth = 0;
