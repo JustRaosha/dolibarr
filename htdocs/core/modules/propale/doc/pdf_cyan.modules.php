@@ -572,20 +572,20 @@ class pdf_cyan extends ModelePDFPropales
 						unset($pdf_sub_options['titleforcepagebreak']);
 						unset($pdf_sub_options['subtotalshowtotalexludingvatonpdf']);
 						if ($sub_options) {
-							if (in_array('titleshowuponpdf', $sub_options)) {
+							if (!empty($sub_options['titleshowuponpdf'])) {
 								$pdf_sub_options['titleshowuponpdf'] = isset($pdf_sub_options['titleshowuponpdf']) && $pdf_sub_options['titleshowuponpdf'] < $level ? $pdf_sub_options['titleshowuponpdf'] : $level;
 							} elseif (isset($pdf_sub_options['titleshowuponpdf']) && abs($level) <= $pdf_sub_options['titleshowuponpdf']) {
 								unset($pdf_sub_options['titleshowuponpdf']);
 							}
-							if (in_array('titleshowtotalexludingvatonpdf', $sub_options)) {
+							if (!empty($sub_options['titleshowtotalexludingvatonpdf'])) {
 								$pdf_sub_options['titleshowtotalexludingvatonpdf'] = isset($pdf_sub_options['titleshowtotalexludingvatonpdf']) && $pdf_sub_options['titleshowtotalexludingvatonpdf'] < $level ? $pdf_sub_options['titleshowtotalexludingvatonpdf'] : $level;
 							} elseif (isset($pdf_sub_options['titleshowtotalexludingvatonpdf']) && abs($level) <= $pdf_sub_options['titleshowtotalexludingvatonpdf']) {
 								unset($pdf_sub_options['titleshowtotalexludingvatonpdf']);
 							}
-							if (in_array('titleforcepagebreak', $sub_options)) {
+							if (!empty($sub_options['titleforcepagebreak'])) {
 								$pdf_sub_options['titleforcepagebreak'] = 1;
 							}
-							if (in_array('subtotalshowtotalexludingvatonpdf', $sub_options)) {
+							if (!empty($sub_options['subtotalshowtotalexludingvatonpdf'])) {
 								$pdf_sub_options['subtotalshowtotalexludingvatonpdf'] = 1;
 							}
 						} else {
@@ -601,6 +601,10 @@ class pdf_cyan extends ModelePDFPropales
 						unset($pdf_sub_options['subtotalshowtotalexludingvatonpdf']);
 					}
 
+					if (($curY + 6) > ($this->page_hauteur - $heightforfooter) || isset($pdf_sub_options['titleforcepagebreak']) && !($pdf->getNumPages() == 1 && $curY == $tab_top + $this->tabTitleHeight)) {
+						$object->lines[$i]->pagebreak = true;
+					}
+
 					// in First Check line page break and add page if needed
 					if (isset($object->lines[$i]->pagebreak) && $object->lines[$i]->pagebreak) {
 						// New page
@@ -610,7 +614,7 @@ class pdf_cyan extends ModelePDFPropales
 						}
 
 						$pdf->setPage($pdf->getNumPages());
-						$nexY = $tab_top_newpage;
+						$nexY = $curY = $tab_top_newpage;
 					}
 
 					$this->resetAfterColsLinePositionsData($nexY, $pdf->getPage());
@@ -667,11 +671,6 @@ class pdf_cyan extends ModelePDFPropales
 							$this->printColDescContent($pdf, $curY, 'desc', $object, $i, $outputlangs, $hideref, $hidedesc);
 							$this->setAfterColsLinePositionsData('desc', $pdf->GetY(), $pdf->getPage());
 						} else {
-							if (($curY + 6) > ($this->page_hauteur - $heightforfooter) || isset($pdf_sub_options['titleforcepagebreak']) && !($pdf->getNumPages() == 1 && $curY == $tab_top + $this->tabTitleHeight)) {
-								$pdf->AddPage();
-								$pdf->setPage($pdf->getNumPages());
-								$curY = $tab_top_newpage;
-							}
 							$bg_color = colorStringToArray(getDolGlobalString("SUBTOTAL_BACK_COLOR_LEVEL_".abs($object->lines[$i]->qty)));
 							$pdf->SetFillColor($bg_color[0], $bg_color[1], $bg_color[2]);
 							$pdf->SetXY($pdf->GetX() + 1, $curY + 1);
