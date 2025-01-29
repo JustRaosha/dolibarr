@@ -576,13 +576,7 @@ trait CommonSubtotal
 
 		$tpl = dol_buildpath('/core/tpl/subtotal_create.tpl.php');
 
-		if (empty($conf->file->strict_mode)) {
-			$res = @include $tpl;
-		} else {
-			$res = include $tpl; // for debug
-		}
-
-		return $res;
+		return include $tpl;
 	}
 
 	/**
@@ -599,7 +593,7 @@ trait CommonSubtotal
 	/**
 	 * Retrieve current object possible titles to choose from
 	 *
-	 * @return array The set of titles, empty if no title line set.
+	 * @return array<string,string> The set of titles, empty if no title line set.
 	 */
 	public function getPossibleTitles()
 	{
@@ -618,8 +612,8 @@ trait CommonSubtotal
 	/**
 	 * Retrieve the current object possible levels (defined in admin page)
 	 *
-	 * @param Translate $langs Translations.
-	 * @return array The set of possible levels, empty if not defined correctly.
+	 * @param Translate $langs 		Translations.
+	 * @return array<int,string>	The set of possible levels, empty if not defined correctly.
 	 */
 	public function getPossibleLevels($langs)
 	{
