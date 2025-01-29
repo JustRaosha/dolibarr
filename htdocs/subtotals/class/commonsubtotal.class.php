@@ -194,16 +194,16 @@ trait CommonSubtotal
 				$rang,					// Rang
 				SUBTOTALS_SPECIAL_CODE,	// Special code
 				0, 						// FK parent line
-				null , 					// FK fournprice
-				0 , 					// PA ht
-				'' , 					// Label
-				array() , 				// Array options
-				null , 					// FK unit
-				'' , 					// Origin
-				0 , 					// Origin id
-				0 , 					// PU ht devise
-				'' , 					// Ref ext
-				0 , 					// Noupdateafterinsertline
+				null, 					// FK fournprice
+				0, 					// PA ht
+				'', 					// Label
+				array(), 				// Array options
+				null, 					// FK unit
+				'', 					// Origin
+				0, 					// Origin id
+				0, 					// PU ht devise
+				'', 					// Ref ext
+				0, 					// Noupdateafterinsertline
 				$options				// Subtotal options
 			);
 		}
@@ -219,10 +219,11 @@ trait CommonSubtotal
 	 * Deletes a subtotal or a title line from a document.
 	 * If the corresponding subtotal line exists and second parameter true, it will also be deleted.
 	 *
-	 * @param int      $id                  ID of the line to delete
-	 * @param boolean  $correspondingstline If true, also deletes the corresponding subtotal line
-	 * @param User     $user                User performing the deletion (used for permissions in some modules)
-	 * @return int                          ID of deleted line if successful, -1 on error
+	 * @param Translate	$langs					Translation.
+	 * @param int		$id						ID of the line to delete
+	 * @param boolean	$correspondingstline	If true, also deletes the corresponding subtotal line
+	 * @param User		$userUser				performing the deletion (used for permissions in some modules)
+	 * @return int								ID of deleted line if successful, -1 on error
 	 */
 	public function deleteSubtotalLine($langs, $id, $correspondingstline = false, $user = null)
 	{
@@ -275,7 +276,6 @@ trait CommonSubtotal
 	 */
 	public function updateSubtotalLine($langs, $lineid, $desc, $depth, $options)
 	{
-
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
@@ -424,12 +424,13 @@ trait CommonSubtotal
 	 */
 	public function updateSubtotalLineBlockLines($linerang, $mode, $value)
 	{
-
 		$linerang -= 1;
 
-		for ($i = $linerang+1; $i < count($this->lines)+1; $i++) {
+		$nb_lines = count($this->lines)+1;
+
+		for ($i = $linerang+1; $i < $nb_lines; $i++) {
 			if ($this->lines[$i]->special_code == SUBTOTALS_SPECIAL_CODE) {
-				if (abs($this->lines[$i]->qty) <= (int)$this->lines[$linerang]->qty) {
+				if (abs($this->lines[$i]->qty) <= (int) $this->lines[$linerang]->qty) {
 					return 1;
 				}
 			} else {
@@ -515,7 +516,7 @@ trait CommonSubtotal
 	 * Return the total_ht of lines that are above the current line (excluded) and that are not a subtotal line
 	 * until a title line of the same level is found
 	 *
-	 * @param object	$line
+	 * @param object	$line	Line that needs the subtotal amount.
 	 * @return string	$total_ht
 	 */
 	public function getSubtotalLineAmount($line)
@@ -537,7 +538,7 @@ trait CommonSubtotal
 	 * Return the multicurrency_total_ht of lines that are above the current line (excluded) and that are not a subtotal line
 	 * until a title line of the same level is found
 	 *
-	 * @param object	$line
+	 * @param object	$line	Line that needs the subtotal amount with multicurrency mod activated.
 	 * @return string	$total_ht
 	 */
 	public function getSubtotalLineMulticurrencyAmount($line)
@@ -590,7 +591,8 @@ trait CommonSubtotal
 	 * @param int $level The level of the subtotal for which the color is requested.
 	 * @return string|null The background color in hexadecimal format or null if not set.
 	 */
-	public function getSubtotalColors($level) {
+	public function getSubtotalColors($level)
+	{
 		return getDolGlobalString('SUBTOTAL_BACK_COLOR_LEVEL_'.abs($level));
 	}
 
@@ -599,7 +601,8 @@ trait CommonSubtotal
 	 *
 	 * @return array The set of titles, empty if no title line set.
 	 */
-	public function getPossibleTitles() {
+	public function getPossibleTitles()
+	{
 		$titles = array();
 		foreach ($this->lines as $line) {
 			if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty > 0) {
@@ -615,10 +618,11 @@ trait CommonSubtotal
 	/**
 	 * Retrieve the current object possible levels (defined in admin page)
 	 *
-	 * @param Translate $langs
+	 * @param Translate $langs Translations.
 	 * @return array The set of possible levels, empty if not defined correctly.
 	 */
-	public function getPossibleLevels($langs) {
+	public function getPossibleLevels($langs)
+	{
 		$depth_array = array();
 		$max_depth = getDolGlobalString('SUBTOTAL_'.strtoupper($this->element).'_MAX_DEPTH', 2);
 		for ($i = 0; $i < $max_depth; $i++) {
