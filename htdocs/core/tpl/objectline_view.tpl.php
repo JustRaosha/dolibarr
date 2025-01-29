@@ -79,9 +79,10 @@ if (empty($object) || !is_object($object)) {
 ';
 
 // Handle subtotals line view
-if ($line->special_code == SUBTOTALS_SPECIAL_CODE) :
-include DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_view.tpl.php';
-else :
+if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
+	return include DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_view.tpl.php';
+}
+
 global $mysoc;
 global $forceall, $senderissupplier, $inputalsopricewithtax, $outputalsopricetotalwithtax;
 
@@ -636,4 +637,3 @@ if ($action == 'selectlines') { ?>
 print "</tr>\n";
 
 print "<!-- END PHP TEMPLATE objectline_view.tpl.php -->\n";
-endif;

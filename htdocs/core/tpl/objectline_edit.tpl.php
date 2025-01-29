@@ -60,9 +60,9 @@ if (empty($object) || !is_object($object)) {
 ';
 
 // Handle subtotals line edit
-if ($line->special_code == SUBTOTALS_SPECIAL_CODE) :
-	include DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_edit.tpl.php';
-else :
+if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
+	return include DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_edit.tpl.php';
+}
 
 $usemargins = 0;
 if (isModEnabled('margin') && !empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande'))) {
@@ -659,4 +659,3 @@ jQuery(document).ready(function()
 
 </script>
 <!-- END PHP TEMPLATE objectline_edit.tpl.php -->
-<?php endif; ?>

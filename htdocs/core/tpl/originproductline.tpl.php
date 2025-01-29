@@ -32,9 +32,10 @@ if (empty($conf) || !is_object($conf)) {
 <!-- BEGIN PHP TEMPLATE originproductline.tpl.php -->
 <?php
 // Handle subtotals line edit
-if ($line->special_code == SUBTOTALS_SPECIAL_CODE) :
-	include DOL_DOCUMENT_ROOT.'/core/tpl/originsubtotalline.tpl.php';
-else :
+if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
+	return include DOL_DOCUMENT_ROOT.'/core/tpl/originsubtotalline.tpl.php';
+}
+
 '@phan-var-force CommonObject $this';
 print '<tr data-id="'.$this->tpl['id'].'" class="oddeven'.(empty($this->tpl['strike']) ? '' : ' strikefordisabled').'">';
 print '<td class="linecolref">'.$this->tpl['label'].'</td>';
@@ -63,5 +64,3 @@ print '</td>';
 print '</tr>'."\n";
 ?>
 <!-- END PHP TEMPLATE originproductline.tpl.php -->
-
-<?php endif; ?>
