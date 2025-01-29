@@ -1431,8 +1431,8 @@ function pdf_writeLinkedObjects(&$pdf, $object, $outputlangs, $posx, $posy, $w, 
  *	@param	CommonObject	$object				Object
  *	@param	int				$i					Current line number
  *  @param  Translate		$outputlangs		Object lang for output
- *  @param  int				$w					Width
- *  @param  int				$h					Height
+ *  @param  float			$w					Width
+ *  @param  float			$h					Height
  *  @param  float			$posx				Pos x
  *  @param  float			$posy				Pos y
  *  @param  int<0,1>		$hideref       		Hide reference

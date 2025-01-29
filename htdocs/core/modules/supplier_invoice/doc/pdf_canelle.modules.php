@@ -616,10 +616,10 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 	 *
 	 *	@param	TCPDF				$pdf            Object PDF
 	 *	@param  FactureFournisseur	$object         Object invoice
-	 *	@param  int					$deja_regle     Amount already paid (in the currency of invoice)
-	 *	@param	int					$posy			Position depart
+	 *	@param  float				$deja_regle     Amount already paid (in the currency of invoice)
+	 *	@param	float				$posy			Position depart
 	 *	@param	Translate			$outputlangs	Object langs
-	 *	@return int									Position of cursor after output
+	 *	@return float								Position of cursor after output
 	 */
 	protected function _tableau_tot(&$pdf, $object, $deja_regle, $posy, $outputlangs)
 	{
@@ -946,9 +946,9 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 	 *
 	 *  @param  TCPDF       $pdf            	Object PDF
 	 *  @param  Object		$object         	Object to show
-	 *  @param  int         $posy           	Position y in PDF
+	 *  @param  float       $posy           	Position y in PDF
 	 *  @param  Translate   $outputlangs    	Object langs for output
-	 *  @param  int			$heightforfooter 	Height for footer
+	 *  @param  float		$heightforfooter 	Height for footer
 	 *  @return int                             Return integer <0 if KO, >0 if OK
 	 */
 	protected function _tableau_versements(&$pdf, $object, $posy, $outputlangs, $heightforfooter = 0)

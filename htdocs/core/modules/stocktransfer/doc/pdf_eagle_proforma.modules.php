@@ -843,11 +843,11 @@ class pdf_eagle_proforma extends ModelePDFStockTransfer
 	/**
 	 *   Show miscellaneous information (payment mode, payment term, ...)
 	 *
-	 *   @param		TCPDF		$pdf     		Object PDF
-	 *   @param		Object		$object			Object to show
-	 *   @param		int			$posy			Y
-	 *   @param		Translate	$outputlangs	Langs object
-	 *   @return	int							Pos y
+	 *   @param		TCPDF			$pdf     		Object PDF
+	 *   @param		StockTransfer	$object			Object to show
+	 *   @param		int				$posy			Y
+	 *   @param		Translate		$outputlangs	Langs object
+	 *   @return	int								Pos y
 	 */
 	protected function drawInfoTable(&$pdf, $object, $posy, $outputlangs)
 	{
@@ -1186,7 +1186,7 @@ class pdf_eagle_proforma extends ModelePDFStockTransfer
 	 *  Show top header of page.
 	 *
 	 *  @param	TCPDF			$pdf     		Object PDF
-	 *  @param  Object			$object     	Object to show
+	 *  @param  StockTransfer	$object     	Object to show
 	 *  @param  int<0,1>		$showaddress    0=no, 1=yes
 	 *  @param  Translate		$outputlangs	Object lang for output
 	 *  @param	string			$titlekey		Translation key to show as title of document
@@ -1207,7 +1207,7 @@ class pdf_eagle_proforma extends ModelePDFStockTransfer
 		pdf_pagehead($pdf, $outputlangs, $this->page_hauteur);
 
 		// Show Draft Watermark
-		if ($object->statut == 0 && getDolGlobalString('STOCKTRANSFER_DRAFT_WATERMARK')) {
+		if ($object->status == 0 && getDolGlobalString('STOCKTRANSFER_DRAFT_WATERMARK')) {
 			pdf_watermark($pdf, $outputlangs, $this->page_hauteur, $this->page_largeur, 'mm', getDolGlobalString('COMMANDE_DRAFT_WATERMARK'));
 		}
 

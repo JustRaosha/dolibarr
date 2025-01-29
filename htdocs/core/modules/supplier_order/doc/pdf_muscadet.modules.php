@@ -714,7 +714,7 @@ class pdf_muscadet extends ModelePDFSuppliersOrders
 	 *
 	 *  @param	TCPDF		$pdf     		Object PDF
 	 *  @param  CommandeFournisseur		$object			Object order
-	 *	@param	int			$posy			Position y in PDF
+	 *	@param	float		$posy			Position y in PDF
 	 *	@param	Translate	$outputlangs	Object langs for output
 	 *	@return int							Return integer <0 if KO, >0 if OK
 	 */
@@ -731,9 +731,9 @@ class pdf_muscadet extends ModelePDFSuppliersOrders
 	 *
 	 *   @param		TCPDF		$pdf     		Object PDF
 	 *   @param		CommandeFournisseur	$object	Object to show
-	 *   @param		int			$posy			Y
+	 *   @param		float		$posy			Y
 	 *   @param		Translate	$outputlangs	Langs object
-	 *   @return	integer
+	 *   @return	float
 	 */
 	protected function _tableau_info(&$pdf, $object, $posy, $outputlangs)
 	{
@@ -795,10 +795,10 @@ class pdf_muscadet extends ModelePDFSuppliersOrders
 	 *
 	 *  @param	TCPDF		$pdf            Object PDF
 	 *	@param  CommandeFournisseur	$object Object CommandeFournisseur
-	 *	@param  int			$deja_regle     Amount already paid
-	 *	@param	int			$posy			Position depart
+	 *	@param  float		$deja_regle     Amount already paid
+	 *	@param	float		$posy			Position depart
 	 *	@param	Translate	$outputlangs	Object langs
-	 *	@return int							Position pour suite
+	 *	@return float						Position pour suite
 	 */
 	protected function _tableau_tot(&$pdf, $object, $deja_regle, $posy, $outputlangs)
 	{
@@ -1000,7 +1000,7 @@ class pdf_muscadet extends ModelePDFSuppliersOrders
 	 *   @param		TCPDF		$pdf     		Object PDF
 	 *   @param		float|int	$tab_top		Top position of table
 	 *   @param		float|int	$tab_height		Height of table (rectangle)
-	 *   @param		int			$nexY			Y (not used)
+	 *   @param		float		$nexY			Y (not used)
 	 *   @param		Translate	$outputlangs	Langs object
 	 *   @param		int			$hidetop		Hide top bar of array
 	 *   @param		int			$hidebottom		Hide bottom bar of array

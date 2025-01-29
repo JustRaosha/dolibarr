@@ -344,6 +344,11 @@ class PropaleLigne extends CommonObjectLine
 	public $multicurrency_total_ttc;
 
 	/**
+	 * @var float
+	 */
+	public $packaging;
+
+	/**
 	 * @var string Serialized subtotal options
 	 */
 	public $subtotal_options = [];
@@ -374,6 +379,9 @@ class PropaleLigne extends CommonObjectLine
 		$sql .= ' pd.fk_multicurrency, pd.multicurrency_code, pd.multicurrency_subprice, pd.multicurrency_total_ht, pd.multicurrency_total_tva, pd.multicurrency_total_ttc,';
 		$sql .= ' p.ref as product_ref, p.label as product_label, p.description as product_desc,';
 		$sql .= ' pd.date_start, pd.date_end, pd.product_type, pd.subtotal_options';
+		if (getDolGlobalInt('PRODUCT_USE_CUSTOMER_PACKAGING')) {
+			$sql .= ', p.packaging';
+		}
 		$sql .= ' FROM '.MAIN_DB_PREFIX.'propaldet as pd';
 		$sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'product as p ON pd.fk_product = p.rowid';
 		$sql .= ' WHERE pd.rowid = '.((int) $rowid);
@@ -421,6 +429,10 @@ class PropaleLigne extends CommonObjectLine
 				$this->product_label	= $objp->product_label;
 				$this->product_desc		= $objp->product_desc;
 				$this->fk_unit          = $objp->fk_unit;
+
+				if (getDolGlobalInt('PRODUCT_USE_CUSTOMER_PACKAGING')) {
+					$this->packaging      = $objp->packaging;
+				}
 
 				$this->date_start       = $this->db->jdate($objp->date_start);
 				$this->date_end         = $this->db->jdate($objp->date_end);
