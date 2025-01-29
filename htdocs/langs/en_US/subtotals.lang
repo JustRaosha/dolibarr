@@ -46,6 +46,7 @@ STLineUnderCorrespondingTitleDesc=Subtotal line must be under a title with the s
 STLineUnderCorrespondingTitle=Subtotal line must be under a title of the same level and the same description.
 STLineUnderTitle=Subtotal line must be under its title
 UnsupportedModuleError=You can't add a subtotals line in unsupported module
+CorrespondingTitleNotFound=The corresponding title was not found
 
 #
 # PDF
