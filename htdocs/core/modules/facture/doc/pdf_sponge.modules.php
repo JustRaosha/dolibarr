@@ -713,8 +713,6 @@ class pdf_sponge extends ModelePDFFactures
 
 					if ($object->lines[$i]->special_code == SUBTOTALS_SPECIAL_CODE) {
 						$level = $object->lines[$i]->qty;
-						unset($pdf_sub_options['titleforcepagebreak']);
-						unset($pdf_sub_options['subtotalshowtotalexludingvatonpdf']);
 						if ($sub_options) {
 							if (!empty($sub_options['titleshowuponpdf'])) {
 								$pdf_sub_options['titleshowuponpdf'] = isset($pdf_sub_options['titleshowuponpdf']) && $pdf_sub_options['titleshowuponpdf'] < $level ? $pdf_sub_options['titleshowuponpdf'] : $level;
@@ -726,12 +724,6 @@ class pdf_sponge extends ModelePDFFactures
 							} elseif (isset($pdf_sub_options['titleshowtotalexludingvatonpdf']) && abs($level) <= $pdf_sub_options['titleshowtotalexludingvatonpdf']) {
 								unset($pdf_sub_options['titleshowtotalexludingvatonpdf']);
 							}
-							if (!empty($sub_options['titleforcepagebreak'])) {
-								$pdf_sub_options['titleforcepagebreak'] = 1;
-							}
-							if (!empty($sub_options['subtotalshowtotalexludingvatonpdf'])) {
-								$pdf_sub_options['subtotalshowtotalexludingvatonpdf'] = 1;
-							}
 						} else {
 							if (isset($pdf_sub_options['titleshowuponpdf']) && abs($level) <= $pdf_sub_options['titleshowuponpdf']) {
 								unset($pdf_sub_options['titleshowuponpdf']);
@@ -740,12 +732,9 @@ class pdf_sponge extends ModelePDFFactures
 								unset($pdf_sub_options['titleshowtotalexludingvatonpdf']);
 							}
 						}
-					} else {
-						unset($pdf_sub_options['titleforcepagebreak']);
-						unset($pdf_sub_options['subtotalshowtotalexludingvatonpdf']);
 					}
 
-					if (($curY + 6) > ($this->page_hauteur - $this->heightforfooter) || isset($pdf_sub_options['titleforcepagebreak']) && !($pdf->getNumPages() == 1 && $curY == $this->tab_top + $this->tabTitleHeight)) {
+					if (($curY + 6) > ($this->page_hauteur - $this->heightforfooter) || !empty($sub_options['titleforcepagebreak']) && !($pdf->getNumPages() == 1 && $curY == $this->tab_top + $this->tabTitleHeight)) {
 						$object->lines[$i]->pagebreak = true;
 					}
 
@@ -896,7 +885,7 @@ class pdf_sponge extends ModelePDFFactures
 						if ($object->lines[$i]->special_code != SUBTOTALS_SPECIAL_CODE && isset($pdf_sub_options['titleshowtotalexludingvatonpdf'])) {
 							$total_excl_tax = pdf_getlinetotalexcltax($object, $i, $outputlangs, $hidedetails);
 							$this->printStdColumnContent($pdf, $curY, 'totalexcltax', $total_excl_tax);
-						} elseif ($object->lines[$i]->qty < 0 && isset($pdf_sub_options['subtotalshowtotalexludingvatonpdf'])) {
+						} elseif ($object->lines[$i]->qty < 0 && !empty($sub_options['subtotalshowtotalexludingvatonpdf'])) {
 							if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
 								$total_excl_tax = $object->getSubtotalLineMulticurrencyAmount($object->lines[$i]);
 							} else {
