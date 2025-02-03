@@ -430,6 +430,7 @@ trait CommonSubtotal
 	/**
 	 * Updates a block of lines of a document.
 	 *
+	 * @param Translate	$langs  	Translation.
 	 * @param int		$linerang	Rang of the line to start from.
 	 * @param string	$mode		Column to change (discount or vat).
 	 * @param int		$value		Value of the change.
