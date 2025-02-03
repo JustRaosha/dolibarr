@@ -107,9 +107,9 @@ class Form
 	 * @param 	object		$object 		Object (on the page we show)
 	 * @param 	int<0,1>	$perm 			Permission to allow button to edit parameter. Set it to 0 to have a not edited field.
 	 * @param 	string	 	$typeofdata 	Type of data ('string' by default, 'email', 'amount:99', 'numeric:99', 'text' or 'textarea:rows:cols', 'datepicker' ('day' do not work, don't know why), 'dayhour' or 'datehourpicker' 'checkbox:ckeditor:dolibarr_zzz:width:height:savemethod:1:rows:cols', 'select;xxx[:class]'...)
-	 * @param 	string		$moreparam 		More param to add on a href URL.
-	 * @param 	int			$fieldrequired 	1 if we want to show field as mandatory using the "fieldrequired" CSS.
-	 * @param 	int<0,3>	$notabletag 	1=Do not output table tags but output a ':', 2=Do not output table tags and no ':', 3=Do not output table tags but output a ' '
+	 * @param 	string		$moreparam		More param to add on a href URL.
+	 * @param 	int<0,1>	$fieldrequired	1 if we want to show field as mandatory using the "fieldrequired" CSS.
+	 * @param 	int<0,3>	$notabletag		1=Do not output table tags but output a ':', 2=Do not output table tags and no ':', 3=Do not output table tags but output a ' '
 	 * @param 	string		$paramid 		Key of parameter for id ('id', 'socid')
 	 * @param 	string		$help 			Tooltip help
 	 * @return  string						HTML edit field
@@ -333,7 +333,7 @@ class Form
 					$ret .= '<td>';
 				}
 				//else $ret.='<div class="clearboth"></div>';
-				$ret .= '<input type="submit" class="smallpaddingimp nomargingtop nomarginbottom button' . (empty($notabletag) ? '' : ' ') . '" name="modify" value="' . $langs->trans("Modify") . '">';
+				$ret .= '<input type="submit" class="smallpaddingimp nomargingtop nomarginbottom button' . (empty($notabletag) ? '' : ' ') . '" name="modify" value="' . $langs->trans("Save") . '">';
 				if (preg_match('/ckeditor|textarea/', $typeofdata) && empty($notabletag)) {
 					$ret .= '<br>' . "\n";
 				}
@@ -624,19 +624,19 @@ class Form
 	 *  Show a text and picto with tooltip on text or picto.
 	 *  Can be called by an instancied $form->textwithtooltip or by a static call Form::textwithtooltip
 	 *
-	 * 	@param 	string 	$text 				Text to show
-	 * 	@param 	string 	$htmltext 			HTML content of tooltip. Must be HTML/UTF8 encoded.
-	 * 	@param 	int 	$tooltipon 			1=tooltip on text, 2=tooltip on image, 3=tooltip on both
-	 * 	@param 	int 	$direction 			-1=image is before, 0=no image, 1=image is after
-	 * 	@param 	string 	$img 				Html code for image (use img_xxx() function to get it)
-	 * 	@param 	string 	$extracss 			Add a CSS style to td tags
-	 * 	@param 	int 	$notabs 			0=Include table and tr tags, 1=Do not include table and tr tags, 2=use div, 3=use span
-	 * 	@param 	string 	$incbefore 			Include code before the text
-	 * 	@param 	int 	$noencodehtmltext 	Do not encode into html entity the htmltext
-	 * 	@param 	string 	$tooltiptrigger 	''=Tooltip on hover, 'abc'=Tooltip on click (abc is a unique key)
-	 * 	@param 	int 	$forcenowrap 		Force no wrap between text and picto (works with notabs=2 only)
-	 * 	@return string                      Code html du tooltip (texte+picto)
-	 * 	@see    textwithpicto() 			Use textwithpicto() instead of textwithtooltip if you can.
+	 * 	@param 	string		$text 				Text to show
+	 * 	@param 	string	 	$htmltext 			HTML content of tooltip. Must be HTML/UTF8 encoded.
+	 * 	@param 	int<0,3> 	$tooltipon 			1=tooltip on text, 2=tooltip on image, 3=tooltip on both
+	 * 	@param 	int<-1,1> 	$direction 			-1=image is before, 0=no image, 1=image is after
+	 * 	@param 	string	 	$img 				Html code for image (use img_xxx() function to get it)
+	 * 	@param 	string	 	$extracss 			Add a CSS style to td tags
+	 * 	@param 	int<0,3> 	$notabs 			0=Include table and tr tags, 1=Do not include table and tr tags, 2=use div, 3=use span
+	 * 	@param 	string		$incbefore 			Include code before the text
+	 * 	@param 	int<0,1>	$noencodehtmltext 	Do not encode into html entity the htmltext
+	 * 	@param 	string		$tooltiptrigger 	''=Tooltip on hover, 'abc'=Tooltip on click (abc is a unique key)
+	 * 	@param 	int<0,1>	$forcenowrap 		Force no wrap between text and picto (works with notabs=2 only)
+	 * 	@return string				           Code html du tooltip (texte+picto)
+	 * 	@see    textwithpicto()					Use textwithpicto() instead of textwithtooltip if you can.
 	 */
 	public function textwithtooltip($text, $htmltext, $tooltipon = 1, $direction = 0, $img = '', $extracss = '', $notabs = 3, $incbefore = '', $noencodehtmltext = 0, $tooltiptrigger = '', $forcenowrap = 0)
 	{
@@ -2205,7 +2205,7 @@ class Form
 			$sql .= " LEFT JOIN " . $this->db->prefix() . "entity as e ON e.rowid = u.entity";
 		}
 		// Condition here should be the same than into societe->getSalesRepresentatives().
-		if ($userissuperadminentityone && $force_entity != 'default') {
+		if ($userissuperadminentityone && $force_entity !== 'default') {
 			if (!empty($force_entity)) {
 				$sql .= " WHERE u.entity IN (0, " . $this->db->sanitize($force_entity) . ")";
 			} else {
@@ -3109,7 +3109,7 @@ class Form
 		$sql .= $hookmanager->resPrint;
 		// Add criteria on ref/label
 		if ($filterkey != '') {
-			$sqlSupplierSearch= '';
+			$sqlSupplierSearch = '';
 
 			$sql .= ' AND (';
 			$prefix = !getDolGlobalString('PRODUCT_DONOTSEARCH_ANYWHERE') ? '%' : ''; // Can use index if PRODUCT_DONOTSEARCH_ANYWHERE is on
@@ -3139,7 +3139,7 @@ class Form
 
 				// include search in supplier ref
 				if (getDolGlobalString('MAIN_SEARCH_PRODUCT_BY_FOURN_REF')) {
-					$sqlSupplierSearch .= !empty($sqlSupplierSearch) ? ' OR ':'';
+					$sqlSupplierSearch .= !empty($sqlSupplierSearch) ? ' OR ' : '';
 					$sqlSupplierSearch .= " pfp.ref_fourn LIKE '" . $this->db->escape($prefix . $crit) . "%'";
 				}
 				$sql .= ")";
@@ -5648,9 +5648,9 @@ class Form
 	 * @param string 		$title 				Title
 	 * @param string 		$question 			Question
 	 * @param string 		$action 			Action
-	 * @param array<array{name:string,value:string,values:string[],default:string,label:string,type:string,size:string,morecss:string,moreattr:string,style:string,inputko?:int<0,1>}>|string|null 	$formquestion 		An array with complementary inputs to add into forms: array(array('label'=> ,'type'=> , 'size'=>, 'morecss'=>, 'moreattr'=>'autofocus' or 'style=...'))
-	 *                                                                                                                                                                                                                  'type' can be 'text', 'password', 'checkbox', 'radio', 'date', 'datetime', 'select', 'multiselect', 'morecss',
-	 *                                                                                                                                                                                                                  'other', 'onecolumn' or 'hidden'...
+	 * @param array<array{name:string,value?:string,values?:string[],default?:string,label:string,type:string,size?:string,morecss?:string,moreattr?:string,style?:string,inputko?:int<0,1>}>|string|null 	$formquestion 		An array with complementary inputs to add into forms: array(array('label'=> ,'type'=> , 'size'=>, 'morecss'=>, 'moreattr'=>'autofocus' or 'style=...'))
+	 *                                                                                                                                                                                                                          'type' can be 'text', 'password', 'checkbox', 'radio', 'date', 'datetime', 'select', 'multiselect', 'morecss',
+	 *                                                                                                                                                                                                                          'other', 'onecolumn' or 'hidden'...
 	 * @param int<0,1>|''|'no'|'yes'|'1'|'0'	$selectedchoice 	'' or 'no', or 'yes' or '1', 1, '0' or 0
 	 * @param int<0,2>|string	$useajax 			0=No, 1=Yes use Ajax to show the popup, 2=Yes and also submit page with &confirm=no if choice is No, 'xxx'=Yes and preoutput confirm box with div id=dialog-confirm-xxx
 	 * @param int|string 	$height 			Force height of box (0 = auto)
@@ -8486,22 +8486,22 @@ class Form
 
 	/**
 	 * Generic method to select a component from a combo list.
-	 * Can use autocomplete with ajax after x key pressed or a full combo, depending on setup.
+	 * Can use autocomplete with ajax after x key pressed (if $objecttmp->element.'_USE_SEARCH_TO_SELECT' is set) or a full combo, depending on setup.
 	 * This is the generic method that will replace all specific existing methods.
 	 *
-	 * @param	string		$objectdesc           	'ObjectClass:PathToClass[:AddCreateButtonOrNot[:Filter[:Sortfield]]]'. For hard coded custom needs. Try to prefer method using $objectfield instead of $objectdesc.
-	 * @param	string		$htmlname             	Name of HTML select component
-	 * @param 	int			$preSelectedValue     	Preselected value (ID of element)
+	 * @param	string			$objectdesc           	'ObjectClass:PathToClass[:AddCreateButtonOrNot[:Filter[:Sortfield]]]'. For hard coded custom needs. Try to prefer method using $objectfield array instead of $objectdesc.
+	 * @param	string			$htmlname             	Name of HTML select component
+	 * @param 	int				$preSelectedValue     	Preselected value (ID of element)
 	 * @param 	string|int<0,1> $showempty			''=empty values not allowed, 'string'=value show if we allow empty values (for example 'All', ...)
-	 * @param 	string		$searchkey            	Search criteria
-	 * @param	string		$placeholder          	Place holder
-	 * @param	string		$morecss              	More CSS
-	 * @param	string		$moreparams           	More params provided to ajax call
-	 * @param 	int			$forcecombo           	Force to load all values and output a standard combobox (with no beautification)
-	 * @param 	int<0,1>	$disabled             	1=Html component is disabled
-	 * @param	string		$selected_input_value 	Value of preselected input text (for use with ajax)
-	 * @param	string		$objectfield          	Object:Field that contains the definition of parent (in table $fields or $extrafields). Example: 'Object:xxx' or 'Object@module:xxx' (old syntax 'Module_Object:xxx') or 'Object:options_xxx' or 'Object@module:options_xxx' (old syntax 'Module_Object:options_xxx')
-	 * @return  string	    						Return HTML string
+	 * @param 	string			$searchkey            	Search criteria
+	 * @param	string			$placeholder          	Place holder
+	 * @param	string			$morecss              	More CSS
+	 * @param	string			$moreparams           	More params provided to ajax call
+	 * @param 	int				$forcecombo           	Force to load all values and output a standard combobox (with no beautification)
+	 * @param 	int<0,1>		$disabled             	1=Html component is disabled
+	 * @param	string			$selected_input_value 	Value of preselected input text (for use with ajax)
+	 * @param	string|array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-5,5>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}	$objectfield	'Object:Field' that contains the definition of parent (in table $fields or $extrafields). Example: 'Object:xxx' or 'Object@module:xxx' or 'Object:options_xxx' or 'Object@module:options_xxx' or,  better, the full entry array in ->fields
+	 * @return  string	    							Return HTML string
 	 * @see selectForFormsList(), select_thirdparty_list()
 	 */
 	public function selectForForms($objectdesc, $htmlname, $preSelectedValue, $showempty = '', $searchkey = '', $placeholder = '', $morecss = '', $moreparams = '', $forcecombo = 0, $disabled = 0, $selected_input_value = '', $objectfield = '')
@@ -8511,14 +8511,16 @@ class Form
 		// Example of common usage for a link to a thirdparty
 
 		// We got this in a modulebuilder form of "MyObject" of module "mymodule".
-		// ->fields is array( ... "fk_soc" => array("type"=>"integer:Societe:societe/class/societe.class.php:1:((status:=:1) AND (entity:IN:__SHARED_ENTITIES__))" ...)
+		// When ->fields is array( ... "fk_soc" => array("type"=>"integer:Societe:societe/class/societe.class.php:1:((status:=:1) AND (entity:IN:__SHARED_ENTITIES__))" ...), we have
 		// $objectdesc = 'Societe'
-		// $objectfield = 'myobject@mymodule:fk_soc'  ('fk_soc' is code to retrieve myobject->fields['fk_soc'])
+		// $objectfield = 'myobject@mymodule:fk_soc'  ('fk_soc' is code to retrieve myobject->fields['fk_soc'])   or it can be an array that is directly
+		//                 array("type"=>"integer:Societe:societe/class/societe.class.php:1:((status:=:1) AND (entity:IN:__SHARED_ENTITIES__))" ...)
 
 		// We got this when showing an extrafields on resource that is a link to societe
-		// extrafields 'link_to_societe' of Resource is 'link' to 'Societe:societe/class/societe.class.php:1:((status:=:1) AND (entity:IN:__SHARED_ENTITIES__))" ...)'
+		// When extrafields 'link_to_societe' of Resource is 'link' to 'Societe:societe/class/societe.class.php:1:((status:=:1) AND (entity:IN:__SHARED_ENTITIES__))" ...)', we have
 		// $objectdesc = 'Societe'
-		// $objectfield = 'resource:options_link_to_societe'
+		// $objectfield = 'resource:options_link_to_societe'  or it can be an array that is directly
+		//                array("type"=>'Societe:societe/class/societe.class.php:1:((status:=:1) AND (entity:IN:__SHARED_ENTITIES__))" ...)
 
 		// With old usage:
 		// $objectdesc = 'Societe:societe/class/societe.class.php:1:((status:=:1) AND (entity:IN:__SHARED_ENTITIES__))'
@@ -8534,7 +8536,10 @@ class Form
 		$filter = '';  // Ensure filter has value (for static analysis)
 		$sortfield = '';  // Ensure filter has value (for static analysis)
 
-		if ($objectfield) {	// We must retrieve the objectdesc from the field or extrafield
+		if (is_array($objectfield)) {
+			$objectdesc = $objectfield['type'];
+			$objectdesc = preg_replace('/^integer[^:]*:/', '', $objectdesc);
+		} elseif ($objectfield) {	// We must retrieve the objectdesc from the field or extrafield. Deprecated, it is better to provide the array record directly.
 			// Example: $objectfield = 'product:options_package' or 'myobject@mymodule:options_myfield'
 			$tmparray = explode(':', $objectfield);
 

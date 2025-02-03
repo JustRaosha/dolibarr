@@ -19,7 +19,7 @@
  * Copyright (C) 2022       OpenDSI                 <support@open-dsi.fr>
  * Copyright (C) 2022      	Gauthier VERDOL     	<gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2023		William Mead			<william.mead@manchenumerique.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW							<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,23 +147,23 @@ class Propal extends CommonObject
 
 	/**
 	 * @var int|''
-	 * @deprecated
+	 * @deprecated Use $date_validation
 	 * @see $date_validation
 	 */
 	public $datev;
 
 	/**
-	 * @var integer|'' $date_validation;
+	 * @var int|''
 	 */
 	public $date_validation;
 
 	/**
-	 * @var integer|'' $date_signature;
+	 * @var int|''
 	 */
 	public $date_signature;
 
 	/**
-	 * @var User $user_signature
+	 * @var User
 	 */
 	public $user_signature;
 
@@ -664,7 +664,7 @@ class Propal extends CommonObject
 		$noupdateafterinsertline = 0,
 		$subtotal_options = []
 	) {
-		global $mysoc, $conf, $langs;
+		global $mysoc, $langs;
 
 		dol_syslog(get_class($this)."::addline propalid=$this->id, desc=$desc, pu_ht=$pu_ht, qty=$qty, txtva=$txtva, fk_product=$fk_product, remise_except=$remise_percent, price_base_type=$price_base_type, pu_ttc=$pu_ttc, info_bits=$info_bits, type=$type, fk_remise_except=".$fk_remise_except);
 
@@ -689,7 +689,7 @@ class Propal extends CommonObject
 			}
 
 			$remise_percent = price2num($remise_percent);
-			$qty = (float) price2num($qty);
+			$qty = (float) price2num($qty, 'MS');
 			$pu_ht = price2num($pu_ht);
 			$pu_ht_devise = price2num($pu_ht_devise);
 			$pu_ttc = price2num($pu_ttc);
@@ -740,14 +740,14 @@ class Propal extends CommonObject
 			$localtaxes_type = getLocalTaxesFromRate($txtva, 0, $this->thirdparty, $mysoc);
 
 			if (getDolGlobalString('PRODUCT_USE_CUSTOMER_PACKAGING')) {
-				$product = new Product($this->db);
-				$result = $product->fetch($fk_product);
-				if ($qty < $product->packaging) {
-					$qty = $product->packaging;
+				$tmpproduct = new Product($this->db);
+				$result = $tmpproduct->fetch($fk_product);
+				if (abs($qty) < $tmpproduct->packaging) {
+					$qty = (float) $tmpproduct->packaging;
 				} else {
-					if (!empty($product->packaging) && (fmod((float) $qty, $product->packaging)  > 0.000001)) {
-						$coeff = intval((float) $qty / $product->packaging) + 1;
-						$qty = (float) $product->packaging * $coeff;
+					if (!empty($tmpproduct->packaging) && $qty > $tmpproduct->packaging) {
+						$coeff = intval(abs($qty) / $tmpproduct->packaging) + 1;
+						$qty = price2num((float) $tmpproduct->packaging * $coeff, 'MS');
 						setEventMessages($langs->trans('QtyRecalculatedWithPackaging'), null, 'mesgs');
 					}
 				}
@@ -802,7 +802,7 @@ class Propal extends CommonObject
 			$this->line->fk_propal = $this->id;
 			$this->line->label = $label;
 			$this->line->desc = $desc;
-			$this->line->qty = $qty;
+			$this->line->qty = (float) $qty;
 
 			$this->line->vat_src_code = $vat_src_code;
 			$this->line->tva_tx = $txtva;

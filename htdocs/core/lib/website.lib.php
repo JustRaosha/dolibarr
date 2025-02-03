@@ -779,13 +779,13 @@ function getStructuredData($type, $data = array())
 
 			$pageurl = $websitepage->pageurl;
 			$title = $websitepage->title;
-			$image = $websitepage->image;
+			$image = getImageFromHtmlContent($websitepage->content);
 			$companyname = $mysoc->name;
 			$description = $websitepage->description;
 
 			$pageurl = str_replace('__WEBSITE_KEY__', $website->ref, $pageurl);
 			$title = str_replace('__WEBSITE_KEY__', $website->ref, $title);
-			$image = '/medias'.(preg_match('/^\//', $image) ? '' : '/').str_replace('__WEBSITE_KEY__', $website->ref, $image);
+			$imagepath = '/medias'.(preg_match('/^\//', $image) ? '' : '/').str_replace('__WEBSITE_KEY__', $website->ref, $image);
 			$companyname = str_replace('__WEBSITE_KEY__', $website->ref, $companyname);
 			$description = str_replace('__WEBSITE_KEY__', $website->ref, $description);
 
@@ -798,10 +798,14 @@ function getStructuredData($type, $data = array())
 				    "@type": "WebPage",
 				    "@id": "'.dol_escape_json($pageurl).'"
 				  },
-				  "headline": "'.dol_escape_json($title).'",
+				  "headline": "'.dol_escape_json($title).'",';
+			if ($image) {
+				$ret .= '
 				  "image": [
-				    "'.dol_escape_json($image).'"
-				   ],
+				    "'.dol_escape_json($imagepath).'"
+				   ],';
+			}
+			$ret .= '
 				  "dateCreated": "'.dol_print_date($websitepage->date_creation, 'dayhourrfc').'",
 				  "datePublished": "'.dol_print_date($websitepage->date_creation, 'dayhourrfc').'",
 				  "dateModified": "'.dol_print_date($websitepage->date_modification, 'dayhourrfc').'",
@@ -814,7 +818,7 @@ function getStructuredData($type, $data = array())
 				     "name": "'.dol_escape_json($companyname).'",
 				     "logo": {
 				        "@type": "ImageObject",
-				        "url": "/wrapper.php?modulepart=mycompany&file=logos%2F'.urlencode($mysoc->logo).'"
+				        "url": "/wrapper.php?modulepart=mycompany&file='.urlencode('logos/'.$mysoc->logo).'"
 				     }
 				   },'."\n";
 			if ($websitepage->keywords) {

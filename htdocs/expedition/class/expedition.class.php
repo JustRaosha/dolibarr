@@ -13,7 +13,7 @@
  * Copyright (C) 2018       Nicolas ZABOURI			<info@inovea-conseil.com>
  * Copyright (C) 2018-2025  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2020       Lenin Rivas         	<lenin@leninrivas.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024		William Mead			<william.mead@manchenumerique.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -306,7 +306,6 @@ class Expedition extends CommonObject
 	 * Closed status
 	 * -> parcel was received by customer / end of process
 	 * prev status : validated or shipment_in_progress
-	 *
 	 */
 	const STATUS_CLOSED = 2;
 
@@ -1476,10 +1475,10 @@ class Expedition extends CommonObject
 	 * 	Delete shipment.
 	 * 	Warning, do not delete a shipment if a delivery is linked to (with table llx_element_element)
 	 *
-	 *  @param	User	$user					User making the deletion
-	 *  @param  int  	$notrigger 				Disable triggers
-	 *  @param  bool 	$also_update_stock  	true if the stock should be increased back (false by default)
-	 * 	@return	int								>0 if OK, 0 if deletion done but failed to delete files, <0 if KO
+	 *  @param	?User		$user					User making the deletion
+	 *  @param  int<0,1>  	$notrigger 				Disable triggers
+	 *  @param  bool		$also_update_stock  	true if the stock should be increased back (false by default)
+	 * 	@return	int									>0 if OK, 0 if deletion done but failed to delete files, <0 if KO
 	 */
 	public function delete($user = null, $notrigger = 0, $also_update_stock = false)
 	{
@@ -1609,6 +1608,13 @@ class Expedition extends CommonObject
 					$error++;
 				}
 
+				if (!$error) {
+					// Delete linked contacts
+					$res = $this->delete_linked_contact();
+					if ($res < 0) {
+						$error++;
+					}
+				}
 				if (!$error) {
 					$sql = "DELETE FROM ".MAIN_DB_PREFIX."expedition";
 					$sql .= " WHERE rowid = ".((int) $this->id);
@@ -2437,7 +2443,6 @@ class Expedition extends CommonObject
 	 * @param		string	$labelmovement		Label of movement
 	 * @return     	int     					Return integer <0 if KO, >0 if OK
 	 * @throws Exception
-	 *
 	 */
 	private function manageStockMvtOnEvt($user, $labelmovement = 'ShipmentClassifyClosedInDolibarr')
 	{

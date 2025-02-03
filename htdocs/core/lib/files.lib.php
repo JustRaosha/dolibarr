@@ -1588,6 +1588,7 @@ function dol_delete_file($file, $disableglob = 0, $nophperrors = 0, $nohook = 0,
 					}
 				}
 			} else {
+				$ok = false; // to avoid false positive
 				dol_syslog("No files to delete found", LOG_DEBUG);
 			}
 		} else {
@@ -3564,9 +3565,19 @@ function dol_check_secure_access_document($modulepart, $original_file, $entity, 
 				dol_print_error(null, 'Error call dol_check_secure_access_document with not supported value for modulepart parameter ('.$modulepart.')');
 				exit;
 			}
-			if ($fuser->hasRight($tmpmodule, $lire) || preg_match('/^specimen/i', $original_file)) {
+
+			// Check fuser->rights->modulepart->myobject->read and fuser->rights->modulepart->read
+			$partsofdirinoriginalfile = explode('/', $original_file);
+			if (!empty($partsofdirinoriginalfile[1])) {    // If original_file is xxx/filename (xxx is a part we will use)
+				$partofdirinoriginalfile = $partsofdirinoriginalfile[0];
+				if (($partofdirinoriginalfile && $fuser->hasRight($tmpmodule, $partofdirinoriginalfile, 'read')) || preg_match('/^specimen/i', $original_file)) {
+					$accessallowed = 1;
+				}
+			}
+			if ($fuser->hasRight($tmpmodule, $read) || preg_match('/^specimen/i', $original_file)) {
 				$accessallowed = 1;
 			}
+
 			$original_file = $conf->$tmpmodule->dir_output.'/temp/massgeneration/'.$user->id.'/'.$original_file;
 		} else {
 			if (empty($conf->$modulepart->dir_output)) {	// modulepart not supported
