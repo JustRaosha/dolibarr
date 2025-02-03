@@ -77,6 +77,7 @@ trait CommonSubtotal
 		$desc = dol_html_entity_decode($desc, ENT_QUOTES);
 		$rang = -1;
 		$next_line = false;
+		$result = 0;
 
 		if ($depth<0) {
 			foreach ($this->lines as $line) {
@@ -123,7 +124,7 @@ trait CommonSubtotal
 				0,						// VAT rate
 				0,						// Local tax 1
 				0,						// Local tax 2
-				null,					// FK product
+				0,						// FK product
 				0,						// Discount percentage
 				'',						// Date start
 				'',						// Date end
@@ -158,7 +159,7 @@ trait CommonSubtotal
 				0,						// VAT rate
 				0,						// Local tax 1
 				0,						// Local tax 2
-				null,					// FK product
+				0,						// FK product
 				0,						// Discount percentage
 				'',						// Price base type
 				0,						// PU ttc
@@ -189,7 +190,7 @@ trait CommonSubtotal
 				0,						// VAT rate
 				0,						// Local tax 1
 				0,						// Local tax 2
-				null,					// FK product
+				0,						// FK product
 				0,						// Discount percentage
 				0,						// Info bits
 				0,						// FK remise except
@@ -202,15 +203,15 @@ trait CommonSubtotal
 				SUBTOTALS_SPECIAL_CODE,	// Special code
 				0, 						// FK parent line
 				null, 					// FK fournprice
-				0, 					// PA ht
+				0, 						// PA ht
 				'', 					// Label
 				array(), 				// Array options
 				null, 					// FK unit
 				'', 					// Origin
-				0, 					// Origin id
-				0, 					// PU ht devise
+				0, 						// Origin id
+				0, 						// PU ht devise
 				'', 					// Ref ext
-				0, 					// Noupdateafterinsertline
+				0, 						// Noupdateafterinsertline
 				$options				// Subtotal options
 			);
 		}
@@ -243,6 +244,8 @@ trait CommonSubtotal
 			}
 			return -1; // Unsupported type
 		}
+
+		$result = 0;
 
 		if ($correspondingstline) {
 			$oldDesc = "";
@@ -295,6 +298,7 @@ trait CommonSubtotal
 			return -1; // Unsupported type
 		}
 
+		$result = 0;
 		$error = 0;
 
 		$max_existing_level = 0;
@@ -448,6 +452,7 @@ trait CommonSubtotal
 			return -1; // Unsupported type
 		}
 
+		$result = 0;
 		$linerang -= 1;
 
 		$nb_lines = count($this->lines)+1;
@@ -534,6 +539,7 @@ trait CommonSubtotal
 				}
 			}
 		}
+		return 1;
 	}
 
 	/**
