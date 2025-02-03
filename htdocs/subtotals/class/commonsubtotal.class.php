@@ -24,7 +24,16 @@ if (!defined('SUBTOTALS_SPECIAL_CODE')) {
 
 /**
  * Trait CommonSubtotal
+ *
  * add subtotals lines
+ *
+ *
+ * @property array $errors
+ * @property string $element
+ * @property array $lines
+ * @method int addline()
+ * @method int updateline()
+ * @method int deleteLine()
  */
 trait CommonSubtotal
 {
