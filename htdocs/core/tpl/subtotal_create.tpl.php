@@ -36,6 +36,8 @@ if ($type == 'subtotal' && empty($titles)) {
 	return;
 }
 
+$formquestion = array();
+
 if ($type == 'title') {
 	$formquestion = array(
 		array('type' => 'text', 'name' => 'subtotallinedesc', 'label' => $langs->trans("SubtotalLineDesc"), 'moreattr' => 'placeholder="'.$langs->trans("Description").'"'),
