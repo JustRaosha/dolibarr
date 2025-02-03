@@ -59,14 +59,18 @@ trait CommonSubtotal
 	public function addSubtotalLine($langs, $desc, $depth, $options)
 	{
 		if (empty($desc)) {
-			$this->errors[] = $langs->trans("TitleNeedDesc");
+			if (isset($this->errors)) {
+				$this->errors[] = $langs->trans("TitleNeedDesc");
+			}
 			return -1;
 		}
-		$current_module = $this->element;
+		$current_module = $this->element ?? "";
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
-			$this->errors[] = $langs->trans("UnsupportedModuleError");
+			if (isset($this->errors)) {
+				$this->errors[] = $langs->trans("UnsupportedModuleError");
+			}
 			return -1; // Unsupported type
 		}
 		$error = 0;
@@ -102,7 +106,10 @@ trait CommonSubtotal
 
 			if ($max_existing_level+1 < $depth) {
 				$depth = $max_existing_level+1;
-				$this->errors[] = $langs->trans("TitleAddedLevelTooHigh", $depth);
+				if (isset($this->errors)) {
+					$this->errors[] = $langs->trans("TitleAddedLevelTooHigh", $depth);
+				}
+
 				$error ++;
 			}
 		}
@@ -143,7 +150,7 @@ trait CommonSubtotal
 				0, 						// Noupdateafterinsertline
 				$options 				// Subtotal options
 			);
-		} elseif ($current_module== 'propal') {
+		} elseif ($current_module == 'propal') {
 			$result = $this->addline(
 				$desc,					// Description
 				0,						// Unit price
@@ -174,7 +181,7 @@ trait CommonSubtotal
 				0, 						// Noupdateafterinsertline
 				$options 				// Subtotal options
 			);
-		} elseif ($current_module== 'commande') {
+		} elseif ($current_module == 'commande') {
 			$result = $this->addline(
 				$desc,					// Description
 				0,						// Unit price
@@ -227,11 +234,13 @@ trait CommonSubtotal
 	 */
 	public function deleteSubtotalLine($langs, $id, $correspondingstline = false, $user = null)
 	{
-		$current_module = $this->element;
+		$current_module = $this->element ?? "";
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
-			$this->errors[] = $langs->trans("UnsupportedModuleError");
+			if (isset($this->errors)) {
+				$this->errors[] = $langs->trans("UnsupportedModuleError");
+			}
 			return -1; // Unsupported type
 		}
 
@@ -276,11 +285,13 @@ trait CommonSubtotal
 	 */
 	public function updateSubtotalLine($langs, $lineid, $desc, $depth, $options)
 	{
-		$current_module = $this->element;
+		$current_module = $this->element ?? "";
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
-			$this->errors[] = $langs->trans("UnsupportedModuleError");
+			if (isset($this->errors)) {
+				$this->errors[] = $langs->trans("UnsupportedModuleError");
+			}
 			return -1; // Unsupported type
 		}
 
@@ -298,7 +309,9 @@ trait CommonSubtotal
 
 		if ($max_existing_level+1 < $depth) {
 			$depth = $max_existing_level+1;
-			$this->errors[] = $langs->trans("TitleEditedLevelTooHigh", $depth);
+			if (isset($this->errors)) {
+				$this->errors[] = $langs->trans("TitleEditedLevelTooHigh");
+			}
 			$error ++;
 		}
 
@@ -422,8 +435,18 @@ trait CommonSubtotal
 	 * @param int		$value		Value of the change.
 	 * @return int					Return integer < 0 if KO, 1 if OK
 	 */
-	public function updateSubtotalLineBlockLines($linerang, $mode, $value)
+	public function updateSubtotalLineBlockLines($langs, $linerang, $mode, $value)
 	{
+		$current_module = $this->element ?? "";
+		// Ensure the object is one of the supported types
+		$allowed_types = array('propal', 'commande', 'facture');
+		if (!in_array($current_module, $allowed_types)) {
+			if (isset($this->errors)) {
+				$this->errors[] = $langs->trans("UnsupportedModuleError");
+			}
+			return -1; // Unsupported type
+		}
+
 		$linerang -= 1;
 
 		$nb_lines = count($this->lines)+1;
@@ -434,7 +457,7 @@ trait CommonSubtotal
 					return 1;
 				}
 			} else {
-				if ($this->element == 'facture') {
+				if ($current_module == 'facture') {
 					$result = $this->updateline(
 						$this->lines[$i]->id,
 						$this->lines[$i]->desc,
@@ -458,7 +481,7 @@ trait CommonSubtotal
 						$this->lines[$i]->situation_percent,
 						$this->lines[$i]->fk_unit,
 						$this->lines[$i]->multicurrency_subprice);
-				} elseif ($this->element == 'commande') {
+				} elseif ($current_module == 'commande') {
 					$result = $this->updateline(
 						$this->lines[$i]->id,
 						$this->lines[$i]->desc,
@@ -481,7 +504,7 @@ trait CommonSubtotal
 						$this->lines[$i]->array_options,
 						$this->lines[$i]->fk_unit,
 						$this->lines[$i]->multicurrency_subprice);
-				} elseif ($this->element == 'propal') {
+				} elseif ($current_module == 'propal') {
 					$result = $this->updateline(
 						$this->lines[$i]->id,
 						$this->lines[$i]->subprice,
@@ -618,7 +641,8 @@ trait CommonSubtotal
 	public function getPossibleLevels($langs)
 	{
 		$depth_array = array();
-		$max_depth = getDolGlobalString('SUBTOTAL_'.strtoupper($this->element).'_MAX_DEPTH', 2);
+		$element = $this->element ?? "";
+		$max_depth = getDolGlobalString('SUBTOTAL_'.strtoupper($element).'_MAX_DEPTH', 2);
 		for ($i = 0; $i < $max_depth; $i++) {
 			$depth_array[$i + 1] = $langs->trans("Level", $i + 1);
 		}
