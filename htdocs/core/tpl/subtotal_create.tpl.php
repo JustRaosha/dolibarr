@@ -18,6 +18,19 @@
  * or see https://www.gnu.org/
  */
 
+/**
+ * @var CommonObject $this
+ * @var CommonObject $object
+ * @var CommonObjectLine $line
+ * @var Form $form
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ *
+ * @var array $depth_array
+ * @var array $titles
+ */
+
 if ($type == 'subtotal' && empty($titles)) {
 	setEventMessages("NoTitleError", null, 'errors');
 	return;
