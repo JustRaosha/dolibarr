@@ -31,7 +31,9 @@ if (!defined('SUBTOTALS_SPECIAL_CODE')) {
  * @property array $errors
  * @property string $element
  * @property array $lines
- * @method int addline()
+ * @method int addline(string $desc, float $pu_ht, float $qty, float|string $txtva, float $txlocaltax1, float $txlocaltax2, int $fk_product, float $remise_percent, string $price_base_type, float $pu_ttc, int $info_bits, int $type, int $rang, int $special_code, int $fk_parent_line, int $fk_fournprice, int $pa_ht, string $label, int|string $date_start, int|string $date_end, array $array_options, int|null $fk_unit, string $origin, int $origin_id, float $pu_ht_devise, int $fk_remise_except, int $noupdateafterinsertline, array $subtotal_options) Propal
+ * @method int addline(string $desc, float $pu_ht, float $qty, float $txtva, float $txlocaltax1, float $txlocaltax2, int $fk_product, float $remise_percent, int $info_bits, int $fk_remise_except, string $price_base_type, float $pu_ttc, int|string $date_start, int|string $date_end, int $type, int $rang, int $special_code, int $fk_parent_line, int $fk_fournprice, int $pa_ht, string $label, array $array_options, ?int $fk_unit, string $origin, int $origin_id, float $pu_ht_devise, string $ref_ext, int $noupdateafterinsertline, array $subtotal_options) Commande
+ * @method int addline(string $desc, float $pu_ht, float $qty, float $txtva, float $txlocaltax1, float $txlocaltax2, int $fk_product, float $remise_percent, int|string $date_start, int|string $date_end, int $fk_code_ventilation, int $info_bits, int $fk_remise_except, string $price_base_type, float $pu_ttc, int $type, int $rang, int $special_code, string $origin, int $origin_id, int $fk_parent_line, int $fk_fournprice, int $pa_ht, string $label, array $array_options, int $situation_percent, int $fk_prev_id, int|null $fk_unit, float $pu_ht_devise, string $ref_ext, int $noupdateafterinsertline, array $subtotal_options) Facture
  * @method int updateline()
  * @method int deleteLine()
  */
