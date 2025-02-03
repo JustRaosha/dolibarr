@@ -114,10 +114,10 @@ if ($line->qty > 0) { ?>
 		<?php
 		if ($this->status == 0) {
 			if (GETPOST('mode', 'aZ09') == 'vatforblocklines' && GETPOST('lineid') == $line->id) {
+				$seller = $seller ?? null;
+				$buyer = $buyer ?? null;
+				$type_tva = $type_tva ?? 0;
 				print '<div class="inline-block nowraponall">';
-                $seller = $seller ?? null;
-                $buyer = $buyer ?? null;
-                $type_tva = $type_tva ?? 0;
 				print $form->load_tva('vatforblocklines', '', $seller, $buyer, 0, $line->info_bits, $line->product_type, false, 1, $type_tva);
 				print '<input type="hidden" name="lineid" value="' . $line->id . '">';
 				print '<input class="inline-block button smallpaddingimp" type="submit" name="updateallvatlinesblock" value="' . $langs->trans("Update") . '">';
