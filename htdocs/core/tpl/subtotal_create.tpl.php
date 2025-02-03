@@ -56,7 +56,7 @@ if ($type == 'title') {
 } elseif ($type == 'subtotal') {
 	$formquestion = array(
 		array('type' => 'select', 'name' => 'subtotaltitleline', 'label' => $langs->trans("CorrespondingTitleLine"), 'values' => $titles, 'select_show_empty' => 0),
-		array('type' => 'checkbox', 'name' => 'subtotalshowtotalexludingvatonpdf', 'label' => $langs->trans("ShowTotalExludingVATOnPDF")),
+		array('type' => 'checkbox', 'value' => 'on', 'name' => 'subtotalshowtotalexludingvatonpdf', 'label' => $langs->trans("ShowTotalExludingVATOnPDF")),
 	);
 }
 
