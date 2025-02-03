@@ -31,6 +31,13 @@
  * @var array $titles
  */
 
+'
+@phan-var-force CommonObject $this
+';
+
+$depth_array = $depth_array ?? array();
+$titles = $titles ?? array();
+
 if ($type == 'subtotal' && empty($titles)) {
 	setEventMessages("NoTitleError", null, 'errors');
 	return;
