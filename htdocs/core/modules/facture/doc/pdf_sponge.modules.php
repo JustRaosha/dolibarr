@@ -808,19 +808,19 @@ class pdf_sponge extends ModelePDFFactures
 							$pdf->SetFillColor($bg_color[0], $bg_color[1], $bg_color[2]);
 							$pdf->SetXY($pdf->GetX() + 1, $curY);
 							$pdf->MultiCell($this->page_largeur - $this->marge_droite  - $this->marge_gauche - 2, 6, '', 0, '', 1);
-							$previous_align = $this->cols['desc']['content']['align'];
+							$previous_align['align'] = $this->cols['desc']['content']['align'];
 							if ($object->lines[$i]->qty < 0) {
 								$langs->load("subtotals");
 								$object->lines[$i]->desc = $langs->trans("SubtotalOf", $object->lines[$i]->desc);
-								if ($previous_align == 'L') {
+								if ($previous_align['align'] == 'L') {
 									$this->cols['desc']['content']['align'] = 'R';
-								} elseif ($previous_align == 'R') {
+								} elseif ($previous_align['align'] == 'R') {
 									$this->cols['desc']['content']['align'] = 'L';
 								}
 							}
 							$this->printColDescContent($pdf, $curY, 'desc', $object, $i, $outputlangs, $hideref, $hidedesc);
 							$this->setAfterColsLinePositionsData('desc', $pdf->GetY(), $pdf->getPage());
-							$this->cols['desc']['content']['align'] = $previous_align; // Re align if we printed a subtotal ligne
+							$this->cols['desc']['content']['align'] = $previous_align['align']; // Re align if we printed a subtotal ligne
 						}
 					}
 
