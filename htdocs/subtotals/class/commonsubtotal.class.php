@@ -30,7 +30,7 @@ if (!defined('SUBTOTALS_SPECIAL_CODE')) {
  *
  * @property array $errors
  * @property string $element
- * @property array $lines
+ * @property array<Object> $lines
  * @method int addline()
  * @method int updateline()
  * @method int deleteLine()
