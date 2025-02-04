@@ -28,7 +28,7 @@ if (!defined('SUBTOTALS_SPECIAL_CODE')) {
  * add subtotals lines
  *
  *
- * @property array $errors
+ * @property string[] $errors
  * @property string $element
  * @property array<Object> $lines
  * @method int addline()
