@@ -31,12 +31,15 @@
  *    \brief      Description and activation file for the module subtotals
  */
 include_once DOL_DOCUMENT_ROOT."/core/modules/DolibarrModules.class.php";
+require_once DOL_DOCUMENT_ROOT.'/subtotals/class/commonsubtotal.class.php';
 
 /**
  *		Description and activation class for module subtotals
  */
 class modSubtotals extends DolibarrModules
 {
+	use CommonSubtotal;
+
 	/**
 	 *  Constructor. Define names, constants, directories, boxes, permissions
 	 *
