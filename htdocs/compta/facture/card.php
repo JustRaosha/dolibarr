@@ -2257,6 +2257,8 @@ if (empty($reshook)) {
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
+		header('Location: '.$_SERVER["PHP_SELF"].'?facid='.$id);
+		exit();
 	} elseif ($action == 'confirm_addsubtotalline' && $usercancreate) {
 		// Handling adding a new subtotal line for subtotals module
 
@@ -2307,6 +2309,8 @@ if (empty($reshook)) {
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
+		header('Location: '.$_SERVER["PHP_SELF"].'?facid='.$id);
+		exit();
 	} elseif ($action == 'addline' && !GETPOST('submitforalllines', 'alpha') && !GETPOST('submitforallmargins', 'alpha') && $usercancreate) {		// Add a new line
 		$langs->load('errors');
 		$error = 0;

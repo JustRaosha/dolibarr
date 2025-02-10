@@ -1126,6 +1126,8 @@ if (empty($reshook)) {
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
+		header('Location: '.$_SERVER["PHP_SELF"].'?id='.$id);
+		exit();
 	} elseif ($action == 'confirm_addsubtotalline' && $usercancreate) {
 		// Handling adding a new subtotal line for subtotals module
 
@@ -1176,6 +1178,8 @@ if (empty($reshook)) {
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
+		header('Location: '.$_SERVER["PHP_SELF"].'?id='.$id);
+		exit();
 	} elseif ($action == 'addline' && !GETPOST('submitforalllines', 'alpha') && !GETPOST('submitforallmargins', 'alpha') && $usercancreate) {		// Add line
 		// Set if we used free entry or predefined product
 		$predef = '';
