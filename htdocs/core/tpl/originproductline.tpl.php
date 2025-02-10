@@ -33,7 +33,7 @@ if (empty($conf) || !is_object($conf)) {
 <?php
 // Handle subtotals line edit
 if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
-	return include DOL_DOCUMENT_ROOT.'/core/tpl/originsubtotalline.tpl.php';
+	return require DOL_DOCUMENT_ROOT.'/core/tpl/originsubtotalline.tpl.php';
 }
 
 '@phan-var-force CommonObject $this';

@@ -113,7 +113,7 @@ if ($line->qty > 0) { ?>
 	<td class="linecolvat nowrap right">
 		<?php
 		if ($this->status == 0) {
-			if (GETPOST('mode', 'aZ09') == 'vatforblocklines' && GETPOST('lineid') == $line->id) {
+			if (GETPOST('mode', 'aZ09') == 'vatforblocklines' && GETPOSTINT('lineid') == $line->id) {
 				$seller = $seller ?? null;
 				$buyer = $buyer ?? null;
 				$type_tva = $type_tva ?? 0;
@@ -133,7 +133,7 @@ if ($line->qty > 0) { ?>
 	<td class="linecoldiscount right">
 		<?php
 		if ($this->status == 0) {
-			if (GETPOST('mode', 'aZ09') == 'discountforblocklines' && GETPOST('lineid') == $line->id) {
+			if (GETPOST('mode', 'aZ09') == 'discountforblocklines' && GETPOSTINT('lineid') == $line->id) {
 				print '<div class="inline-block nowraponall">';
 				print '<input type="text" class="flat right width40" name="discountforblocklines" id="discountforblocklines" value="0"><span class="hideonsmartphone">%</span>';
 				print '<input type="hidden" name="lineid" value="' . $line->id . '">';

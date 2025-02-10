@@ -319,7 +319,7 @@ if (empty($reshook)) {
 		$object->fetch($id);
 		$object->fetch_thirdparty();
 
-		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline'));
+		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline', 'alphanohtml'));
 		if ($result > 0) {
 			// reorder lines
 			$object->line_order(true);
@@ -1087,13 +1087,13 @@ if (empty($reshook)) {
 
 		$langs->load('subtotals');
 
-		$desc = GETPOST('subtotallinedesc', 'san_alpha');
+		$desc = GETPOST('subtotallinedesc', 'alphanohtml');
 		$depth = GETPOSTINT('subtotallinelevel') ?? 1;
 
 		$subtotal_options = array();
 
 		foreach (Propal::$TITLE_OPTIONS as $option) {
-			$value = GETPOST($option);
+			$value = GETPOST($option, 'alphanohtml');
 			if ($value) {
 				$subtotal_options[$option] = $value == 'on' ? 1 : $value;
 			}
@@ -1133,7 +1133,7 @@ if (empty($reshook)) {
 
 		$langs->load('subtotals');
 
-		$choosen_line = GETPOST('subtotaltitleline');
+		$choosen_line = GETPOST('subtotaltitleline', 'alphanohtml');
 		foreach ($object->lines as $line) {
 			if ($line->desc == $choosen_line && $line->special_code == SUBTOTALS_SPECIAL_CODE) {
 				$desc = $line->desc;
@@ -1144,7 +1144,7 @@ if (empty($reshook)) {
 		$subtotal_options = array();
 
 		foreach (Propal::$SUBTOTAL_OPTIONS as $option) {
-			$value = GETPOST($option);
+			$value = GETPOST($option, 'alphanohtml');
 			if ($value) {
 				$subtotal_options[$option] = $value == 'on' ? 1 : $value;
 			}
@@ -1675,13 +1675,13 @@ if (empty($reshook)) {
 
 		$langs->load('subtotals');
 
-		$desc = GETPOST('line_desc') ?? $langs->trans("Title");
+		$desc = GETPOST('line_desc', 'alphanohtml') ?? $langs->trans("Title");
 		$depth = GETPOSTINT('line_depth') ?? 1;
 
 		$subtotal_options = array();
 
 		foreach (Propal::$TITLE_OPTIONS as $option) {
-			$value = GETPOST($option);
+			$value = GETPOST($option, 'alphanohtml');
 			if ($value) {
 				$subtotal_options[$option] = $value == 'on' ? 1 : $value;
 			}
@@ -1719,13 +1719,13 @@ if (empty($reshook)) {
 
 		$langs->load('subtotals');
 
-		$desc = GETPOST('line_desc');
-		$depth = GETPOST('line_depth');
+		$desc = GETPOST('line_desc', 'alphanohtml');
+		$depth = GETPOSTINT('line_depth');
 
 		$subtotal_options = array();
 
 		foreach (Propal::$SUBTOTAL_OPTIONS as $option) {
-			$value = GETPOST($option);
+			$value = GETPOST($option, 'alphanohtml');
 			if ($value) {
 				$subtotal_options[$option] = $value == 'on' ? 1 : $value;
 			}
