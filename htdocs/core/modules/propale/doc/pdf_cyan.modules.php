@@ -666,10 +666,10 @@ class pdf_cyan extends ModelePDFPropales
 							$pdf->SetXY($pdf->GetX() + 1, $curY + 1);
 							$pdf->MultiCell($this->page_largeur - $this->marge_droite  - $this->marge_gauche - 2, 5, '', 0, '', 1);
 							$previous_align = array();
+							$previous_align['align'] = $this->cols['desc']['content']['align'];
 							if ($object->lines[$i]->qty < 0) {
 								$langs->load("subtotals");
 								$object->lines[$i]->desc = $langs->trans("SubtotalOf", $object->lines[$i]->desc);
-								$previous_align['align'] = $this->cols['desc']['content']['align'];
 								if ($previous_align['align'] == 'L') {
 									$this->cols['desc']['content']['align'] = 'R';
 								} elseif ($previous_align['align'] == 'R') {
