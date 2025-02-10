@@ -6,7 +6,7 @@
  * Copyright (C) 2020       Juanjo Menent		<jmenent@2byte.es>
  * Copyright (C) 2022       Charlene Benke		<charlene@patas-monkey.com>
  * Copyright (C) 2023      	Gauthier VERDOL     <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2024		MDW					<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW					<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024		Vincent de Grandpré <vincent@de-grandpre.quebec>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -1845,9 +1845,9 @@ class Task extends CommonObjectLine
 		$sql .= " MIN(t.element_datehour) as min_date,";
 		$sql .= " MAX(t.element_datehour) as max_date,";
 		$sql .= " SUM(t.element_duration) as total_duration,";
-		$sql .= " SUM(t.element_duration / 3600 * ".$this->db->ifsql("t.thm IS NULL", 0, "t.thm").") as total_amount,";
+		$sql .= " SUM(t.element_duration / 3600 * ".$this->db->ifsql("t.thm IS NULL", '0', "t.thm").") as total_amount,";
 		$sql .= " COUNT(t.rowid) as nblines,";
-		$sql .= " SUM(".$this->db->ifsql("t.thm IS NULL", 1, 0).") as nblinesnull";
+		$sql .= " SUM(".$this->db->ifsql("t.thm IS NULL", '1', '0').") as nblinesnull";
 		$sql .= " FROM ".MAIN_DB_PREFIX."element_time as t";
 		$sql .= " WHERE t.elementtype='task'";
 		if ($morewherefilter) {
@@ -1899,7 +1899,7 @@ class Task extends CommonObjectLine
 
 		$sql = "SELECT";
 		$sql .= " SUM(t.element_duration) as nbseconds,";
-		$sql .= " SUM(t.element_duration / 3600 * ".$this->db->ifsql("t.thm IS NULL", 0, "t.thm").") as amount, SUM(".$this->db->ifsql("t.thm IS NULL", 1, 0).") as nblinesnull";
+		$sql .= " SUM(t.element_duration / 3600 * ".$this->db->ifsql("t.thm IS NULL", '0', "t.thm").") as amount, SUM(".$this->db->ifsql("t.thm IS NULL", '1', '0').") as nblinesnull";
 		$sql .= " FROM ".MAIN_DB_PREFIX."element_time as t";
 		$sql .= " WHERE t.elementtype='task' AND t.fk_element = ".((int) $id);
 		if (is_object($fuser) && $fuser->id > 0) {
@@ -2729,9 +2729,9 @@ class Task extends CommonObjectLine
 	/**
 	 *	Return clickable link of object (with eventually picto)
 	 *
-	 *	@param      string	    			$option                 Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
-	 *  @param		array{string,mixed}		$arraydata				Array of data
-	 *  @return		string											HTML Code for Kanban thumb.
+	 *	@param	string	    			$option		Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
+	 *  @param	?array<string,mixed>	$arraydata	Array of data
+	 *  @return	string								HTML Code for Kanban thumb.
 	 */
 	public function getKanbanView($option = '', $arraydata = null)
 	{
