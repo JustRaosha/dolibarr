@@ -31,7 +31,6 @@ if (!defined('SUBTOTALS_SPECIAL_CODE')) {
  * @property string[] $errors
  * @property string $element
  * @property array<Object> $lines
- * @mixin Propal | Commande | Facture
  *
  *
  */
