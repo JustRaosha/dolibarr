@@ -3274,19 +3274,19 @@ if ($action == 'create' && $usercancreate) {
 					$url_button = array(
 						array(
 							'lang' => 'subtotals',
-							'label' => $langs->trans('Title'),
+							'label' => $langs->trans('AddTitleLine'),
 							'perm' => true,
-							'enabled' => (isModEnabled('order') && $object->status == Propal::STATUS_DRAFT),
+							'enabled' => (isModEnabled('order') && $object->status == Commande::STATUS_DRAFT),
 							'urlraw' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=add_title_line&token='.newToken()
 						),
 						array(
 							'lang' => 'subtotals',
-							'label' => $langs->trans('Subtotal'),
+							'label' => $langs->trans('AddSubtotalLine'),
 							'perm' => true,
-							'enabled' => (isModEnabled('order') && $object->status == Propal::STATUS_DRAFT),
+							'enabled' => (isModEnabled('order') && $object->status == Commande::STATUS_DRAFT),
 							'urlraw' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=add_subtotal_line&token='.newToken()
 						),);
-					print dolGetButtonAction('', $langs->trans('AddSubtotalLine'), 'default', $url_button, '', true);
+					print dolGetButtonAction('', $langs->trans('Subtotal'), 'default', $url_button, '', true);
 				}
 
 				// Valid
