@@ -61,7 +61,7 @@ if (empty($object) || !is_object($object)) {
 
 // Handle subtotals line edit
 if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
-	return include DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_edit.tpl.php';
+	return require DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_edit.tpl.php';
 }
 
 $usemargins = 0;

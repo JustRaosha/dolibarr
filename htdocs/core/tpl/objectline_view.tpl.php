@@ -80,7 +80,7 @@ if (empty($object) || !is_object($object)) {
 
 // Handle subtotals line view
 if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
-	return include DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_view.tpl.php';
+	return require DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_view.tpl.php';
 }
 
 global $mysoc;

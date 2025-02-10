@@ -613,7 +613,7 @@ trait CommonSubtotal
 
 		$tpl = dol_buildpath('/core/tpl/subtotal_create.tpl.php');
 
-		return include $tpl;
+		return require $tpl;
 	}
 
 	/**
