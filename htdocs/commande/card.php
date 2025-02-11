@@ -509,7 +509,11 @@ if (empty($reshook)) {
 									$array_options,
 									$lines[$i]->fk_unit,
 									$object->origin,
-									$lines[$i]->rowid
+									$lines[$i]->rowid,
+									$lines[$i]->pu_ht_devise,
+									$lines[$i]->ref_ext,
+									$lines[$i]->noupdateafterinsertline,
+									$lines[$i]->subtotal_options
 								);
 
 								if ($result < 0) {

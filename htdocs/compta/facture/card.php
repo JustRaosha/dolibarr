@@ -1931,7 +1931,8 @@ if (empty($reshook)) {
 											$lines[$i]->fk_unit,
 											0,
 											'',
-											1
+											1,
+											$lines[$i]->subtotal_options
 										);
 
 										if ($result > 0) {
