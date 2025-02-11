@@ -2659,7 +2659,7 @@ class Form
 	 *
 	 *  @param		int			$selected				Preselected products
 	 *  @param		string		$htmlname				Name of HTML select field (must be unique in page).
-	 *  @param		int|string	$filtertype				Filter on product type (''=nofilter, 0=product, 1=service)
+	 *  @param		int|''		$filtertype				Filter on product type (''=nofilter, 0=product, 1=service)
 	 *  @param		int			$limit					Limit on number of returned lines
 	 *  @param		int			$price_level			Level of price to show
 	 *  @param		int<-1,1>	$status					Sell status: -1=No filter on sell status, 0=Products not on sell, 1=Products on sell

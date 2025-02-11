@@ -9,15 +9,15 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 2050+ occurrences
+    // PhanTypeMismatchArgument : 2000+ occurrences
     // PhanUndeclaredProperty : 520+ occurrences
-    // PhanTypeMismatchArgumentNullable : 410+ occurrences
+    // PhanTypeMismatchArgumentNullable : 400+ occurrences
     // PhanUndeclaredGlobalVariable : 180+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 170+ occurrences
     // PhanTypeMismatchProperty : 130+ occurrences
-    // PhanPossiblyUndeclaredGlobalVariable : 120+ occurrences
     // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
     // PhanTypeMismatchArgumentProbablyReal : 110+ occurrences
+    // PhanPossiblyUndeclaredGlobalVariable : 100+ occurrences
     // PhanRedefineFunction : 40+ occurrences
     // PhanTypeExpectedObjectPropAccess : 40+ occurrences
     // PhanTypeInvalidDimOffset : 25+ occurrences
@@ -453,8 +453,7 @@ return [
         'htdocs/core/modules/propale/doc/pdf_cyan.modules.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanUndeclaredProperty'],
         'htdocs/core/modules/reception/doc/pdf_squille.modules.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanUndeclaredProperty'],
         'htdocs/core/modules/societe/doc/doc_generic_odt.modules.php' => ['PhanTypeMismatchArgumentNullable'],
-        'htdocs/core/modules/stocktransfer/doc/pdf_eagle.modules.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/core/modules/stocktransfer/doc/pdf_eagle_proforma.modules.php' => ['PhanTypeMismatchArgumentNullable'],
+        'htdocs/core/modules/stocktransfer/doc/pdf_eagle.modules.php' => ['PhanUndeclaredProperty'],
         'htdocs/core/modules/stocktransfer/mod_stocktransfer_advanced.php' => ['PhanUndeclaredProperty'],
         'htdocs/core/modules/supplier_invoice/doc/pdf_canelle.modules.php' => ['PhanTypeMismatchArgumentNullable', 'PhanTypeMismatchProperty'],
         'htdocs/core/modules/supplier_order/doc/pdf_cornas.modules.php' => ['PhanTypeMismatchArgumentNullable', 'PhanTypeMismatchDimFetch', 'PhanTypeMismatchProperty', 'PhanUndeclaredProperty'],
@@ -604,19 +603,13 @@ return [
         'htdocs/product/stock/list.php' => ['PhanUndeclaredProperty'],
         'htdocs/product/stock/movement_card.php' => ['PhanPluginUndeclaredVariableIsset', 'PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
         'htdocs/product/stock/movement_list.php' => ['PhanPluginUndeclaredVariableIsset', 'PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
-        'htdocs/product/stock/product.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/product/stock/productlot_card.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/product/stock/productlot_list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/product/stock/replenish.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/product/stock/stats/commande_fournisseur.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/product/stock/stats/expedition.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/product/stock/stats/mo.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/product/stock/stats/reception.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/product/stock/stockatdate.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/product/stock/stocktransfer/class/stocktransferline.class.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/product/stock/stocktransfer/stocktransfer_card.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredGlobalVariable'],
-        'htdocs/product/stock/stocktransfer/stocktransfer_contact.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/product/stock/stocktransfer/stocktransfer_list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
+        'htdocs/product/stock/productlot_card.php' => ['PhanUndeclaredProperty'],
+        'htdocs/product/stock/stats/commande_fournisseur.php' => ['PhanUndeclaredProperty'],
+        'htdocs/product/stock/stats/expedition.php' => ['PhanUndeclaredProperty'],
+        'htdocs/product/stock/stats/mo.php' => ['PhanUndeclaredProperty'],
+        'htdocs/product/stock/stats/reception.php' => ['PhanUndeclaredProperty'],
+        'htdocs/product/stock/stocktransfer/class/stocktransferline.class.php' => ['PhanUndeclaredProperty'],
+        'htdocs/product/stock/stocktransfer/stocktransfer_card.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/product/stock/tpl/stockcorrection.tpl.php' => ['PhanUndeclaredProperty'],
         'htdocs/product/stock/tpl/stocktransfer.tpl.php' => ['PhanUndeclaredProperty'],
         'htdocs/projet/activity/perday.php' => ['PhanTypeMismatchArgument'],
