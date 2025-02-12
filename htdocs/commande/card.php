@@ -2793,9 +2793,15 @@ if ($action == 'create' && $usercancreate) {
 
 		// Subtotal line form
 		if ($action == 'add_title_line') {
-			$formconfirm = $object->getSubtotalForm($form, $langs, 'title');
+			$langs->load('subtotals');
+			$type = 'title';
+			$depth_array = $object->getPossibleLevels($langs);
+			require dol_buildpath('/core/tpl/subtotal_create.tpl.php');
 		} elseif ($action == 'add_subtotal_line') {
-			$formconfirm = $object->getSubtotalForm($form, $langs, 'subtotal');
+			$langs->load('subtotals');
+			$type = 'subtotal';
+			$titles = $object->getPossibleTitles();
+			require dol_buildpath('/core/tpl/subtotal_create.tpl.php');
 		}
 
 		// Call Hook formConfirm

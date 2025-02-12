@@ -26,12 +26,7 @@ if (!defined('SUBTOTALS_SPECIAL_CODE')) {
  *
  * Trait CommonSubtotal
  *
- * add subtotals lines
- *
- * @property string[] $errors
- * @property string $element
- * @property array<Object> $lines
- *
+ * Add subtotals lines
  */
 trait CommonSubtotal
 {
@@ -591,29 +586,6 @@ trait CommonSubtotal
 			}
 		}
 		return price($final_amount);
-	}
-
-	/**
-	 * Returns a form array to add a subtotal or title line
-	 *
-	 * @param Form $form		Form class to use in template.
-	 * @param Translate $langs	Translation.
-	 * @param string $type 		Type to show form to add a 'title' or 'subtotal' line.
-	 * @return string $formconfirm
-	 */
-	public function getSubtotalForm($form, $langs, $type)
-	{
-		$langs->load('subtotals');
-
-		if ($type == 'subtotal') {
-			$titles = $this->getPossibleTitles();
-		}
-
-		$depth_array = $this->getPossibleLevels($langs);
-
-		$tpl = dol_buildpath('/core/tpl/subtotal_create.tpl.php');
-
-		return require $tpl;
 	}
 
 	/**

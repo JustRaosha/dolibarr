@@ -62,12 +62,12 @@ if ($type == 'title') {
 
 $page = $_SERVER["PHP_SELF"];
 
-if ($this->element == 'facture') {
-	$page .= '?facid='.$this->id;
-} elseif (in_array($this->element, array('propal', 'commande'))) {
-	$page .= '?id='.$this->id;
+if ($object->element == 'facture') {
+	$page .= '?facid='.$object->id;
+} elseif (in_array($object->element, array('propal', 'commande'))) {
+	$page .= '?id='.$object->id;
 }
 
 $form_title = $type == 'title' ? $langs->trans('AddTitleLine') : $langs->trans('AddSubtotalLine');
 
-return $form->formconfirm($page, $form_title, '', 'confirm_add'.$type.'line', $formquestion, 'yes', 1);
+print $form->formconfirm($page, $form_title, '', 'confirm_add'.$type.'line', $formquestion, 'yes', 1);
