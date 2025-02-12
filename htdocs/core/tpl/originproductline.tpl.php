@@ -20,6 +20,7 @@
 /**
  * @var CommonObject $this
  * @var Conf $conf
+ * @var CommonObjectLine $line
  */
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
@@ -31,12 +32,16 @@ if (empty($conf) || !is_object($conf)) {
 
 <!-- BEGIN PHP TEMPLATE originproductline.tpl.php -->
 <?php
+'
+@phan-var-force CommonObject $this
+@phan-var-force PropaleLigne|ContratLigne|CommonObjectLine|CommonInvoiceLine|CommonOrderLine|ExpeditionLigne|DeliveryLine|FactureFournisseurLigneRec|SupplierInvoiceLine|SupplierProposalLine $line
+';
+
 // Handle subtotals line edit
 if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
 	return require DOL_DOCUMENT_ROOT.'/core/tpl/originsubtotalline.tpl.php';
 }
 
-'@phan-var-force CommonObject $this';
 print '<tr data-id="'.$this->tpl['id'].'" class="oddeven'.(empty($this->tpl['strike']) ? '' : ' strikefordisabled').'">';
 print '<td class="linecolref">'.$this->tpl['label'].'</td>';
 print '<td class="linecoldescription">'.$this->tpl['description'].'</td>';

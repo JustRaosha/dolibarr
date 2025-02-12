@@ -730,7 +730,7 @@ class pdf_cyan extends ModelePDFPropales
 					}
 
 					// Discount on line
-					if ($this->getColumnStatus('discount' && $object->lines[$i]->special_code != SUBTOTALS_SPECIAL_CODE) && $object->lines[$i]->remise_percent) {
+					if ($this->getColumnStatus('discount') && $object->lines[$i]->special_code != SUBTOTALS_SPECIAL_CODE && $object->lines[$i]->remise_percent) {
 						$remise_percent = pdf_getlineremisepercent($object, $i, $outputlangs, $hidedetails);
 						$this->printStdColumnContent($pdf, $curY, 'discount', $remise_percent);
 					}

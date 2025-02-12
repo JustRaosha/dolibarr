@@ -6132,22 +6132,23 @@ if ($action == 'create') {
 			if ($object->status == Facture::STATUS_DRAFT && isModEnabled('subtotals') && getDolGlobalString('SUBTOTAL_TITLE_'.strtoupper($object->element))) {
 				$langs->load("subtotals");
 
-				// Array of the subbuttons
-				$url_button = array(
-					array(
-						'lang' => 'subtotals',
-						'label' => $langs->trans('AddTitleLine'),
-						'perm' => true,
-						'enabled' => (isModEnabled('order') && $object->status == Facture::STATUS_DRAFT),
-						'urlraw' => $_SERVER["PHP_SELF"].'?facid='.$object->id.'&action=add_title_line&token='.newToken()
-					),
-					array(
-						'lang' => 'subtotals',
-						'label' => $langs->trans('AddSubtotalLine'),
-						'perm' => true,
-						'enabled' => (isModEnabled('order') && $object->status == Facture::STATUS_DRAFT),
-						'urlraw' => $_SERVER["PHP_SELF"].'?facid='.$object->id.'&action=add_subtotal_line&token='.newToken()
-					));
+				$url_button = array();
+
+				$url_button[] = array(
+					'lang' => 'subtotals',
+					'enabled' => (isModEnabled('invoice') && $object->status == Facture::STATUS_DRAFT),
+					'perm' => $usercancreate,
+					'label' => $langs->trans('AddTitleLine'),
+					'url' => '/compta/facture/card.php?facid='.$object->id.'&action=add_title_line&token='.newToken()
+				);
+
+				$url_button[] = array(
+					'lang' => 'subtotals',
+					'enabled' => (isModEnabled('invoice') && $object->status == Facture::STATUS_DRAFT),
+					'perm' => $usercancreate,
+					'label' => $langs->trans('AddSubtotalLine'),
+					'url' => '/compta/facture/card.php?facid='.$object->id.'&action=add_subtotal_line&token='.newToken()
+				);
 				print dolGetButtonAction('', $langs->trans('Subtotal'), 'default', $url_button, '', true);
 			}
 

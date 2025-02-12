@@ -20,6 +20,7 @@
 /**
  * @var CommonObject $this
  * @var Conf $conf
+ * @var CommonObjectLine $line
  */
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
@@ -30,7 +31,12 @@ if (empty($conf) || !is_object($conf)) {
 
 <!-- BEGIN PHP TEMPLATE originproductline.tpl.php -->
 <?php
-'@phan-var-force CommonObject $this';
+
+'
+@phan-var-force CommonObject $this
+@phan-var-force PropaleLigne|ContratLigne|CommonObjectLine|CommonInvoiceLine|CommonOrderLine|ExpeditionLigne|DeliveryLine|FactureFournisseurLigneRec|SupplierInvoiceLine|SupplierProposalLine $line
+';
+
 print '<tr data-id="'.$this->tpl['id'].'" class="'.(empty($this->tpl['strike']) ? '' : ' strikefordisabled').'" style="background:#'.$this->getSubtotalColors($line->qty).'">';
 print '<td class="linecolref">'.$this->tpl['description'].'</td>';
 print '<td class="linecoldescription"></td>';

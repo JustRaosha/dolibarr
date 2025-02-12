@@ -453,6 +453,8 @@ if (empty($reshook)) {
 								$label = (!empty($lines[$i]->label) ? $lines[$i]->label : '');
 								$desc = (!empty($lines[$i]->desc) ? $lines[$i]->desc : '');
 								$product_type = (!empty($lines[$i]->product_type) ? $lines[$i]->product_type : 0);
+								$pu_ht_devise = (!empty($lines[$i]->pu_ht_devise) ? $lines[$i]->pu_ht_devise : 0);
+								$noupdateafterinsertline = (!empty($lines[$i]->noupdateafterinsertline) ? $lines[$i]->noupdateafterinsertline : 0);
 
 								// Dates
 								// TODO mutualiser
@@ -513,9 +515,9 @@ if (empty($reshook)) {
 									$lines[$i]->fk_unit,
 									$object->origin,
 									$lines[$i]->rowid,
-									$lines[$i]->pu_ht_devise ?? 0,
+									$pu_ht_devise,
 									$lines[$i]->ref_ext,
-									$lines[$i]->noupdateafterinsertline ?? 0,
+									$noupdateafterinsertline,
 									$lines[$i]->subtotal_options
 								);
 
@@ -3285,22 +3287,23 @@ if ($action == 'create' && $usercancreate) {
 				if ($object->status == Commande::STATUS_DRAFT && isModEnabled('subtotals') && getDolGlobalString('SUBTOTAL_TITLE_'.strtoupper($object->element))) {
 					$langs->load('subtotals');
 
-					// Array of the subbuttons
-					$url_button = array(
-						array(
-							'lang' => 'subtotals',
-							'label' => $langs->trans('AddTitleLine'),
-							'perm' => true,
-							'enabled' => (isModEnabled('order') && $object->status == Commande::STATUS_DRAFT),
-							'urlraw' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=add_title_line&token='.newToken()
-						),
-						array(
-							'lang' => 'subtotals',
-							'label' => $langs->trans('AddSubtotalLine'),
-							'perm' => true,
-							'enabled' => (isModEnabled('order') && $object->status == Commande::STATUS_DRAFT),
-							'urlraw' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=add_subtotal_line&token='.newToken()
-						),);
+					$url_button = array();
+
+					$url_button[] = array(
+						'lang' => 'subtotals',
+						'enabled' => (isModEnabled('order') && $object->status == Commande::STATUS_DRAFT),
+						'perm' => $usercancreate,
+						'label' => $langs->trans('AddTitleLine'),
+						'url' => '/commande/card.php?id='.$object->id.'&action=add_title_line&token='.newToken()
+					);
+
+					$url_button[] = array(
+						'lang' => 'subtotals',
+						'enabled' => (isModEnabled('order') && $object->status == Commande::STATUS_DRAFT),
+						'perm' => $usercancreate,
+						'label' => $langs->trans('AddSubtotalLine'),
+						'url' => '/commande/card.php?id='.$object->id.'&action=add_subtotal_line&token='.newToken()
+					);
 					print dolGetButtonAction('', $langs->trans('Subtotal'), 'default', $url_button, '', true);
 				}
 
