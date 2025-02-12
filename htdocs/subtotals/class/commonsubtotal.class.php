@@ -31,9 +31,6 @@ if (!defined('SUBTOTALS_SPECIAL_CODE')) {
  * @property string[] $errors
  * @property string $element
  * @property array<Object> $lines
- * @mixin Propal
- * @mixin Commande
- * @mixin Facture
  *
  */
 trait CommonSubtotal
@@ -149,13 +146,13 @@ trait CommonSubtotal
 				'', 					// Origin
 				0, 						// Origin_id
 				0, 						// FK parent line
-				null, 					// FK fournprice
+				0, 						// FK fournprice
 				0, 						// PA ht
 				'', 					// Label
 				array(), 				// Array options
 				100, 					// Situation percent
 				0, 						// FK prev id
-				null, 					// FK unit
+				0, 						// FK unit
 				0, 						// PU ht devise
 				'', 					// Ref ext
 				0, 						// Noupdateafterinsertline
@@ -184,7 +181,7 @@ trait CommonSubtotal
 				'', 					// Date start
 				'', 					// Date end
 				array(), 				// Array options
-				null, 					// FK unit
+				0, 						// FK unit
 				'', 					// Origin
 				0, 						// Origin id
 				0, 						// PU ht devise
@@ -212,11 +209,11 @@ trait CommonSubtotal
 				$rang,					// Rang
 				SUBTOTALS_SPECIAL_CODE,	// Special code
 				0, 						// FK parent line
-				null, 					// FK fournprice
+				0, 						// FK fournprice
 				0, 						// PA ht
 				'', 					// Label
 				array(), 				// Array options
-				null, 					// FK unit
+				0, 						// FK unit
 				'', 					// Origin
 				0, 						// Origin id
 				0, 						// PU ht devise
@@ -362,13 +359,13 @@ trait CommonSubtotal
 				self::$PRODUCT_TYPE,	// Type
 				0,						// FK parent line
 				0,						// Skip update total
-				null,					// FK fournprice
+				0,						// FK fournprice
 				0,						// PA ht
 				'',						// Label
 				SUBTOTALS_SPECIAL_CODE,	// Special code
 				array(), 				// Array options
 				100, 					// Situation percent
-				null,					// FK unit
+				0,						// FK unit
 				0, 						// PU ht devise
 				0, 						// Notrigger
 				'', 					// Ref ext
@@ -387,7 +384,7 @@ trait CommonSubtotal
 				$desc,					// Description
 				'',						// Price base type
 				0,						// Info bits
-				SUBTOTALS_SPECIAL_CODE, 	// Special code
+				SUBTOTALS_SPECIAL_CODE, // Special code
 				0, 						// FK parent line
 				0, 						// Skip update total
 				0, 						// FK fournprice
@@ -397,7 +394,7 @@ trait CommonSubtotal
 				'', 					// Date start
 				'', 					// Date end
 				array(), 				// Array options
-				null, 					// FK unit
+				0, 						// FK unit
 				0, 						// PU ht devise
 				0, 						// Notrigger
 				0,						// Rang
@@ -423,9 +420,9 @@ trait CommonSubtotal
 				0, 						// FK fournprice
 				0, 						// PA ht
 				'',						// Label
-				SUBTOTALS_SPECIAL_CODE, 	// Special code
+				SUBTOTALS_SPECIAL_CODE, // Special code
 				array(), 				// Array options
-				null, 					// FK unit
+				0, 						// FK unit
 				0, 						// PU ht devise
 				0, 						// Notrigger
 				'', 					// Ref ext
