@@ -2286,7 +2286,7 @@ if (empty($reshook)) {
 		if (isset($desc) && isset($depth)) {
 			$result = $object->addSubtotalLine($langs, $desc, $depth, $subtotal_options);
 		} else {
-			$this->errors[] = $langs->trans("CorrespondingTitleNotFound");
+			$object->errors[] = $langs->trans("CorrespondingTitleNotFound");
 		}
 
 		if (isset($result) && $result >= 0) {
