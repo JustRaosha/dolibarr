@@ -38,8 +38,6 @@ require_once DOL_DOCUMENT_ROOT.'/subtotals/class/commonsubtotal.class.php';
  */
 class modSubtotals extends DolibarrModules
 {
-	use CommonSubtotal;
-
 	/**
 	 *  Constructor. Define names, constants, directories, boxes, permissions
 	 *

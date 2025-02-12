@@ -57,6 +57,9 @@ trait CommonSubtotal
 	 * @param int						$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
 	 * @param array<string,int|float>	$options	Subtotal options for pdf view
 	 * @return int									ID of the added line if successful, 0 on warning, -1 on error
+	 *
+	 * @phan-suppress PhanUndeclaredMethod
+	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function addSubtotalLine($langs, $desc, $depth, $options)
 	{
@@ -234,6 +237,9 @@ trait CommonSubtotal
 	 * @param boolean	$correspondingstline	If true, also deletes the corresponding subtotal line
 	 * @param User		$user					performing the deletion (used for permissions in some modules)
 	 * @return int								ID of deleted line if successful, -1 on error
+	 *
+	 * @phan-suppress PhanUndeclaredMethod
+	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function deleteSubtotalLine($langs, $id, $correspondingstline = false, $user = null)
 	{
@@ -287,6 +293,9 @@ trait CommonSubtotal
 	 * @param int						$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
 	 * @param array<string,int|float>	$options	Subtotal options for pdf view
 	 * @return int									ID of the added line if successful, 0 on warning, -1 on error
+	 *
+	 * @phan-suppress PhanUndeclaredMethod
+	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function updateSubtotalLine($langs, $lineid, $desc, $depth, $options)
 	{
@@ -441,6 +450,9 @@ trait CommonSubtotal
 	 * @param string	$mode		Column to change (discount or vat).
 	 * @param int		$value		Value of the change.
 	 * @return int					Return integer < 0 if KO, 1 if OK
+	 *
+	 * @phan-suppress PhanUndeclaredMethod
+	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function updateSubtotalLineBlockLines($langs, $linerang, $mode, $value)
 	{
@@ -550,6 +562,8 @@ trait CommonSubtotal
 	 *
 	 * @param object	$line	Line that needs the subtotal amount.
 	 * @return string	$total_ht
+	 *
+	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function getSubtotalLineAmount($line)
 	{
@@ -572,6 +586,8 @@ trait CommonSubtotal
 	 *
 	 * @param object	$line	Line that needs the subtotal amount with multicurrency mod activated.
 	 * @return string	$total_ht
+	 *
+	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function getSubtotalLineMulticurrencyAmount($line)
 	{
@@ -603,6 +619,8 @@ trait CommonSubtotal
 	 * Retrieve current object possible titles to choose from
 	 *
 	 * @return array<string,string> The set of titles, empty if no title line set.
+	 *
+	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function getPossibleTitles()
 	{
@@ -623,6 +641,8 @@ trait CommonSubtotal
 	 *
 	 * @param Translate $langs 		Translations.
 	 * @return array<int,string>	The set of possible levels, empty if not defined correctly.
+	 *
+	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function getPossibleLevels($langs)
 	{

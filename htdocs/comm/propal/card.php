@@ -3378,7 +3378,7 @@ if ($action == 'create') {
 					$url_button[] = array(
 						'lang' => 'subtotals',
 						'enabled' => (isModEnabled('propal') && $object->status == Propal::STATUS_DRAFT),
-						'perm' => $usercancreate,
+						'perm' => (bool) $usercancreate,
 						'label' => $langs->trans('AddTitleLine'),
 						'url' => '/comm/propal/card.php?id='.$object->id.'&action=add_title_line&token='.newToken()
 					);
@@ -3386,7 +3386,7 @@ if ($action == 'create') {
 					$url_button[] = array(
 						'lang' => 'subtotals',
 						'enabled' => (isModEnabled('propal') && $object->status == Propal::STATUS_DRAFT),
-						'perm' => $usercancreate,
+						'perm' => (bool) $usercancreate,
 						'label' => $langs->trans('AddSubtotalLine'),
 						'url' => '/comm/propal/card.php?id='.$object->id.'&action=add_subtotal_line&token='.newToken()
 					);

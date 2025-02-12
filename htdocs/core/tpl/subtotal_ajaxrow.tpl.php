@@ -32,6 +32,7 @@
 /**
  * @var Conf $conf
  * @var CommonObject $object
+ * @var Translate $langs
  *
  * @var ?string $filepath
  * @var ?string $fk_element

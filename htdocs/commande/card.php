@@ -3298,7 +3298,7 @@ if ($action == 'create' && $usercancreate) {
 					$url_button[] = array(
 						'lang' => 'subtotals',
 						'enabled' => (isModEnabled('order') && $object->status == Commande::STATUS_DRAFT),
-						'perm' => $usercancreate,
+						'perm' => (bool) $usercancreate,
 						'label' => $langs->trans('AddTitleLine'),
 						'url' => '/commande/card.php?id='.$object->id.'&action=add_title_line&token='.newToken()
 					);
@@ -3306,7 +3306,7 @@ if ($action == 'create' && $usercancreate) {
 					$url_button[] = array(
 						'lang' => 'subtotals',
 						'enabled' => (isModEnabled('order') && $object->status == Commande::STATUS_DRAFT),
-						'perm' => $usercancreate,
+						'perm' => (bool) $usercancreate,
 						'label' => $langs->trans('AddSubtotalLine'),
 						'url' => '/commande/card.php?id='.$object->id.'&action=add_subtotal_line&token='.newToken()
 					);

@@ -6143,7 +6143,7 @@ if ($action == 'create') {
 				$url_button[] = array(
 					'lang' => 'subtotals',
 					'enabled' => (isModEnabled('invoice') && $object->status == Facture::STATUS_DRAFT),
-					'perm' => $usercancreate,
+					'perm' => (bool) $usercancreate,
 					'label' => $langs->trans('AddTitleLine'),
 					'url' => '/compta/facture/card.php?facid='.$object->id.'&action=add_title_line&token='.newToken()
 				);
@@ -6151,7 +6151,7 @@ if ($action == 'create') {
 				$url_button[] = array(
 					'lang' => 'subtotals',
 					'enabled' => (isModEnabled('invoice') && $object->status == Facture::STATUS_DRAFT),
-					'perm' => $usercancreate,
+					'perm' => (bool) $usercancreate,
 					'label' => $langs->trans('AddSubtotalLine'),
 					'url' => '/compta/facture/card.php?facid='.$object->id.'&action=add_subtotal_line&token='.newToken()
 				);
