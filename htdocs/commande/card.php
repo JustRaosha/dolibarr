@@ -453,8 +453,6 @@ if (empty($reshook)) {
 								$label = (!empty($lines[$i]->label) ? $lines[$i]->label : '');
 								$desc = (!empty($lines[$i]->desc) ? $lines[$i]->desc : '');
 								$product_type = (!empty($lines[$i]->product_type) ? $lines[$i]->product_type : 0);
-								$pu_ht_devise = (!empty($lines[$i]->pu_ht_devise) ? $lines[$i]->pu_ht_devise : 0);
-								$noupdateafterinsertline = (!empty($lines[$i]->noupdateafterinsertline) ? $lines[$i]->noupdateafterinsertline : 0);
 
 								// Dates
 								// TODO mutualiser

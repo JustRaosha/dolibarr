@@ -60,6 +60,8 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
+	 * @phpstan-ignore TooManyArguments
+	 * @phpstan-ignore InvalidArgument
 	 */
 	public function addSubtotalLine($langs, $desc, $depth, $options)
 	{
@@ -69,7 +71,7 @@ trait CommonSubtotal
 			}
 			return -1;
 		}
-		$current_module = $this->element ?? "";
+		$current_module = $this->element;
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
@@ -240,10 +242,12 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
+	 * @phpstan-ignore TooManyArguments
+	 * @phpstan-ignore InvalidArgument
 	 */
 	public function deleteSubtotalLine($langs, $id, $correspondingstline = false, $user = null)
 	{
-		$current_module = $this->element ?? "";
+		$current_module = $this->element;
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
@@ -296,10 +300,12 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
+	 * @phpstan-ignore TooManyArguments
+	 * @phpstan-ignore InvalidArgument
 	 */
 	public function updateSubtotalLine($langs, $lineid, $desc, $depth, $options)
 	{
-		$current_module = $this->element ?? "";
+		$current_module = $this->element;
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
@@ -453,10 +459,12 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
+	 * @phpstan-ignore TooManyArguments
+	 * @phpstan-ignore InvalidArgument
 	 */
 	public function updateSubtotalLineBlockLines($langs, $linerang, $mode, $value)
 	{
-		$current_module = $this->element ?? "";
+		$current_module = $this->element;
 		// Ensure the object is one of the supported types
 		$allowed_types = array('propal', 'commande', 'facture');
 		if (!in_array($current_module, $allowed_types)) {
@@ -647,8 +655,7 @@ trait CommonSubtotal
 	public function getPossibleLevels($langs)
 	{
 		$depth_array = array();
-		$element = $this->element ?? "";
-		$max_depth = getDolGlobalString('SUBTOTAL_'.strtoupper($element).'_MAX_DEPTH', 2);
+		$max_depth = getDolGlobalString('SUBTOTAL_'.strtoupper($this->element).'_MAX_DEPTH', 2);
 		for ($i = 0; $i < $max_depth; $i++) {
 			$depth_array[$i + 1] = $langs->trans("Level", $i + 1);
 		}

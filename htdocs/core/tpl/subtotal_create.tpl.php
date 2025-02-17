@@ -27,8 +27,9 @@
  * @var Translate $langs
  * @var User $user
  *
- * @var array $depth_array
- * @var array $titles
+ * @var array<int,string> $depth_array
+ * @var array<string,string> $titles
+ * @var string $type
  */
 
 '
