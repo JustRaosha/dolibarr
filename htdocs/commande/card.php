@@ -515,9 +515,9 @@ if (empty($reshook)) {
 									$lines[$i]->fk_unit,
 									$object->origin,
 									$lines[$i]->rowid,
-									$pu_ht_devise,
+									0,
 									$lines[$i]->ref_ext,
-									$noupdateafterinsertline,
+									0,
 									$lines[$i]->subtotal_options
 								);
 
