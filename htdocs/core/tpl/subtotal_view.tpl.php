@@ -35,6 +35,7 @@
  * @var 0|1 $senderissupplier
  * @var string $text
  * @var string $description
+ * @var int $i
  */
 
 '
@@ -94,7 +95,7 @@ if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 
 if ($line->qty > 0) { ?>
 		<?php $colspan = isModEnabled('multicurrency') && $this->multicurrency_code != $conf->currency ? $colspan+2 : $colspan+1 ?>
-	<td class="linecollabel"><?php echo str_repeat('&nbsp;', ($line->qty-1)*8);?>
+	<td class="linecollabel"><?php echo str_repeat('&nbsp;', (int) ($line->qty-1)*8);?>
 		<?php
 		echo $line->desc;
 		if ($line_options) {

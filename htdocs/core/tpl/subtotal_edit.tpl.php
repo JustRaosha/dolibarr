@@ -26,6 +26,8 @@
  * @var HookManager $hookmanager
  * @var Translate $langs
  * @var User $user
+ * @var Conf $conf
+ * @var int $i
  */
 
 '
