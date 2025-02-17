@@ -60,8 +60,8 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
-	 * @phpstan-ignore TooManyArguments
-	 * @phpstan-ignore InvalidArgument
+	 * @phpstan-suppress TooManyArguments
+	 * @phpstan-suppress InvalidArgument
 	 */
 	public function addSubtotalLine($langs, $desc, $depth, $options)
 	{
@@ -242,8 +242,8 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
-	 * @phpstan-ignore TooManyArguments
-	 * @phpstan-ignore InvalidArgument
+	 * @phpstan-suppress TooManyArguments
+	 * @phpstan-suppress InvalidArgument
 	 */
 	public function deleteSubtotalLine($langs, $id, $correspondingstline = false, $user = null)
 	{
@@ -300,8 +300,8 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
-	 * @phpstan-ignore TooManyArguments
-	 * @phpstan-ignore InvalidArgument
+	 * @phpstan-suppress TooManyArguments
+	 * @phpstan-suppress InvalidArgument
 	 */
 	public function updateSubtotalLine($langs, $lineid, $desc, $depth, $options)
 	{
@@ -459,8 +459,8 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
-	 * @phpstan-ignore TooManyArguments
-	 * @phpstan-ignore InvalidArgument
+	 * @phpstan-suppress TooManyArguments
+	 * @phpstan-suppress InvalidArgument
 	 */
 	public function updateSubtotalLineBlockLines($langs, $linerang, $mode, $value)
 	{
