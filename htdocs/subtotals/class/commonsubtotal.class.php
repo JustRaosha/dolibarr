@@ -60,9 +60,8 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
-	 * @phpstan-ignore
 	 */
-	public function addSubtotalLine($langs, $desc, $depth, $options)
+	public function addSubtotalLine($langs, $desc, $depth, $options) // @phpstan-ignore-line
 	{
 		if (empty($desc)) {
 			if (isset($this->errors)) {
@@ -241,9 +240,8 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
-	 * @phpstan-ignore
 	 */
-	public function deleteSubtotalLine($langs, $id, $correspondingstline = false, $user = null)
+	public function deleteSubtotalLine($langs, $id, $correspondingstline = false, $user = null) // @phpstan-ignore-line
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
@@ -298,9 +296,8 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
-	 * @phpstan-ignore
 	 */
-	public function updateSubtotalLine($langs, $lineid, $desc, $depth, $options)
+	public function updateSubtotalLine($langs, $lineid, $desc, $depth, $options) // @phpstan-ignore-line
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
@@ -456,9 +453,8 @@ trait CommonSubtotal
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
-	 * @phpstan-ignore
 	 */
-	public function updateSubtotalLineBlockLines($langs, $linerang, $mode, $value)
+	public function updateSubtotalLineBlockLines($langs, $linerang, $mode, $value) // @phpstan-ignore-line
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
