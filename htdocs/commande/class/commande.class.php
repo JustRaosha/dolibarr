@@ -122,7 +122,7 @@ class Commande extends CommonOrder
 
 	/**
 	 * Status of the order
-	 * @var int
+	 * @var int|null
 	 */
 	public $status;
 

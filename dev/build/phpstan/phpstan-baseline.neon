@@ -5125,12 +5125,6 @@ parameters:
 			path: ../../../htdocs/compta/bank/various_payment/document.php
 
 		-
-			message: '#^Variable \$morehtmlright might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/compta/bank/various_payment/document.php
-
-		-
 			message: '#^Right side of && is always false\.$#'
 			identifier: booleanAnd.rightAlwaysFalse
 			count: 1
@@ -10715,12 +10709,6 @@ parameters:
 			identifier: missingType.parameter
 			count: 1
 			path: ../../../htdocs/core/lib/ajax.lib.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 2
-			path: ../../../htdocs/core/lib/company.lib.php
 
 		-
 			message: '#^Left side of && is always true\.$#'
@@ -25729,12 +25717,6 @@ parameters:
 			path: ../../../htdocs/societe/ajax/ajaxcompanies.php
 
 		-
-			message: '#^Left side of && is always true\.$#'
-			identifier: booleanAnd.leftAlwaysTrue
-			count: 1
-			path: ../../../htdocs/societe/ajax/company.php
-
-		-
 			message: '#^Variable \$formfile might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -25817,12 +25799,6 @@ parameters:
 			identifier: ternary.alwaysTrue
 			count: 3
 			path: ../../../htdocs/societe/card.php
-
-		-
-			message: '#^Variable \$messagetoshow might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/societe/checkvat/checkVatPopup.php
 
 		-
 			message: '#^Property Contact\:\:\$no_email \(int\) in isset\(\) is not nullable\.$#'
@@ -26125,43 +26101,13 @@ parameters:
 			path: ../../../htdocs/societe/consumption.php
 
 		-
-			message: '#^Variable \$dateprint might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/societe/consumption.php
-
-		-
-			message: '#^Variable \$doc_number might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/societe/consumption.php
-
-		-
-			message: '#^Variable \$documentstatic might not be defined\.$#'
-			identifier: variable.undefined
-			count: 14
-			path: ../../../htdocs/societe/consumption.php
-
-		-
 			message: '#^Variable \$newlang in empty\(\) always exists and is always falsy\.$#'
 			identifier: empty.variable
 			count: 1
 			path: ../../../htdocs/societe/consumption.php
 
 		-
-			message: '#^Variable \$num might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/societe/consumption.php
-
-		-
 			message: '#^Variable \$sql might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/societe/consumption.php
-
-		-
-			message: '#^Variable \$tables_from might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
 			path: ../../../htdocs/societe/consumption.php
@@ -26177,12 +26123,6 @@ parameters:
 			identifier: variable.undefined
 			count: 1
 			path: ../../../htdocs/societe/document.php
-
-		-
-			message: '#^Variable \$newcardbutton might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/societe/list.php
 
 		-
 			message: '#^Variable \$contextpage in empty\(\) always exists and is not falsy\.$#'
@@ -26235,7 +26175,7 @@ parameters:
 		-
 			message: '#^Variable \$rib might not be defined\.$#'
 			identifier: variable.undefined
-			count: 3
+			count: 2
 			path: ../../../htdocs/societe/paymentmodes.php
 
 		-
@@ -26315,12 +26255,6 @@ parameters:
 			identifier: variable.undefined
 			count: 4
 			path: ../../../htdocs/societe/website.php
-
-		-
-			message: '#^Parameter \#1 \$params of static method Stripe\\Terminal\\Location\:\:all\(\) expects array\|null, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/stripe/admin/stripe.php
 
 		-
 			message: '#^Call to function is_object\(\) with Facture will always evaluate to true\.$#'
@@ -26509,24 +26443,6 @@ parameters:
 			path: ../../../htdocs/supplier_proposal/class/supplier_proposal.class.php
 
 		-
-			message: '#^Parameter \#3 \$remise_percent_ligne of function calcul_price_total expects float, string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../../htdocs/supplier_proposal/class/supplier_proposal.class.php
-
-		-
-			message: '#^Parameter \#5 \$uselocaltax1_rate of function calcul_price_total expects float, string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../../htdocs/supplier_proposal/class/supplier_proposal.class.php
-
-		-
-			message: '#^Parameter \#6 \$uselocaltax2_rate of function calcul_price_total expects float, string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../../htdocs/supplier_proposal/class/supplier_proposal.class.php
-
-		-
 			message: '#^Property SupplierProposal\:\:\$statut \(int\) in isset\(\) is not nullable\.$#'
 			identifier: isset.property
 			count: 1
@@ -26665,12 +26581,6 @@ parameters:
 			path: ../../../htdocs/takepos/admin/terminal.php
 
 		-
-			message: '#^Parameter \#1 \$params of static method Stripe\\Terminal\\Reader\:\:all\(\) expects array\|null, string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../../htdocs/takepos/admin/terminal.php
-
-		-
 			message: '#^Right side of && is always true\.$#'
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 5
@@ -26725,18 +26635,6 @@ parameters:
 			path: ../../../htdocs/takepos/index.php
 
 		-
-			message: '#^Variable \$CUSTOMER_DISPLAY_line1 might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
-			message: '#^Variable \$CUSTOMER_DISPLAY_line2 might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
 			message: '#^Variable \$batch might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -26749,27 +26647,9 @@ parameters:
 			path: ../../../htdocs/takepos/invoice.php
 
 		-
-			message: '#^Variable \$creditnote might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
-			message: '#^Variable \$fk_source might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
 			message: '#^Variable \$footer_ticket might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
-			message: '#^Variable \$footerorder might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
 			path: ../../../htdocs/takepos/invoice.php
 
 		-
@@ -26785,39 +26665,9 @@ parameters:
 			path: ../../../htdocs/takepos/invoice.php
 
 		-
-			message: '#^Variable \$headerorder might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
-			message: '#^Variable \$idoflineadded might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
-			message: '#^Variable \$printer might not be defined\.$#'
-			identifier: variable.undefined
-			count: 6
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
-			message: '#^Variable \$sectionwithinvoicelink might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
 			message: '#^Variable \$ticket_total might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
-			path: ../../../htdocs/takepos/invoice.php
-
-		-
-			message: '#^Variable \$tva_npr might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
 			path: ../../../htdocs/takepos/invoice.php
 
 		-
@@ -26845,12 +26695,6 @@ parameters:
 			path: ../../../htdocs/takepos/pay.php
 
 		-
-			message: '#^Variable \$stripeacc might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/takepos/pay.php
-
-		-
 			message: '#^Variable \$user might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -26872,18 +26716,6 @@ parameters:
 			message: '#^Right side of && is always true\.$#'
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 1
-			path: ../../../htdocs/takepos/split.php
-
-		-
-			message: '#^Variable \$invoice might not be defined\.$#'
-			identifier: variable.undefined
-			count: 4
-			path: ../../../htdocs/takepos/split.php
-
-		-
-			message: '#^Variable \$placeid might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
 			path: ../../../htdocs/takepos/split.php
 
 		-

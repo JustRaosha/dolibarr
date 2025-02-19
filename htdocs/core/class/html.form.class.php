@@ -6926,7 +6926,7 @@ class Form
 	 *  The name of this function should be selectVat. We keep bad name for compatibility purpose.
 	 *
 	 *  @param	string			$htmlname           Name of HTML select field
-	 *  @param  float|string	$selectedrate       Force preselected vat rate. Can be '8.5' or '8.5 (NOO)' for example. Use '' for no forcing.
+	 *  @param  float|string	$selectedrate       Force preselected vat rate. Can be '8.5' or '8.5 (CODE)' for example. Use -1 or '' for no forcing (auto mode).
 	 *  @param  ?Societe		$societe_vendeuse   Thirdparty seller
 	 *  @param  ?Societe		$societe_acheteuse  Thirdparty buyer
 	 *  @param  int				$idprod             Id product. O if unknown of NA.
@@ -7055,7 +7055,7 @@ class Form
 		$num = count($arrayofvatrates);
 
 		if ($num > 0) {
-			// Definition du taux a pre-selectionner (si defaulttx non force et donc vaut -1 ou '')
+			// Define vat rate to pre-select (if defaulttx not forced and so is -1 or '')
 			if (($defaulttx < 0 || dol_strlen($defaulttx) == 0) && is_object($societe_vendeuse)) {
 				$tmpthirdparty = new Societe($this->db);
 
@@ -7090,12 +7090,13 @@ class Form
 				}
 			}
 
-			// Disabled if seller is not subject to VAT
+			// Disabled is true if the seller is not subject to VAT
 			$disabled = false;
 			$title = '';
-			if (is_object($societe_vendeuse) && $societe_vendeuse->id == $mysoc->id && $societe_vendeuse->tva_assuj == "0") {
-				// Override/enable VAT for expense report regardless of global setting - needed if expense report used for business expenses instead
-				// of using supplier invoices (this is a very bad idea !)
+			if (is_object($societe_vendeuse) && $societe_vendeuse->id == $mysoc->id && empty($societe_vendeuse->tva_assuj)) {
+				// When we are seller and we do not use VAT, we want to force to disable VAT selection, except if EXPENSEREPORT_OVERRIDE_VAT is set
+				// EXPENSEREPORT_OVERRIDE_VAT is a strange option that allow to override/enable VAT regardless of sellet vat option - needed for expense report if
+				// expense report used for business expenses instead of using supplier invoices (but this is a very bad idea !)
 				if (!getDolGlobalString('EXPENSEREPORT_OVERRIDE_VAT')) {
 					$title = ' title="' . dol_escape_htmltag($langs->trans('VATIsNotUsed')) . '"';
 					$disabled = true;
