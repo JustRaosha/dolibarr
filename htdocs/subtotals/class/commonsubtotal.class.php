@@ -183,7 +183,7 @@ trait CommonSubtotal
 
 		foreach ($this->lines as $line) {
 			if ($line->id == $result) {
-				$line->extraparams = $options;
+				$line->extraparams["subtotal"] = $options;
 				$line->setExtraParameters();
 			}
 		}
@@ -306,7 +306,7 @@ trait CommonSubtotal
 					$oldDepth = $line->qty;
 				}
 				if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
-					$this->updateSubtotalLine($langs, $line->id, $desc, -$depth, $line->extraparams);
+					$this->updateSubtotalLine($langs, $line->id, $desc, -$depth, !empty($line->extraparams["subtotal"]) ? $line->extraparams["subtotal"] : array());
 					break;
 				}
 			}
@@ -381,7 +381,7 @@ trait CommonSubtotal
 
 		foreach ($this->lines as $line) {
 			if ($line->id == $lineid) {
-				$line->extraparams = $options;
+				$line->extraparams["subtotal"] = $options;
 				$line->setExtraParameters();
 			}
 		}
