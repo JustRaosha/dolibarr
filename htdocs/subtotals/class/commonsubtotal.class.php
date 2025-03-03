@@ -52,10 +52,10 @@ trait CommonSubtotal
 	 * Adds a subtotals line to a document.
 	 * This function inserts a subtotal line based on the given parameters.
 	 *
-	 * @param Translate					$langs  	Translation.
-	 * @param string					$desc		Description of the line.
-	 * @param int						$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
-	 * @param array<string,int|float>	$options	Subtotal options for pdf view
+	 * @param Translate						$langs  	Translation.
+	 * @param string						$desc		Description of the line.
+	 * @param int							$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
+	 * @param array<string,string>|string	$options	Subtotal options for pdf view
 	 * @return int									ID of the added line if successful, 0 on warning, -1 on error
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
@@ -254,11 +254,11 @@ trait CommonSubtotal
 	 * This function updates a subtotals line based on its id and the given parameters.
 	 * Updating a title line updates the corresponding subtotal line except options.
 	 *
-	 * @param Translate					$langs  	Translation.
-	 * @param int						$lineid  	ID of the line to update.
-	 * @param string					$desc		Description of the line.
-	 * @param int						$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
-	 * @param array<string,int|float>	$options	Subtotal options for pdf view
+	 * @param Translate						$langs  	Translation.
+	 * @param int							$lineid  	ID of the line to update.
+	 * @param string						$desc		Description of the line.
+	 * @param int							$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
+	 * @param array<string,string>|string	$options	Subtotal options for pdf view
 	 * @return int									ID of the added line if successful, 0 on warning, -1 on error
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
