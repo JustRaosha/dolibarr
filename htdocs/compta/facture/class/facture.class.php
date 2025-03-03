@@ -911,8 +911,7 @@ class Facture extends CommonInvoice
 							$newinvoiceline->fk_unit,
 							$newinvoiceline->multicurrency_subprice,
 							$newinvoiceline->ref_ext,
-							1,
-							$newinvoiceline->subtotal_options
+							1
 						);
 
 						if ($result < 0) {
@@ -2345,8 +2344,7 @@ class Facture extends CommonInvoice
 		$sql .= ' l.info_bits, l.total_ht, l.total_tva, l.total_localtax1, l.total_localtax2, l.total_ttc, l.fk_code_ventilation, l.fk_product_fournisseur_price as fk_fournprice, l.buy_price_ht as pa_ht,';
 		$sql .= ' l.fk_unit,';
 		$sql .= ' l.fk_multicurrency, l.multicurrency_code, l.multicurrency_subprice, l.multicurrency_total_ht, l.multicurrency_total_tva, l.multicurrency_total_ttc,';
-		$sql .= ' p.ref as product_ref, p.fk_product_type as fk_product_type, p.label as product_label, p.description as product_desc, p.barcode as product_barcode,';
-		$sql .= ' l.subtotal_options';
+		$sql .= ' p.ref as product_ref, p.fk_product_type as fk_product_type, p.label as product_label, p.description as product_desc, p.barcode as product_barcode';
 		$sql .= ' FROM '.MAIN_DB_PREFIX.'facturedet as l';
 		$sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'product as p ON l.fk_product = p.rowid';
 		$sql .= ' WHERE l.fk_facture = '.((int) $this->id);
@@ -2422,8 +2420,6 @@ class Facture extends CommonInvoice
 				$line->multicurrency_total_ht 	= $objp->multicurrency_total_ht;
 				$line->multicurrency_total_tva 	= $objp->multicurrency_total_tva;
 				$line->multicurrency_total_ttc 	= $objp->multicurrency_total_ttc;
-
-				$line->subtotal_options = unserialize($objp->subtotal_options);
 
 				$line->fetch_optionals();
 
@@ -3863,7 +3859,6 @@ class Facture extends CommonInvoice
 	 *  @param	float		$pu_ht_devise		Unit price in foreign currency
 	 *  @param	string		$ref_ext		    External reference of the line
 	 *  @param	int			$noupdateafterinsertline	No update after insert of line
-	 *  @param	array<string,int|float>	$subtotal_options	Subtotal options for pdf view
 	 *  @return	int             				Return integer <0 if KO, Id of line if OK
 	 */
 	public function addline(
@@ -3897,8 +3892,7 @@ class Facture extends CommonInvoice
 		$fk_unit = null,
 		$pu_ht_devise = 0,
 		$ref_ext = '',
-		$noupdateafterinsertline = 0,
-		$subtotal_options = []
+		$noupdateafterinsertline = 0
 	) {
 		// Deprecation warning
 		if ($label) {
@@ -4098,7 +4092,6 @@ class Facture extends CommonInvoice
 			$this->line->situation_percent = $situation_percent;
 			$this->line->fk_prev_id = $fk_prev_id;
 			$this->line->fk_unit = $fk_unit;
-			$this->line->subtotal_options = $subtotal_options;
 
 			// infos margin
 			$this->line->fk_fournprice = $fk_fournprice;
@@ -4189,10 +4182,9 @@ class Facture extends CommonInvoice
 	 * 	@param	int<0,1>	$notrigger			disable line update trigger
 	 *  @param	string		$ref_ext		    External reference of the line
 	 *  @param	integer		$rang		    	rank of line
-	 *  @param	array<string,int|float>	$subtotal_options	Subtotal options for pdf view
 	 *  @return	int								Return integer < 0 if KO, > 0 if OK
 	 */
-	public function updateline($rowid, $desc, $pu, $qty, $remise_percent, $date_start, $date_end, $txtva, $txlocaltax1 = 0, $txlocaltax2 = 0, $price_base_type = 'HT', $info_bits = 0, $type = self::TYPE_STANDARD, $fk_parent_line = 0, $skip_update_total = 0, $fk_fournprice = null, $pa_ht = 0, $label = '', $special_code = 0, $array_options = array(), $situation_percent = 100, $fk_unit = null, $pu_ht_devise = 0, $notrigger = 0, $ref_ext = '', $rang = 0, $subtotal_options = [])
+	public function updateline($rowid, $desc, $pu, $qty, $remise_percent, $date_start, $date_end, $txtva, $txlocaltax1 = 0, $txlocaltax2 = 0, $price_base_type = 'HT', $info_bits = 0, $type = self::TYPE_STANDARD, $fk_parent_line = 0, $skip_update_total = 0, $fk_fournprice = null, $pa_ht = 0, $label = '', $special_code = 0, $array_options = array(), $situation_percent = 100, $fk_unit = null, $pu_ht_devise = 0, $notrigger = 0, $ref_ext = '', $rang = 0)
 	{
 		global $user;
 
@@ -4376,8 +4368,6 @@ class Facture extends CommonInvoice
 
 			$this->line->fk_fournprice = $fk_fournprice;
 			$this->line->pa_ht = $pa_ht;
-
-			$this->line->subtotal_options = $subtotal_options;
 
 			// Multicurrency
 			$this->line->multicurrency_subprice		= ($this->type == self::TYPE_CREDIT_NOTE ? -abs((float) $pu_ht_devise) : (float) $pu_ht_devise); // For credit note, unit price always negative, always positive otherwise
@@ -5270,8 +5260,6 @@ class Facture extends CommonInvoice
 					$line->multicurrency_total_tva = 39.2;
 					$line->remise_percent = 0;
 				}
-
-				$line->subtotal_options = [];
 
 				$this->lines[$xnbp] = $line;
 

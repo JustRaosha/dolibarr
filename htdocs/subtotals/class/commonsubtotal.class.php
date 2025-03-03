@@ -153,8 +153,7 @@ trait CommonSubtotal
 				0, 						// FK unit @phpstan-ignore-line
 				0, 						// PU ht devise @phpstan-ignore-line
 				'', 					// Ref ext @phpstan-ignore-line
-				0, 						// Noupdateafterinsertline @phpstan-ignore-line
-				$options 				// Subtotal options @phpstan-ignore-line
+				0 						// Noupdateafterinsertline @phpstan-ignore-line
 			);
 		} elseif ($current_module == 'propal') {
 			$result = $this->addline( // @phpstan-ignore-line
@@ -184,8 +183,7 @@ trait CommonSubtotal
 				0, 						// Origin id @phpstan-ignore-line
 				0, 						// PU ht devise @phpstan-ignore-line
 				0, 						// FK remise except @phpstan-ignore-line
-				0, 						// Noupdateafterinsertline @phpstan-ignore-line
-				$options 				// Subtotal options @phpstan-ignore-line
+				0 						// Noupdateafterinsertline @phpstan-ignore-line
 			);
 		} elseif ($current_module == 'commande') {
 			$result = $this->addline( // @phpstan-ignore-line
@@ -216,8 +214,7 @@ trait CommonSubtotal
 				0, 						// Origin id @phpstan-ignore-line
 				0, 						// PU ht devise @phpstan-ignore-line
 				'', 					// Ref ext @phpstan-ignore-line
-				0, 						// Noupdateafterinsertline @phpstan-ignore-line
-				$options				// Subtotal options @phpstan-ignore-line
+				0 						// Noupdateafterinsertline @phpstan-ignore-line
 			);
 		}
 
@@ -373,8 +370,7 @@ trait CommonSubtotal
 				0, 						// PU ht devise @phpstan-ignore-line
 				0, 						// Notrigger @phpstan-ignore-line
 				'', 					// Ref ext @phpstan-ignore-line
-				0, 						// Rang @phpstan-ignore-line
-				$options 				// Subtotal_options @phpstan-ignore-line
+				0 						// Rang @phpstan-ignore-line
 			);
 		} elseif ($current_module== 'propal') {
 			$result = $this->updateline( // @phpstan-ignore-line
@@ -401,8 +397,7 @@ trait CommonSubtotal
 				0, 						// FK unit @phpstan-ignore-line
 				0, 						// PU ht devise @phpstan-ignore-line
 				0, 						// Notrigger @phpstan-ignore-line
-				0,						// Rang @phpstan-ignore-line
-				$options 				// Subtotal options @phpstan-ignore-line
+				0						// Rang @phpstan-ignore-line
 			);
 		} elseif ($current_module== 'commande') {
 			$result = $this->updateline( // @phpstan-ignore-line
@@ -430,8 +425,7 @@ trait CommonSubtotal
 				0, 						// PU ht devise @phpstan-ignore-line
 				0, 						// Notrigger @phpstan-ignore-line
 				'', 					// Ref ext @phpstan-ignore-line
-				0, 						// Rang @phpstan-ignore-line
-				$options 				// Subtotal options @phpstan-ignore-line
+				0 						// Rang @phpstan-ignore-line
 			);
 		}
 

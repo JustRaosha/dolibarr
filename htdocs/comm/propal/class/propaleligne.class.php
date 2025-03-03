@@ -349,11 +349,6 @@ class PropaleLigne extends CommonObjectLine
 	public $packaging;
 
 	/**
-	 * @var array<string,int|float> Serialized subtotal options
-	 */
-	public $subtotal_options = [];
-
-	/**
 	 * 	Class line Constructor
 	 *
 	 * 	@param	DoliDB	$db	Database handler
@@ -379,7 +374,7 @@ class PropaleLigne extends CommonObjectLine
 		$sql .= ' pd.fk_multicurrency, pd.multicurrency_code, pd.multicurrency_subprice, pd.multicurrency_total_ht, pd.multicurrency_total_tva, pd.multicurrency_total_ttc,';
 		$sql .= ' p.ref as product_ref, p.label as product_label, p.description as product_desc,';
 		$sql .= ' p.packaging,';
-		$sql .= ' pd.date_start, pd.date_end, pd.product_type, pd.subtotal_options';
+		$sql .= ' pd.date_start, pd.date_end, pd.product_type';
 		$sql .= ' FROM '.MAIN_DB_PREFIX.'propaldet as pd';
 		$sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'product as p ON pd.fk_product = p.rowid';
 		$sql .= ' WHERE pd.rowid = '.((int) $rowid);
@@ -440,8 +435,6 @@ class PropaleLigne extends CommonObjectLine
 				$this->multicurrency_total_ht 	= $objp->multicurrency_total_ht;
 				$this->multicurrency_total_tva 	= $objp->multicurrency_total_tva;
 				$this->multicurrency_total_ttc 	= $objp->multicurrency_total_ttc;
-
-				$this->subtotal_options 	= unserialize($objp->subtotal_options);
 
 				$this->fetch_optionals();
 
@@ -554,7 +547,7 @@ class PropaleLigne extends CommonObjectLine
 		$sql .= ' total_ht, total_tva, total_localtax1, total_localtax2, total_ttc, fk_product_fournisseur_price, buy_price_ht, special_code, rang,';
 		$sql .= ' fk_unit,';
 		$sql .= ' date_start, date_end';
-		$sql .= ', fk_multicurrency, multicurrency_code, multicurrency_subprice, multicurrency_total_ht, multicurrency_total_tva, multicurrency_total_ttc, subtotal_options)';
+		$sql .= ', fk_multicurrency, multicurrency_code, multicurrency_subprice, multicurrency_total_ht, multicurrency_total_tva, multicurrency_total_ttc)';
 		$sql .= " VALUES (".$this->fk_propal.",";
 		$sql .= " ".($this->fk_parent_line > 0 ? "'".$this->db->escape($this->fk_parent_line)."'" : "null").",";
 		$sql .= " ".(!empty($this->label) ? "'".$this->db->escape($this->label)."'" : "null").",";
@@ -590,7 +583,6 @@ class PropaleLigne extends CommonObjectLine
 		$sql .= ", ".price2num($this->multicurrency_total_ht, 'CT');
 		$sql .= ", ".price2num($this->multicurrency_total_tva, 'CT');
 		$sql .= ", ".price2num($this->multicurrency_total_ttc, 'CT');
-		$sql .= ", '".$this->db->escape(serialize($this->subtotal_options))."'";
 		$sql .= ')';
 
 		dol_syslog(get_class($this).'::insert', LOG_DEBUG);
@@ -792,7 +784,6 @@ class PropaleLigne extends CommonObjectLine
 		$sql .= ", date_start=".(!empty($this->date_start) ? "'".$this->db->idate($this->date_start)."'" : "null");
 		$sql .= ", date_end=".(!empty($this->date_end) ? "'".$this->db->idate($this->date_end)."'" : "null");
 		$sql .= ", fk_unit=".(!$this->fk_unit ? 'NULL' : $this->fk_unit);
-		$sql .= ", subtotal_options='".$this->db->escape(serialize($this->subtotal_options))."'";
 
 		// Multicurrency
 		$sql .= ", multicurrency_subprice=".price2num($this->multicurrency_subprice);

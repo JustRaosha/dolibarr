@@ -186,12 +186,6 @@ class FactureLigne extends CommonInvoiceLine
 	public $packaging;
 
 	/**
-	 * @var array<string,int|float> Serialized subtotal options
-	 */
-	public $subtotal_options = [];
-
-
-	/**
 	 *      Constructor
 	 *
 	 *      @param     DoliDB	$db      handler d'acces base de donnee
@@ -222,8 +216,7 @@ class FactureLigne extends CommonInvoiceLine
 		$sql .= ' fd.multicurrency_total_tva,';
 		$sql .= ' fd.multicurrency_total_ttc,';
 		$sql .= ' p.ref as product_ref, p.label as product_label, p.description as product_desc,';
-		$sql .= ' p.packaging,';
-		$sql .= ' fd.subtotal_options';
+		$sql .= ' p.packaging';
 		$sql .= ' FROM '.MAIN_DB_PREFIX.'facturedet as fd';
 		$sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'product as p ON fd.fk_product = p.rowid';
 		$sql .= ' WHERE fd.rowid = '.((int) $rowid);
@@ -293,8 +286,6 @@ class FactureLigne extends CommonInvoiceLine
 			$this->multicurrency_total_ttc = $objp->multicurrency_total_ttc;
 
 			$this->packaging      = $objp->packaging;
-
-			$this->subtotal_options 	= unserialize($objp->subtotal_options);
 
 			$this->fetch_optionals();
 
@@ -427,7 +418,7 @@ class FactureLigne extends CommonInvoiceLine
 		$sql .= ' situation_percent, fk_prev_id,';
 		$sql .= ' fk_unit, fk_user_author, fk_user_modif,';
 		$sql .= ' fk_multicurrency, multicurrency_code, multicurrency_subprice, multicurrency_total_ht, multicurrency_total_tva, multicurrency_total_ttc,';
-		$sql .= ' batch, fk_warehouse, subtotal_options';
+		$sql .= ' batch, fk_warehouse';
 		$sql .= ')';
 		$sql .= " VALUES (".$this->fk_facture.",";
 		$sql .= " ".($this->fk_parent_line > 0 ? $this->fk_parent_line : "null").",";
@@ -472,7 +463,6 @@ class FactureLigne extends CommonInvoiceLine
 		$sql .= ", ".price2num($this->multicurrency_total_ttc);
 		$sql .= ", '".$this->db->escape($this->batch)."'";
 		$sql .= ", ".((int) $this->fk_warehouse);
-		$sql .= ", '".$this->db->escape(serialize($this->subtotal_options))."'";
 		$sql .= ')';
 
 		dol_syslog(get_class($this)."::insert", LOG_DEBUG);
@@ -680,7 +670,6 @@ class FactureLigne extends CommonInvoiceLine
 		$sql .= ", situation_percent = ".((float) $this->situation_percent);
 		$sql .= ", fk_unit = ".(!$this->fk_unit ? 'NULL' : $this->fk_unit);
 		$sql .= ", fk_user_modif = ".((int) $user->id);
-		$sql .= ", subtotal_options='".$this->db->escape(serialize($this->subtotal_options))."'";
 
 		// Multicurrency
 		$sql .= ", multicurrency_subprice=".price2num($this->multicurrency_subprice);

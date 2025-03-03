@@ -630,7 +630,6 @@ class Propal extends CommonObject
 	 * 		@param		float		$pu_ht_devise		Unit price in currency
 	 * 		@param		int    		$fk_remise_except	Id discount if line is from a discount
 	 *  	@param		int			$noupdateafterinsertline	No update after insert of line
-	 * 		@param	array<string,int|float>	$subtotal_options	Subtotal options for pdf view
 	 *    	@return    	int         	    			>0 if OK, <0 if KO
 	 *    	@see       	add_product()
 	 */
@@ -661,8 +660,7 @@ class Propal extends CommonObject
 		$origin_id = 0,
 		$pu_ht_devise = 0,
 		$fk_remise_except = 0,
-		$noupdateafterinsertline = 0,
-		$subtotal_options = []
+		$noupdateafterinsertline = 0
 	) {
 		global $mysoc, $langs;
 
@@ -826,7 +824,6 @@ class Propal extends CommonObject
 			$this->line->special_code = $special_code;
 			$this->line->fk_parent_line = $fk_parent_line;
 			$this->line->fk_unit = $fk_unit;
-			$this->line->subtotal_options = $subtotal_options;
 
 			$this->line->date_start = $date_start;
 			$this->line->date_end = $date_end;
@@ -927,10 +924,9 @@ class Propal extends CommonObject
 	 * 	@param		float		$pu_ht_devise		Unit price in currency
 	 * 	@param		int			$notrigger			disable line update trigger
 	 *	@param       int			$rang   line rank
-	 *  @param	array<string,int|float>	$subtotal_options	Subtotal options for pdf view
 	 *  @return     int     		        		0 if OK, <0 if KO
 	 */
-	public function updateline($rowid, $pu, $qty, $remise_percent, $txtva, $txlocaltax1 = 0.0, $txlocaltax2 = 0.0, $desc = '', $price_base_type = 'HT', $info_bits = 0, $special_code = 0, $fk_parent_line = 0, $skip_update_total = 0, $fk_fournprice = 0, $pa_ht = 0, $label = '', $type = 0, $date_start = '', $date_end = '', $array_options = array(), $fk_unit = null, $pu_ht_devise = 0, $notrigger = 0, $rang = 0, $subtotal_options = [])
+	public function updateline($rowid, $pu, $qty, $remise_percent, $txtva, $txlocaltax1 = 0.0, $txlocaltax2 = 0.0, $desc = '', $price_base_type = 'HT', $info_bits = 0, $special_code = 0, $fk_parent_line = 0, $skip_update_total = 0, $fk_fournprice = 0, $pa_ht = 0, $label = '', $type = 0, $date_start = '', $date_end = '', $array_options = array(), $fk_unit = null, $pu_ht_devise = 0, $notrigger = 0, $rang = 0)
 	{
 		global $mysoc, $langs;
 
@@ -1068,7 +1064,6 @@ class Propal extends CommonObject
 
 			$this->line->date_start = $date_start;
 			$this->line->date_end = $date_end;
-			$this->line->subtotal_options = $subtotal_options;
 
 			if (is_array($array_options) && count($array_options) > 0) {
 				// We replace values in this->line->array_options only for entries defined into $array_options
@@ -1400,8 +1395,7 @@ class Propal extends CommonObject
 							$originid,
 							0,
 							0,
-							1,
-							$line->subtotal_options
+							1
 						);
 
 						if ($result < 0) {
@@ -1973,8 +1967,7 @@ class Propal extends CommonObject
 		$sql .= ' p.ref as product_ref, p.description as product_desc, p.fk_product_type, p.label as product_label, p.tobatch as product_tobatch, p.barcode as product_barcode,';
 		$sql .= ' p.weight, p.weight_units, p.volume, p.volume_units,';
 		$sql .= ' d.date_start, d.date_end,';
-		$sql .= ' d.fk_multicurrency, d.multicurrency_code, d.multicurrency_subprice, d.multicurrency_total_ht, d.multicurrency_total_tva, d.multicurrency_total_ttc,';
-		$sql .= ' d.subtotal_options';
+		$sql .= ' d.fk_multicurrency, d.multicurrency_code, d.multicurrency_subprice, d.multicurrency_total_ht, d.multicurrency_total_tva, d.multicurrency_total_ttc';
 		$sql .= ' FROM '.MAIN_DB_PREFIX.$this->table_element_line.' as d';
 		$sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'product as p ON (d.fk_product = p.rowid)';
 		$sql .= ' WHERE d.fk_propal = '.((int) $this->id);
@@ -2061,8 +2054,6 @@ class Propal extends CommonObject
 				$line->multicurrency_total_ht 	= $objp->multicurrency_total_ht;
 				$line->multicurrency_total_tva 	= $objp->multicurrency_total_tva;
 				$line->multicurrency_total_ttc 	= $objp->multicurrency_total_ttc;
-
-				$line->subtotal_options = unserialize($objp->subtotal_options);
 
 				$line->fetch_optionals();
 
@@ -3673,8 +3664,6 @@ class Propal extends CommonObject
 				$line->fk_product = $prodids[$prodid];
 				$line->product_ref = 'SPECIMEN';
 			}
-
-			$line->subtotal_options = [];
 
 			$this->lines[$xnbp] = $line;
 
