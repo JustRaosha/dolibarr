@@ -140,20 +140,7 @@ trait CommonSubtotal
 				0,						// PU ttc @phpstan-ignore-line
 				self::$PRODUCT_TYPE,	// Type @phpstan-ignore-line
 				$rang,					// Rang @phpstan-ignore-line
-				SUBTOTALS_SPECIAL_CODE,	// Special code @phpstan-ignore-line
-				'', 					// Origin @phpstan-ignore-line
-				0, 						// Origin_id @phpstan-ignore-line
-				0, 						// FK parent line @phpstan-ignore-line
-				0, 						// FK fournprice @phpstan-ignore-line
-				0, 						// PA ht @phpstan-ignore-line
-				'', 					// Label @phpstan-ignore-line
-				array(), 				// Array options @phpstan-ignore-line
-				100, 					// Situation percent @phpstan-ignore-line
-				0, 						// FK prev id @phpstan-ignore-line
-				0, 						// FK unit @phpstan-ignore-line
-				0, 						// PU ht devise @phpstan-ignore-line
-				'', 					// Ref ext @phpstan-ignore-line
-				0 						// Noupdateafterinsertline @phpstan-ignore-line
+				SUBTOTALS_SPECIAL_CODE	// Special code @phpstan-ignore-line
 			);
 		} elseif ($current_module == 'propal') {
 			$result = $this->addline( // @phpstan-ignore-line
@@ -170,20 +157,7 @@ trait CommonSubtotal
 				0,						// Info bits @phpstan-ignore-line
 				self::$PRODUCT_TYPE,	// Type @phpstan-ignore-line
 				$rang,					// Rang @phpstan-ignore-line
-				SUBTOTALS_SPECIAL_CODE,	// Special code @phpstan-ignore-line
-				0, 						// FK parent line @phpstan-ignore-line
-				0, 						// FK fournprice @phpstan-ignore-line
-				0, 						// PA ht @phpstan-ignore-line
-				'', 					// Label @phpstan-ignore-line
-				'', 					// Date start @phpstan-ignore-line
-				'', 					// Date end @phpstan-ignore-line
-				array(), 				// Array options @phpstan-ignore-line
-				0, 						// FK unit @phpstan-ignore-line
-				'', 					// Origin @phpstan-ignore-line
-				0, 						// Origin id @phpstan-ignore-line
-				0, 						// PU ht devise @phpstan-ignore-line
-				0, 						// FK remise except @phpstan-ignore-line
-				0 						// Noupdateafterinsertline @phpstan-ignore-line
+				SUBTOTALS_SPECIAL_CODE	// Special code @phpstan-ignore-line
 			);
 		} elseif ($current_module == 'commande') {
 			$result = $this->addline( // @phpstan-ignore-line
@@ -203,18 +177,7 @@ trait CommonSubtotal
 				'',						// Date end @phpstan-ignore-line
 				self::$PRODUCT_TYPE,	// Type @phpstan-ignore-line
 				$rang,					// Rang @phpstan-ignore-line
-				SUBTOTALS_SPECIAL_CODE,	// Special code @phpstan-ignore-line
-				0, 						// FK parent line @phpstan-ignore-line
-				0, 						// FK fournprice @phpstan-ignore-line
-				0, 						// PA ht @phpstan-ignore-line
-				'', 					// Label @phpstan-ignore-line
-				array(), 				// Array options @phpstan-ignore-line
-				0, 						// FK unit @phpstan-ignore-line
-				'', 					// Origin @phpstan-ignore-line
-				0, 						// Origin id @phpstan-ignore-line
-				0, 						// PU ht devise @phpstan-ignore-line
-				'', 					// Ref ext @phpstan-ignore-line
-				0 						// Noupdateafterinsertline @phpstan-ignore-line
+				SUBTOTALS_SPECIAL_CODE	// Special code @phpstan-ignore-line
 			);
 		}
 
@@ -370,14 +333,7 @@ trait CommonSubtotal
 				0,						// FK fournprice @phpstan-ignore-line
 				0,						// PA ht @phpstan-ignore-line
 				'',						// Label @phpstan-ignore-line
-				SUBTOTALS_SPECIAL_CODE,	// Special code @phpstan-ignore-line
-				array(), 				// Array options @phpstan-ignore-line
-				100, 					// Situation percent @phpstan-ignore-line
-				0,						// FK unit @phpstan-ignore-line
-				0, 						// PU ht devise @phpstan-ignore-line
-				0, 						// Notrigger @phpstan-ignore-line
-				'', 					// Ref ext @phpstan-ignore-line
-				0 						// Rang @phpstan-ignore-line
+				SUBTOTALS_SPECIAL_CODE	// Special code @phpstan-ignore-line
 			);
 		} elseif ($current_module== 'propal') {
 			$result = $this->updateline( // @phpstan-ignore-line
@@ -397,14 +353,7 @@ trait CommonSubtotal
 				0, 						// FK fournprice @phpstan-ignore-line
 				0, 						// PA ht @phpstan-ignore-line
 				'',						// Label @phpstan-ignore-line
-				self::$PRODUCT_TYPE,	// Type @phpstan-ignore-line
-				'', 					// Date start @phpstan-ignore-line
-				'', 					// Date end @phpstan-ignore-line
-				array(), 				// Array options @phpstan-ignore-line
-				0, 						// FK unit @phpstan-ignore-line
-				0, 						// PU ht devise @phpstan-ignore-line
-				0, 						// Notrigger @phpstan-ignore-line
-				0						// Rang @phpstan-ignore-line
+				self::$PRODUCT_TYPE		// Type @phpstan-ignore-line
 			);
 		} elseif ($current_module== 'commande') {
 			$result = $this->updateline( // @phpstan-ignore-line
@@ -426,13 +375,7 @@ trait CommonSubtotal
 				0, 						// FK fournprice @phpstan-ignore-line
 				0, 						// PA ht @phpstan-ignore-line
 				'',						// Label @phpstan-ignore-line
-				SUBTOTALS_SPECIAL_CODE, // Special code @phpstan-ignore-line
-				array(), 				// Array options @phpstan-ignore-line
-				0, 						// FK unit @phpstan-ignore-line
-				0, 						// PU ht devise @phpstan-ignore-line
-				0, 						// Notrigger @phpstan-ignore-line
-				'', 					// Ref ext @phpstan-ignore-line
-				0 						// Rang @phpstan-ignore-line
+				SUBTOTALS_SPECIAL_CODE	// Special code @phpstan-ignore-line
 			);
 		}
 
