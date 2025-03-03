@@ -566,7 +566,7 @@ class pdf_cyan extends ModelePDFPropales
 					$linePosition = $i + 1;
 					$curY = $nexY;
 
-					$sub_options = $object->lines[$i]->extraparams["subtotal"];
+					$sub_options = $object->lines[$i]->extraparams["subtotal"] ?? array();
 
 					if ($object->lines[$i]->special_code == SUBTOTALS_SPECIAL_CODE) {
 						$level = $object->lines[$i]->qty;
