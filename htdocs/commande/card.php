@@ -516,8 +516,7 @@ if (empty($reshook)) {
 									$lines[$i]->rowid,
 									0,
 									$lines[$i]->ref_ext,
-									0,
-									$lines[$i]->subtotal_options
+									0
 								);
 
 								if ($result < 0) {

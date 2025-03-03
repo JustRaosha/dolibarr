@@ -218,6 +218,13 @@ trait CommonSubtotal
 			);
 		}
 
+		foreach ($this->lines as $line) {
+			if ($line->id == $result) {
+				$line->extraparams = $options;
+				$line->setExtraParameters();
+			}
+		}
+
 		if ($result < 0) {
 			return $result;
 		}
@@ -336,7 +343,7 @@ trait CommonSubtotal
 					$oldDepth = $line->qty;
 				}
 				if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
-					$this->updateSubtotalLine($langs, $line->id, $desc, -$depth, $line->subtotal_options);
+					$this->updateSubtotalLine($langs, $line->id, $desc, -$depth, $line->extraparams);
 					break;
 				}
 			}
@@ -427,6 +434,13 @@ trait CommonSubtotal
 				'', 					// Ref ext @phpstan-ignore-line
 				0 						// Rang @phpstan-ignore-line
 			);
+		}
+
+		foreach ($this->lines as $line) {
+			if ($line->id == $lineid) {
+				$line->extraparams = $options;
+				$line->setExtraParameters();
+			}
 		}
 
 		if ($result < 0) {

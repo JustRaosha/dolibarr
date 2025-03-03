@@ -39,7 +39,7 @@
 ';
 
 // Options for subtotal
-$sub_options = $line->subtotal_options;
+$sub_options = $line->extraparams;
 
 $titleshowuponpdf = !empty($sub_options['titleshowuponpdf']);
 $titleshowtotalexludingvatonpdf = !empty($sub_options['titleshowtotalexludingvatonpdf']);
