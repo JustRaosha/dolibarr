@@ -67,7 +67,7 @@ create table llx_propaldet
     multicurrency_total_ttc         double(24,8)    DEFAULT 0,
 
     import_key                      varchar(14),
-	subtotal_options				text
+	extraparams				 		varchar(255)				 	-- to stock other parameters in json format
 )ENGINE=innodb;
 
 --
