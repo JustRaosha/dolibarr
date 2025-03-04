@@ -126,7 +126,7 @@ if ($line->qty > 0) { ?>
 				print '</div>';
 			} else {
 				print '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=vatforblocklines&lineid=' . $line->id . '">';
-				if (!colorIsLight($line_color)){
+				if (!colorIsLight($line_color)) {
 					echo img_edit($langs->trans("ApplyVATForBlock"), 0, 'style="color: white"');
 				} else {
 					echo img_edit($langs->trans("ApplyVATForBlock"), 0, 'style="color: #666"');
@@ -143,7 +143,7 @@ if ($line->qty > 0) { ?>
 			if (GETPOST('mode', 'aZ09') == 'discountforblocklines' && GETPOSTINT('lineid') == $line->id) {
 				print '<div class="inline-block nowraponall">';
 				print '<input type="text" class="flat right width40" name="discountforblocklines" id="discountforblocklines" value="0"><span class="hideonsmartphone"';
-				if (!colorIsLight($line_color)){
+				if (!colorIsLight($line_color)) {
 					print 'style="color: white"';
 				} else {
 					print 'style="color: black"';
@@ -154,7 +154,7 @@ if ($line->qty > 0) { ?>
 				print '</div>';
 			} else {
 				print '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=discountforblocklines&lineid=' . $line->id . '">';
-				if (!colorIsLight($line_color)){
+				if (!colorIsLight($line_color)) {
 					echo img_edit($langs->trans("ApplyDiscountForBlock"), 0, 'style="color: white"');
 				} else {
 					echo img_edit($langs->trans("ApplyDiscountForBlock"), 0, 'style="color: #666"');
@@ -195,7 +195,7 @@ if ($this->status == 0) {
 	// Edit picto
 	echo '<td class="linecoledit center">';
 	echo '<a class="reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=editline&token='.newToken().'&lineid='.$line->id.'">';
-	if (!colorIsLight($line_color)){
+	if (!colorIsLight($line_color)) {
 		echo img_edit('default', 0, 'style="color: white"');
 	} else {
 		echo img_edit('default', 0, 'style="color: #666"');
@@ -209,7 +209,7 @@ if ($this->status == 0) {
 		echo '&type=title';
 	}
 	echo '">';
-	if (!colorIsLight($line_color)){
+	if (!colorIsLight($line_color)) {
 		echo img_delete('default', 'class="pictodelete" style="color: white"');
 	} else {
 		echo img_delete('default', 'class="pictodelete" style="color: #666"');
