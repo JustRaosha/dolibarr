@@ -86,7 +86,10 @@ if (!getDolGlobalInt('MAIN_NO_INPUT_PRICE_WITH_TAX')) {
 if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 	$colspan +=1;
 }
-echo '<tr data-level="'.$line->qty.'" data-desc="'.$line->desc.'" data-rang="'.$line->rang.'" id="row-'.$line->id.'" class="drag drop" style="background:#'.$this->getSubtotalColors($line->qty).'">';
+
+$line_color = $this->getSubtotalColors($line->qty);
+
+echo '<tr data-level="'.$line->qty.'" data-desc="'.$line->desc.'" data-rang="'.$line->rang.'" id="row-'.$line->id.'" class="drag drop" style="background:#'.$line_color.'">';
 
 // Showing line number if conf is enabled
 if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
@@ -95,18 +98,18 @@ if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 
 if ($line->qty > 0) { ?>
 		<?php $colspan = isModEnabled('multicurrency') && $this->multicurrency_code != $conf->currency ? $colspan+2 : $colspan+1 ?>
-	<td class="linecollabel"><?php echo str_repeat('&nbsp;', (int) ($line->qty-1)*8);?>
+	<td class="linecollabel" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"'?>><?php echo str_repeat('&nbsp;', (int) ($line->qty-1)*8);?>
 		<?php
 		echo $line->desc;
 		if ($line_options) {
 			if (!empty($line_options['titleshowuponpdf'])) {
-				echo '&nbsp;'.img_picto($langs->trans("ShowUPOnPDF"), 'invoicing', 'class="colorwhite"');
+				echo '&nbsp;'.img_picto($langs->trans("ShowUPOnPDF"), 'invoicing');
 			}
 			if (!empty($line_options['titleshowtotalexludingvatonpdf'])) {
-				echo '&nbsp; <span class="colorwhite" title="'.$langs->trans("ShowTotalExludingVATOnPDF").'">%</span>';
+				echo '&nbsp; <span title="'.$langs->trans("ShowTotalExludingVATOnPDF").'">%</span>';
 			}
 			if (!empty($line_options['titleforcepagebreak'])) {
-				echo '&nbsp;'.img_picto($langs->trans("ForcePageBreak"), 'file', 'class="colorwhite"');
+				echo '&nbsp;'.img_picto($langs->trans("ForcePageBreak"), 'file');
 			}
 		}
 		?>
@@ -122,8 +125,13 @@ if ($line->qty > 0) { ?>
 				print '<input class="inline-block button smallpaddingimp" type="submit" name="updateallvatlinesblock" value="' . $langs->trans("Update") . '">';
 				print '</div>';
 			} else {
-				// TODO : change color if (colorIsLight($this->getSubtotalColors($line->qty)))
-				print '<a class="editfielda reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=vatforblocklines&lineid=' . $line->id . '">' . img_edit($langs->trans("ApplyVATForBlock")) . '</a>';
+				print '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=vatforblocklines&lineid=' . $line->id . '">';
+				if (!colorIsLight($line_color)){
+					echo img_edit($langs->trans("ApplyVATForBlock"), 0, 'style="color: white"');
+				} else {
+					echo img_edit($langs->trans("ApplyVATForBlock"), 0, 'style="color: #666"');
+				}
+				echo '</a>';
 			}
 		}
 		?>
@@ -134,36 +142,49 @@ if ($line->qty > 0) { ?>
 		if ($this->status == 0) {
 			if (GETPOST('mode', 'aZ09') == 'discountforblocklines' && GETPOSTINT('lineid') == $line->id) {
 				print '<div class="inline-block nowraponall">';
-				print '<input type="text" class="flat right width40" name="discountforblocklines" id="discountforblocklines" value="0"><span class="hideonsmartphone">%</span>';
+				print '<input type="text" class="flat right width40" name="discountforblocklines" id="discountforblocklines" value="0"><span class="hideonsmartphone"';
+				if (!colorIsLight($line_color)){
+					print 'style="color: white"';
+				} else {
+					print 'style="color: black"';
+				}
+				print '>%</span>';
 				print '<input type="hidden" name="lineid" value="' . $line->id . '">';
 				print '<input class="inline-block button smallpaddingimp" type="submit" name="updatealldiscountlinesblock" value="' . $langs->trans("Update") . '">';
 				print '</div>';
 			} else {
-				// TODO : change color if (colorIsLight($this->getSubtotalColors($line->qty)))
-				print '<a class="editfielda reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=discountforblocklines&lineid=' . $line->id . '">' . img_edit($langs->trans("ApplyDiscountForBlock"), 0, "style=\"color: #111\"") . '</a>';
+				print '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&mode=discountforblocklines&lineid=' . $line->id . '">';
+				if (!colorIsLight($line_color)){
+					echo img_edit($langs->trans("ApplyDiscountForBlock"), 0, 'style="color: white"');
+				} else {
+					echo img_edit($langs->trans("ApplyDiscountForBlock"), 0, 'style="color: #666"');
+				}
+				echo '</a>';
 			}
 		}
 		?>
 	</td>
 	<td class="linecollabel" colspan="<?php echo $colspan - 4 ?>"></td>
 <?php } elseif ($line->qty < 0) {?>
-		<td class="linecollabel nowrap right" colspan="<?php echo $colspan + 2 ?>">
+		<td class="linecollabel nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"'?> colspan="<?php echo $colspan + 2 ?>">
 			<?php
 			echo $line->desc;
 			if (!empty($line_options['subtotalshowtotalexludingvatonpdf'])) {
-				echo '&nbsp; <span class="colorwhite" title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
+				echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
 			}
 			echo ' :';
 			?>
 		</td>
-		<td class="linecolamount nowrap right">
+		<td class="linecolamount nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"'?>>
 			<?php
 			echo $this->getSubtotalLineAmount($line);
 			?>
 		</td>
 		<?php
 		if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
-			echo '<td class="linecolamount nowrap right">';
+			echo '<td class="linecolamount nowrap right"';
+			echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"';
+			echo '>';
 			echo $this->getSubtotalLineMulticurrencyAmount($line);
 			echo '</td>';
 		}
@@ -173,8 +194,13 @@ if ($line->qty > 0) { ?>
 if ($this->status == 0) {
 	// Edit picto
 	echo '<td class="linecoledit center">';
-	echo '<a class="editfielda reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=editline&token='.newToken().'&lineid='.$line->id.'">'.img_edit().'</a>';
-	echo '</td>';
+	echo '<a class="reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=editline&token='.newToken().'&lineid='.$line->id.'">';
+	if (!colorIsLight($line_color)){
+		echo img_edit('default', 0, 'style="color: white"');
+	} else {
+		echo img_edit('default', 0, 'style="color: #666"');
+	}
+	echo '</a> </td>';
 
 	// Delete picto
 	echo '<td class="linecoldelete center">';
@@ -182,12 +208,21 @@ if ($this->status == 0) {
 	if ($line->qty > 0) {
 		echo '&type=title';
 	}
-	echo '">'.img_delete().'</a>';
-	echo '</td>';
+	echo '">';
+	if (!colorIsLight($line_color)){
+		echo img_delete('default', 'class="pictodelete" style="color: white"');
+	} else {
+		echo img_delete('default', 'class="pictodelete" style="color: #666"');
+	}
+	echo '</a> </td>';
 
 	// Move up-down picto
 	if ($num > 1 && $conf->browser->layout != 'phone' && ((property_exists($this, 'situation_counter') && $this->situation_counter == 1) || empty($this->situation_cycle_ref)) && empty($disablemove)) {
-		echo '<td class="linecolmove tdlineupdown center">';
+		echo '<td class="linecolmove tdlineupdown center"';
+		if (!colorIsLight($line_color)) {
+			echo 'data-gripimg="grip_title.png"';
+		}
+		echo '>';
 		if ($i > 0) {
 			echo '<a class="lineupdown" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=up&token='.newToken().'&rowid='.$line->id.'">';
 			echo img_up('default', 0, 'imgupforline');

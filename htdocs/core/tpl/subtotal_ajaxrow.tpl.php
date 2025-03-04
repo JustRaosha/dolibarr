@@ -83,9 +83,15 @@ function init(){
 	$(".imgupforline").hide();
 	$(".imgdownforline").hide();
 	$(".lineupdown").removeAttr('href');
-	$(".tdlineupdown").css("background-image",'url(<?php echo DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/grip.png'; ?>)');
-	$(".tdlineupdown").css("background-repeat","no-repeat");
-	$(".tdlineupdown").css("background-position","center center");
+	console.log($(".tdlineupdown"));
+	$(".tdlineupdown").each(function (tdindex, tdline) {
+		var gripimg = tdline.dataset.gripimg ?? 'grip.png';
+		console.log(gripimg);
+		$(tdline).css("background-image",'url(<?php echo DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/'; ?>' + gripimg + ')');
+		$(tdline).css("background-repeat","no-repeat");
+		$(tdline).css("background-position","center center");
+		console.log($(".tdlineupdown")[tdindex], tdline);
+	})
 
 	console.log("Prepare tableDnd for #<?php echo $tagidfortablednd; ?>");
 	var inital_table = $("#<?php echo $tagidfortablednd; ?> .drag").map((_, el) => $(el)[0]).get();
