@@ -1936,6 +1936,13 @@ if (empty($reshook)) {
 										);
 
 										if ($result > 0) {
+											foreach ($object->lines as $line) {
+												if ($line->id == $result) {
+													$line->extraparams = $lines[$i]->extraparams;
+													$line->setExtraParameters();
+												}
+											}
+
 											$lineid = $result;
 										} else {
 											$lineid = 0;

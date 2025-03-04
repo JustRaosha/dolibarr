@@ -524,6 +524,13 @@ if (empty($reshook)) {
 									break;
 								}
 
+								foreach ($object->lines as $line) {
+									if ($line->id == $result) {
+										$line->extraparams = $lines[$i]->extraparams;
+										$line->setExtraParameters();
+									}
+								}
+
 								// Defined the new fk_parent_line
 								if ($result > 0 && $lines[$i]->product_type == 9) {
 									$fk_parent_line = $result;
