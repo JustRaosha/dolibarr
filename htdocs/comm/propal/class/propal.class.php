@@ -871,7 +871,7 @@ class Propal extends CommonObject
 					$this->lines[] = $this->line;
 				} else {
 					foreach ($this->lines as $line) {
-						if ($line->id == $origin_id){
+						if ($line->id == $origin_id) {
 							$this->line->extraparams = $line->extraparams;
 							$this->line->setExtraParameters();
 						}
