@@ -1090,6 +1090,13 @@ class Facture extends CommonInvoice
 						1
 					);
 
+					foreach ($this->lines as $line) {
+						if ($line->id == $result_insert) {
+							$line->extraparams = $_facrec->lines[$i]->extraparams;
+							$line->setExtraParameters();
+						}
+					}
+
 					// Defined the new fk_parent_line
 					if ($result_insert > 0 && $_facrec->lines[$i]->product_type == 9) {
 						$fk_parent_line = $result_insert;

@@ -485,6 +485,12 @@ class FactureRec extends CommonInvoice
 							if ($result < 0) {
 								$error++;
 							}
+
+							$objectline->extraparams = $facline->extraparams;
+							$result = $objectline->setExtraParameters();
+							if ($result < 0) {
+								$error++;
+							}
 						} elseif ($result2 < 0) {
 							$this->errors[] = $objectline->error;
 							$error++;
