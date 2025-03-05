@@ -55,7 +55,7 @@ echo "<!-- BEGIN PHP TEMPLATE subtotal_view.tpl.php -->\n";
 $langs->load('subtotals');
 
 // Base colspan if there is no module activated to display line correctly
-$colspan = 3;
+$colspan = $object->element != 'facturerec' ? 3 : 2;
 
 $line_options = $line->extraparams["subtotal"];
 

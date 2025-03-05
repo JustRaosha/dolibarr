@@ -60,12 +60,14 @@ $modules = array(
 	'PROPAL' => array('lang' => 'propal', 'key' => 'Proposal', 'old_pdf' => '(azur model)'),
 	'COMMANDE' => array('lang' => 'orders', 'key' => 'CustomerOrder', 'old_pdf' => '(einstein model)'),
 	'FACTURE' => array('lang' => 'bills', 'key' => 'CustomerInvoice', 'old_pdf' => '(crabe model)'),
+	'FACTUREREC' => array('lang' => 'bills', 'key' => 'RecurringInvoiceTemplate'),
 );
 // Conditions for the option to be offered
 $conditions = array(
 	'PROPAL' => (isModEnabled("propal")),
 	'COMMANDE' => (isModEnabled("order")),
 	'FACTURE' => (isModEnabled("invoice")),
+	'FACTUREREC' => (isModEnabled("invoice")),
 );
 
 $max_depth = 0;
@@ -147,7 +149,13 @@ if (empty($conf->use_javascript_ajax)) {
 		$constante_subtotal = 'SUBTOTAL_'.$const;
 		print '<!-- constant = '.$constante_subtotal.' -->'."\n";
 		print '<tr class="oddeven">';
-		print '<td>'.$form->textwithpicto($langs->trans($desc['key']), $langs->trans("NotSupportedByAllPDF", $desc['old_pdf'])).'</td>';
+		print '<td>';
+		if (isset($desc['old_pdf'])) {
+			print $form->textwithpicto($langs->trans($desc['key']), $langs->trans("NotSupportedByAllPDF", $desc['old_pdf']));
+		} else {
+			print $langs->trans($desc['key']);
+		}
+		print '</td>';
 
 		print '<td class="center">';
 		$value_title = getDolGlobalInt($constante_title, 0);
