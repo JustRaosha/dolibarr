@@ -10833,7 +10833,7 @@ class Form
 		}
 		$out .= '         });
         	        $(".' . $cssclass . '").change(function() {
-					$(this).closest("tr").toggleClass("highlight", this.checked);
+					$(this).closest("tr").toggleClass(this.checked);
 				});
 		 	});
     	</script>';

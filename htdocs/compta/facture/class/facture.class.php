@@ -49,6 +49,7 @@ require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/societe/class/client.class.php';
 require_once DOL_DOCUMENT_ROOT.'/margin/lib/margins.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/multicurrency/class/multicurrency.class.php';
+require_once DOL_DOCUMENT_ROOT.'/subtotals/class/commonsubtotal.class.php';
 
 if (isModEnabled('accounting')) {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formaccounting.class.php';
@@ -62,6 +63,8 @@ if (isModEnabled('accounting')) {
  */
 class Facture extends CommonInvoice
 {
+	use CommonSubtotal;
+
 	/**
 	 * @var string ID to identify managed object
 	 */
@@ -1086,6 +1089,13 @@ class Facture extends CommonInvoice
 						$_facrec->lines[$i]->ref_ext,
 						1
 					);
+
+					foreach ($this->lines as $line) {
+						if ($line->id == $result_insert) {
+							$line->extraparams = $_facrec->lines[$i]->extraparams;
+							$line->setExtraParameters();
+						}
+					}
 
 					// Defined the new fk_parent_line
 					if ($result_insert > 0 && $_facrec->lines[$i]->product_type == 9) {
@@ -2339,7 +2349,7 @@ class Facture extends CommonInvoice
 		$sql .= ' l.rang, l.special_code, l.batch, l.fk_warehouse,';
 		$sql .= ' l.date_start as date_start, l.date_end as date_end,';
 		$sql .= ' l.info_bits, l.total_ht, l.total_tva, l.total_localtax1, l.total_localtax2, l.total_ttc, l.fk_code_ventilation, l.fk_product_fournisseur_price as fk_fournprice, l.buy_price_ht as pa_ht,';
-		$sql .= ' l.fk_unit,';
+		$sql .= ' l.fk_unit, l.extraparams,';
 		$sql .= ' l.fk_multicurrency, l.multicurrency_code, l.multicurrency_subprice, l.multicurrency_total_ht, l.multicurrency_total_tva, l.multicurrency_total_ttc,';
 		$sql .= ' p.ref as product_ref, p.fk_product_type as fk_product_type, p.label as product_label, p.description as product_desc, p.barcode as product_barcode';
 		$sql .= ' FROM '.MAIN_DB_PREFIX.'facturedet as l';
@@ -2403,6 +2413,8 @@ class Facture extends CommonInvoice
 				$line->situation_percent = $objp->situation_percent;
 				$line->fk_prev_id = $objp->fk_prev_id;
 				$line->fk_unit = $objp->fk_unit;
+
+				$line->extraparams = !empty($objp->extraparams) ? (array) json_decode($objp->extraparams, true) : array();
 
 				$line->batch = $objp->batch;
 				$line->fk_warehouse = $objp->fk_warehouse;
@@ -4127,6 +4139,13 @@ class Facture extends CommonInvoice
 					}
 
 					$this->lines[] = $this->line;
+				} else {
+					foreach ($this->lines as $line) {
+						if ($line->id == $origin_id) {
+							$this->line->extraparams = $line->extraparams;
+							$this->line->setExtraParameters();
+						}
+					}
 				}
 
 				if ($result > 0) {
