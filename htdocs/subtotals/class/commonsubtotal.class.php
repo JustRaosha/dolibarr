@@ -403,6 +403,7 @@ trait CommonSubtotal
 			);
 		} elseif ($current_module == 'facturerec') {
 			$objectline = new FactureLigneRec($this->db);
+			$objectline->fetch($lineid);
 			$line_rang = $objectline->rang;
 			$result = $this->updateline( // @phpstan-ignore-line
 				$lineid,				// ID of line to change @phpstan-ignore-line
