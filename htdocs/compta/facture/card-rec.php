@@ -842,7 +842,6 @@ if (empty($reshook)) {
 			}
 			$ret = $object->fetch($object->id); // Reload to get new records
 			$object->fetch_thirdparty();
-
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
