@@ -116,7 +116,7 @@ if ($line->qty > 0) { ?>
 	</td>
 	<td class="linecolvat nowrap right">
 		<?php
-		if ($this->status == 0) {
+		if ($this->status == 0 && $object->element != 'facturerec') {
 			if (GETPOST('mode', 'aZ09') == 'vatforblocklines' && GETPOSTINT('lineid') == $line->id) {
 				$type_tva = $type_tva ?? 0;
 				print '<div class="inline-block nowraponall">';
@@ -139,7 +139,7 @@ if ($line->qty > 0) { ?>
 	<td class="linecollabel" colspan="<?php echo $colspan - 2 ?>"></td>
 	<td class="linecoldiscount right">
 		<?php
-		if ($this->status == 0) {
+		if ($this->status == 0 && $object->element != 'facturerec') {
 			if (GETPOST('mode', 'aZ09') == 'discountforblocklines' && GETPOSTINT('lineid') == $line->id) {
 				print '<div class="inline-block nowraponall">';
 				print '<input type="text" class="flat right width40" name="discountforblocklines" id="discountforblocklines" value="0"><span class="hideonsmartphone"';
