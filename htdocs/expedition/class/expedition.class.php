@@ -1810,6 +1810,8 @@ class Expedition extends CommonObject
 				$line->volume_units   	= $obj->volume_units;
 				$line->fk_unit = $obj->fk_unit;
 
+				$line->extraparams = !empty($obj->extraparams) ? (array) json_decode($obj->extraparams, true) : array();
+
 				$line->pa_ht = $obj->pa_ht;
 
 				// Local taxes
