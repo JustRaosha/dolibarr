@@ -61,7 +61,7 @@ print "<!-- BEGIN PHP TEMPLATE subtotal_edit.tpl.php -->\n";
 echo '<tr class="oddeven tredited">';
 
 if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
-	echo '<td class="linecolnum center">'.($i + 1).'</td>';
+	echo '<td class="linecolnum center">' . ($i + 1) . '</td>';
 }
 
 // Base colspan if there is no module activated to display line correctly
@@ -70,34 +70,34 @@ $colspan = 4;
 // Handling colspan if margin module is enabled
 if (!empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande')) && isModEnabled('margin') && empty($user->socid)) {
 	if ($user->hasRight('margins', 'creer')) {
-		$colspan +=1;
+		$colspan += 1;
 	}
 	if (getDolGlobalString('DISPLAY_MARGIN_RATES') && $user->hasRight('margins', 'liretous')) {
-		$colspan +=1;
+		$colspan += 1;
 	}
 	if (getDolGlobalString('DISPLAY_MARK_RATES') && $user->hasRight('margins', 'liretous')) {
-		$colspan +=1;
+		$colspan += 1;
 	}
 }
 
 // Handling colspan if multicurrency module is enabled
 if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
-	$colspan +=1;
+	$colspan += 1;
 }
 
 // Handling colspan if MAIN_NO_INPUT_PRICE_WITH_TAX conf is enabled
 if (!getDolGlobalInt('MAIN_NO_INPUT_PRICE_WITH_TAX')) {
-	$colspan +=1;
+	$colspan += 1;
 }
 
 // Handling colspan if PRODUCT_USE_UNITS conf is enabled
 if (getDolGlobalString('PRODUCT_USE_UNITS')) {
-	$colspan +=1;
+	$colspan += 1;
 }
 
 ?>
 
-	<td class="linecoldesc minwidth250onall">
+<td class="linecoldesc minwidth250onall">
 	<div id="line_<?php echo $line->id; ?>"></div>
 
 	<input type="hidden" name="lineid" value="<?php echo $line->id; ?>">
@@ -112,7 +112,7 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 	if ($line->fk_prev_id != null && in_array($object->element, array('facture', 'facturedet'))) {
 		/** @var CommonInvoice $object */
 		// @phan-suppress-next-line PhanUndeclaredConstantOfClass
-		if ($object->type == $object::TYPE_SITUATION) {	// The constant TYPE_SITUATION exists only for object invoice
+		if ($object->type == $object::TYPE_SITUATION) {    // The constant TYPE_SITUATION exists only for object invoice
 			// Set constant to disallow editing during a situation cycle
 			$situationinvoicelinewithparent = 1;
 		}
@@ -129,7 +129,7 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 
 	if (!$situationinvoicelinewithparent) {
 		print '<input type="text" name="line_desc" class="marginrightonly" id="line_desc" value="';
-		print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $line->description.'"';
+		print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $line->description . '"';
 		$disabled = 0;
 		if ($line_type == 'subtotal') {
 			print ' readonly="readonly"';
@@ -139,19 +139,19 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 		$depth_array = $this->getPossibleLevels($langs);
 		print $form->selectarray('line_depth', $depth_array, abs($line->qty), 0, 0, 0, '', 0, 0, $disabled);
 		if ($disabled) {
-			print '<input type="hidden" name="line_depth" value="'.$line->qty.'">';
+			print '<input type="hidden" name="line_depth" value="' . $line->qty . '">';
 		}
 		print '<div><ul class="ecmjqft">';
 		foreach ($line_options as $key => $value) {
 			if (in_array($line_type, $value['type'])) {
-				print '<li><label for="'.$key.'">'.$langs->trans($value['trans_key']).'</label>';
-				print '<input style="float: left;" id="'.$key.'" type="checkbox" name="'.$key.'" value="'.$value['value'].'" ';
+				print '<li><label for="' . $key . '">' . $langs->trans($value['trans_key']) . '</label>';
+				print '<input style="float: left;" id="' . $key . '" type="checkbox" name="' . $key . '" value="' . $value['value'] . '" ';
 				print $value['checked'] ? 'checked' : '';
 				print '></li>';
 			}
 		}
 		print '</ul></div></td>';
-		print '<td colspan="'.$colspan.'" class="right"></td>';
+		print '<td colspan="' . $colspan . '" class="right"></td>';
 	} else {
 		print '<input type="text" readonly name="line_desc" id="line_desc" value="';
 		print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $line->description;
@@ -160,10 +160,10 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 	?>
 
 
-	<td class="center valignmiddle" colspan="4">
-		<input type="submit" class="reposition button buttongen button-save" id="savelinebutton marginbottomonly" name="save" value="<?php echo $langs->trans("Save"); ?>"><br>
-		<input type="submit" class="reposition button buttongen button-cancel" id="cancellinebutton" name="cancel" value="<?php echo $langs->trans("Cancel"); ?>">
-	</td>
+<td class="center valignmiddle" colspan="4">
+	<input type="submit" class="reposition button buttongen button-save" id="savelinebutton marginbottomonly" name="save" value="<?php echo $langs->trans("Save"); ?>"><br>
+	<input type="submit" class="reposition button buttongen button-cancel" id="cancellinebutton" name="cancel" value="<?php echo $langs->trans("Cancel"); ?>">
+</td>
 </tr>
 
 <!-- END PHP TEMPLATE objectline_edit.tpl.php -->

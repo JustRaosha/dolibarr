@@ -62,54 +62,54 @@ $line_options = $line->extraparams["subtotal"];
 // Handling colspan if margin module is enabled
 if (!empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande')) && isModEnabled('margin') && empty($user->socid)) {
 	if ($user->hasRight('margins', 'creer')) {
-		$colspan +=1;
+		$colspan += 1;
 	}
 	if (getDolGlobalString('DISPLAY_MARGIN_RATES') && $user->hasRight('margins', 'liretous')) {
-		$colspan +=1;
+		$colspan += 1;
 	}
 	if (getDolGlobalString('DISPLAY_MARK_RATES') && $user->hasRight('margins', 'liretous')) {
-		$colspan +=1;
+		$colspan += 1;
 	}
 }
 
 // Handling colspan if multicurrency module is enabled
 if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
-	$colspan +=1;
+	$colspan += 1;
 }
 
 // Handling colspan if MAIN_NO_INPUT_PRICE_WITH_TAX conf is enabled
 if (!getDolGlobalInt('MAIN_NO_INPUT_PRICE_WITH_TAX')) {
-	$colspan +=1;
+	$colspan += 1;
 }
 
 // Handling colspan if PRODUCT_USE_UNITS conf is enabled
 if (getDolGlobalString('PRODUCT_USE_UNITS')) {
-	$colspan +=1;
+	$colspan += 1;
 }
 
 $line_color = $this->getSubtotalColors($line->qty);
 
-echo '<tr data-level="'.$line->qty.'" data-desc="'.$line->desc.'" data-rang="'.$line->rang.'" id="row-'.$line->id.'" class="drag drop" style="background:#'.$line_color.'">';
+echo '<tr data-level="' . $line->qty . '" data-desc="' . $line->desc . '" data-rang="' . $line->rang . '" id="row-' . $line->id . '" class="drag drop" style="background:#' . $line_color . '">';
 
 // Showing line number if conf is enabled
 if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
-	echo '<td class="linecolnum center"><span class="opacitymedium">'.($i + 1).'</span></td>';
+	echo '<td class="linecolnum center"><span class="opacitymedium">' . ($i + 1) . '</span></td>';
 }
 
 if ($line->qty > 0) { ?>
-		<?php $colspan = isModEnabled('multicurrency') && $this->multicurrency_code != $conf->currency ? $colspan+2 : $colspan+1 ?>
-	<td class="linecollabel" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"'?>><?php echo str_repeat('&nbsp;', (int) ($line->qty-1)*8);?>
+	<?php $colspan = isModEnabled('multicurrency') && $this->multicurrency_code != $conf->currency ? $colspan + 2 : $colspan + 1 ?>
+	<td class="linecollabel" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?>><?php echo str_repeat('&nbsp;', (int)($line->qty - 1) * 8); ?>
 		<?php
 		echo $line->desc;
 		if ($line_options) {
 			if (!empty($line_options['titleshowuponpdf'])) {
-				echo '&nbsp;'.img_picto($langs->trans("ShowUPOnPDF"), 'invoicing');
+				echo '&nbsp;' . img_picto($langs->trans("ShowUPOnPDF"), 'invoicing');
 			}
 			if (!empty($line_options['titleshowtotalexludingvatonpdf'])) {
-				echo '&nbsp; <span title="'.$langs->trans("ShowTotalExludingVATOnPDF").'">%</span>';
+				echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
 			}
 			if (!empty($line_options['titleforcepagebreak'])) {
-				echo '&nbsp;'.img_picto($langs->trans("ForcePageBreak"), 'file');
+				echo '&nbsp;' . img_picto($langs->trans("ForcePageBreak"), 'file');
 			}
 		}
 		?>
@@ -165,36 +165,36 @@ if ($line->qty > 0) { ?>
 		?>
 	</td>
 	<td class="linecollabel" colspan="<?php echo $colspan - 4 ?>"></td>
-<?php } elseif ($line->qty < 0) {?>
-		<td class="linecollabel nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"'?> colspan="<?php echo $colspan + 2 ?>">
-			<?php
-			echo $line->desc;
-			if (!empty($line_options['subtotalshowtotalexludingvatonpdf'])) {
-				echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
-			}
-			echo ' :';
-			?>
-		</td>
-		<td class="linecolamount nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"'?>>
-			<?php
-			echo $this->getSubtotalLineAmount($line);
-			?>
-		</td>
+<?php } elseif ($line->qty < 0) { ?>
+	<td class="linecollabel nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?> colspan="<?php echo $colspan + 2 ?>">
 		<?php
-		if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
-			echo '<td class="linecolamount nowrap right"';
-			echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"';
-			echo '>';
-			echo $this->getSubtotalLineMulticurrencyAmount($line);
-			echo '</td>';
+		echo $line->desc;
+		if (!empty($line_options['subtotalshowtotalexludingvatonpdf'])) {
+			echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
 		}
+		echo ' :';
 		?>
+	</td>
+	<td class="linecolamount nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?>>
+		<?php
+		echo $this->getSubtotalLineAmount($line);
+		?>
+	</td>
+	<?php
+	if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
+		echo '<td class="linecolamount nowrap right"';
+		echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"';
+		echo '>';
+		echo $this->getSubtotalLineMulticurrencyAmount($line);
+		echo '</td>';
+	}
+	?>
 <?php }
 
 if ($this->status == 0) {
 	// Edit picto
 	echo '<td class="linecoledit center">';
-	echo '<a class="reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=editline&token='.newToken().'&lineid='.$line->id.'">';
+	echo '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $this->id . '&action=editline&token=' . newToken() . '&lineid=' . $line->id . '">';
 	if (!colorIsLight($line_color)) {
 		echo img_edit('default', 0, 'style="color: white"');
 	} else {
@@ -204,7 +204,7 @@ if ($this->status == 0) {
 
 	// Delete picto
 	echo '<td class="linecoldelete center">';
-	echo '<a class="reposition" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=ask_subtotal_deleteline&token='.newToken().'&lineid='.$line->id;
+	echo '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $this->id . '&action=ask_subtotal_deleteline&token=' . newToken() . '&lineid=' . $line->id;
 	if ($line->qty > 0) {
 		echo '&type=title';
 	}
@@ -224,25 +224,25 @@ if ($this->status == 0) {
 		}
 		echo '>';
 		if ($i > 0) {
-			echo '<a class="lineupdown" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=up&token='.newToken().'&rowid='.$line->id.'">';
+			echo '<a class="lineupdown" href="' . $_SERVER["PHP_SELF"] . '?id=' . $this->id . '&action=up&token=' . newToken() . '&rowid=' . $line->id . '">';
 			echo img_up('default', 0, 'imgupforline');
 			echo '</a>';
 		}
 		if ($i < $num - 1) {
-			echo '<a class="lineupdown" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&action=down&token='.newToken().'&rowid='.$line->id.'">';
+			echo '<a class="lineupdown" href="' . $_SERVER["PHP_SELF"] . '?id=' . $this->id . '&action=down&token=' . newToken() . '&rowid=' . $line->id . '">';
 			echo img_down('default', 0, 'imgdownforline');
 			echo '</a>';
 		}
 		echo '</td>';
 	} else {
-		echo '<td '.(($conf->browser->layout != 'phone' && empty($disablemove)) ? ' class="linecolmove tdlineupdown center"' : ' class="linecolmove center"').'></td>';
+		echo '<td ' . (($conf->browser->layout != 'phone' && empty($disablemove)) ? ' class="linecolmove tdlineupdown center"' : ' class="linecolmove center"') . '></td>';
 	}
 } else {
 	$colspan = 3;
 	if (isModEnabled('asset') && $object->element == 'invoice_supplier') {
 		$colspan++;
 	}
-	print '<td colspan="'.$colspan.'"></td>';
+	print '<td colspan="' . $colspan . '"></td>';
 }
 echo '</tr>';
 echo '<!-- END PHP TEMPLATE subtotal_view.tpl.php -->';

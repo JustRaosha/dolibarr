@@ -28,10 +28,10 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/doleditor.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formother.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/doleditor.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 
 /**
  * @var Conf $conf
@@ -73,14 +73,14 @@ $conditions = array(
 $max_depth = 0;
 
 foreach ($modules as $const => $desc) {
-	$const_depth = getDolGlobalString('SUBTOTAL_'.$const.'_MAX_DEPTH');
+	$const_depth = getDolGlobalString('SUBTOTAL_' . $const . '_MAX_DEPTH');
 	$max_depth = max($const_depth, $max_depth);
 }
 
 $colors = array();
 
 for ($i = 0; $i < $max_depth; $i++) {
-	$colors['SUBTOTAL_BACK_COLOR_LEVEL_'.$i+1] = array('level' => $i+1, 'color' => getDolGlobalString('SUBTOTAL_BACK_COLOR_LEVEL_'.$i+1, $default));
+	$colors['SUBTOTAL_BACK_COLOR_LEVEL_' . ($i + 1)] = array('level' => $i + 1, 'color' => getDolGlobalString('SUBTOTAL_BACK_COLOR_LEVEL_' . ($i + 1), $default));
 }
 
 /*
@@ -90,14 +90,14 @@ for ($i = 0; $i < $max_depth; $i++) {
 if (preg_match('/^SUBTOTAL_.*$/', $action)) {
 	if (preg_match('/^.*_MAX_DEPTH$/', $action)) {
 		dolibarr_set_const($db, $action, GETPOSTINT($action), 'int', 0, '', $conf->entity);
-		header("Location: ".$_SERVER['PHP_SELF']);
+		header("Location: " . $_SERVER['PHP_SELF']);
 		setEventMessages($langs->trans("SetupSaved"), null);
 		exit;
 	} else {
 		$value = getDolGlobalInt($action, 0);
 		$value == 0 ? $value = 1 : $value = 0;
 		dolibarr_set_const($db, $action, $value, 'chaine', 0, '', $conf->entity);
-		header("Location: ".$_SERVER['PHP_SELF']);
+		header("Location: " . $_SERVER['PHP_SELF']);
 		setEventMessages($langs->trans("SetupSaved"), null);
 		exit;
 	}
@@ -111,7 +111,7 @@ if ($action == 'update_colors') {
 		}
 	}
 
-	header("Location: ".$_SERVER["PHP_SELF"]);
+	header("Location: " . $_SERVER["PHP_SELF"]);
 	exit;
 }
 
@@ -121,7 +121,7 @@ if ($action == 'update_colors') {
  */
 
 llxHeader('', '', '', '', 0, 0, '', '', '', 'mod-admin page-subtotals');
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 
 print load_fiche_titre($langs->trans("SubtotalSetup"), $linkback, 'title_setup');
 
@@ -130,10 +130,10 @@ if (empty($conf->use_javascript_ajax)) {
 } else {
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
-	print '<td width="1100">'.$langs->trans("Settings").'</td>';
-	print '<td class="center">'.$langs->trans("Title").'</td>';
-	print '<td class="center">'.$langs->trans("Subtotal").'</td>';
-	print '<td class="center">'.$langs->trans("MaxSubtotalLevel").'</td>';
+	print '<td width="1100">' . $langs->trans("Settings") . '</td>';
+	print '<td class="center">' . $langs->trans("Title") . '</td>';
+	print '<td class="center">' . $langs->trans("Subtotal") . '</td>';
+	print '<td class="center">' . $langs->trans("MaxSubtotalLevel") . '</td>';
 	print "</tr>\n";
 
 	// Modules
@@ -145,9 +145,9 @@ if (empty($conf->use_javascript_ajax)) {
 
 		$langs->load($desc['lang']);
 
-		$constante_title = 'SUBTOTAL_TITLE_'.$const;
-		$constante_subtotal = 'SUBTOTAL_'.$const;
-		print '<!-- constant = '.$constante_subtotal.' -->'."\n";
+		$constante_title = 'SUBTOTAL_TITLE_' . $const;
+		$constante_subtotal = 'SUBTOTAL_' . $const;
+		print '<!-- constant = ' . $constante_subtotal . ' -->' . "\n";
 		print '<tr class="oddeven">';
 		print '<td>';
 		if (isset($desc['old_pdf'])) {
@@ -159,25 +159,25 @@ if (empty($conf->use_javascript_ajax)) {
 
 		print '<td class="center">';
 		$value_title = getDolGlobalInt($constante_title, 0);
-		print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action='.$constante_title.'&token='.newToken().'">';
-		print $value_title == 0 ? img_picto($langs->trans("Disabled"), 'switch_off') : img_picto($langs->trans("Enabled"), 'switch_on').'</a>';
+		print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?action=' . $constante_title . '&token=' . newToken() . '">';
+		print $value_title == 0 ? img_picto($langs->trans("Disabled"), 'switch_off') : img_picto($langs->trans("Enabled"), 'switch_on') . '</a>';
 		print '</td>';
 
 		print '<td class="center">';
 		$value_subtotal = getDolGlobalInt($constante_subtotal, 0);
-		print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action='.$constante_subtotal.'&token='.newToken().'">';
-		print $value_subtotal == 0 ? img_picto($langs->trans("Disabled"), 'switch_off') : img_picto($langs->trans("Enabled"), 'switch_on').'</a>';
+		print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?action=' . $constante_subtotal . '&token=' . newToken() . '">';
+		print $value_subtotal == 0 ? img_picto($langs->trans("Disabled"), 'switch_off') : img_picto($langs->trans("Enabled"), 'switch_on') . '</a>';
 		print '</td>';
 
 		print '<td class="center">';
 		$can_modify = !($value_subtotal == 0 && $value_title == 0);
-		print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'" >';
-		print '<input type="hidden" name="token" value="'.newToken().'">';
-		print '<input type="hidden" name="action" value="SUBTOTAL_'.$const.'_MAX_DEPTH">';
+		print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '" >';
+		print '<input type="hidden" name="token" value="' . newToken() . '">';
+		print '<input type="hidden" name="action" value="SUBTOTAL_' . $const . '_MAX_DEPTH">';
 		print '<input size="3" type="text"';
 		print $can_modify ? '' : ' disabled="disabled" ';
-		print 'name="SUBTOTAL_'.$const.'_MAX_DEPTH" value="'.getDolGlobalString('SUBTOTAL_'.$const.'_MAX_DEPTH', $can_modify ? 2 : 0).'">';
-		print $can_modify ? '<input type="submit" class="button button-edit reposition smallpaddingimp" name="Button"value="'.$langs->trans("Modify").'">' : '';
+		print 'name="SUBTOTAL_' . $const . '_MAX_DEPTH" value="' . getDolGlobalString('SUBTOTAL_' . $const . '_MAX_DEPTH', $can_modify ? 2 : 0) . '">';
+		print $can_modify ? '<input type="submit" class="button button-edit reposition smallpaddingimp" name="Button"value="' . $langs->trans("Modify") . '">' : '';
 		print '</form>';
 		print '</td>';
 
@@ -188,28 +188,28 @@ if (empty($conf->use_javascript_ajax)) {
 
 	// Other options
 
-	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
-	print '<input type="hidden" name="token" value="'.newToken().'">';
+	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
+	print '<input type="hidden" name="token" value="' . newToken() . '">';
 	print '<input type="hidden" name="action" value="update_colors">';
 
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
-	print '<td>'.$langs->trans("Other").'</td>';
+	print '<td>' . $langs->trans("Other") . '</td>';
 	print '<td></td>';
 	print "</tr>\n";
 
 	foreach ($colors as $key => $value) {
 		print '<tr class="oddeven">';
-		print '<td>'.$langs->trans("SubtotalLineBackColor", $value['level']).'</td>';
+		print '<td>' . $langs->trans("SubtotalLineBackColor", $value['level']) . '</td>';
 		print '<td class="center width250">';
-		print $formother->selectColor(colorArrayToHex(colorStringToArray($value['color'], array()), $default), $key, '', 1, array(), '', '', $default).' ';
-		print ' &nbsp; <span class="nowraponall opacitymedium">'.$langs->trans("Default").'</span>: <strong>'.$default.'</strong>';
-		print $form->textwithpicto('', $langs->trans("NotSupportedByAllThemes").', '.$langs->trans("PressF5AfterChangingThis"));
+		print $formother->selectColor(colorArrayToHex(colorStringToArray($value['color'], array()), $default), $key, '', 1, array(), '', '', $default) . ' ';
+		print ' &nbsp; <span class="nowraponall opacitymedium">' . $langs->trans("Default") . '</span>: <strong>' . $default . '</strong>';
+		print $form->textwithpicto('', $langs->trans("NotSupportedByAllThemes") . ', ' . $langs->trans("PressF5AfterChangingThis"));
 		print '</td>';
 		print '</tr>';
 	}
 
-	print '</table>'."\n";
+	print '</table>' . "\n";
 }
 
 print '<div class="center">';
