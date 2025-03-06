@@ -61,7 +61,7 @@ trait CommonSubtotal
 	 * @phan-suppress PhanUndeclaredMethod
 	 * @phan-suppress PhanUndeclaredProperty
 	 */
-	public function addSubtotalLine($langs, $desc, $depth, $options)
+	public function addSubtotalLine($langs, $desc, $depth, $options = array(), $parent_line = 0)
 	{
 		if (empty($desc)) {
 			if (isset($this->errors)) {
@@ -71,7 +71,7 @@ trait CommonSubtotal
 		}
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
-		$allowed_types = array('propal', 'commande', 'facture', 'facturerec');
+		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping');
 		if (!in_array($current_module, $allowed_types)) {
 			if (isset($this->errors)) {
 				$this->errors[] = $langs->trans("UnsupportedModuleError");
@@ -84,7 +84,7 @@ trait CommonSubtotal
 		$next_line = false;
 		$result = 0;
 
-		if ($depth<0) {
+		if ($depth < 0 && $current_module != 'shipping') {
 			foreach ($this->lines as $line) {
 				if (!$next_line && $line->desc == $desc && $line->qty == -$depth) {
 					$next_line = true;
@@ -101,7 +101,7 @@ trait CommonSubtotal
 			}
 		}
 
-		if ($depth>0) {
+		if ($depth > 0 && $current_module != 'shipping') {
 			$max_existing_level = 0;
 
 			foreach ($this->lines as $line) {
@@ -179,6 +179,12 @@ trait CommonSubtotal
 				$rang,					// Rang @phpstan-ignore-line
 				SUBTOTALS_SPECIAL_CODE	// Special code @phpstan-ignore-line
 			);
+		} elseif ($current_module == 'shipping') {
+			$result = $this->addline( // @phpstan-ignore-line
+				'',						// Warehouse ID @phpstan-ignore-line
+				(int) $parent_line,		// Source line @phpstan-ignore-line
+				$depth					// Quantity @phpstan-ignore-line
+			);
 		} elseif ($current_module == 'facturerec') {
 			$rang = $rang == -1 ? $rang : $rang-1;
 			$result = $this->addline( // @phpstan-ignore-line
@@ -202,7 +208,10 @@ trait CommonSubtotal
 		}
 
 		foreach ($this->lines as $line) {
-			if ($line->id == $result) {
+			if ($current_module == 'shipping' && $line->origin_line_id == $parent_line) {
+				$line->extraparams["subtotal"] = $options;
+				$line->setExtraParameters();
+			} elseif ($line->id == $result) {
 				$line->extraparams["subtotal"] = $options;
 				$line->setExtraParameters();
 			}
@@ -232,7 +241,7 @@ trait CommonSubtotal
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
-		$allowed_types = array('propal', 'commande', 'facture', 'facturerec');
+		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping');
 		if (!in_array($current_module, $allowed_types)) {
 			if (isset($this->errors)) {
 				$this->errors[] = $langs->trans("UnsupportedModuleError");
@@ -292,7 +301,7 @@ trait CommonSubtotal
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
-		$allowed_types = array('propal', 'commande', 'facture', 'facturerec');
+		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping');
 		if (!in_array($current_module, $allowed_types)) {
 			if (isset($this->errors)) {
 				$this->errors[] = $langs->trans("UnsupportedModuleError");
@@ -455,7 +464,7 @@ trait CommonSubtotal
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
-		$allowed_types = array('propal', 'commande', 'facture', 'facturerec');
+		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping');
 		if (!in_array($current_module, $allowed_types)) {
 			if (isset($this->errors)) {
 				$this->errors[] = $langs->trans("UnsupportedModuleError");

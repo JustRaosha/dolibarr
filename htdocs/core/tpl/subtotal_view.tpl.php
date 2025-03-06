@@ -57,7 +57,7 @@ $langs->load('subtotals');
 // Base colspan if there is no module activated to display line correctly
 $colspan = $object->element != 'facturerec' ? 3 : 2;
 
-$line_options = $line->extraparams["subtotal"];
+$line_options = $line->extraparams["subtotal"] ?? array();
 
 // Handling colspan if margin module is enabled
 if (!empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande')) && isModEnabled('margin') && empty($user->socid)) {

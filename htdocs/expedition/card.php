@@ -400,6 +400,7 @@ if (empty($reshook)) {
 
 		//var_dump($batch_line[2]);
 		if (($totalqty > 0 || getDolGlobalString('SHIPMENT_GETS_ALL_ORDER_PRODUCTS')) && !$error) {		// There is at least one thing to ship and no error
+			$selected_subtotal_lines = GETPOST('subtotal_toselect', 'array');
 			for ($i = 0; $i < $num; $i++) {
 				$qty = "qtyl".$i;
 
@@ -434,6 +435,9 @@ if (empty($reshook)) {
 								setEventMessages($object->error, $object->errors, 'errors');
 								$error++;
 							}
+						}
+						if (isModEnabled('subtotals') && $objectsrc->lines[$i]->special_code == SUBTOTALS_SPECIAL_CODE && in_array($objectsrc->lines[$i]->id, $selected_subtotal_lines)) {
+							$object->addSubtotalLine($langs, $objectsrc->lines[$i]->desc, (int) $objectsrc->lines[$i]->qty, $objectsrc->lines[$i]->extraparams, $objectsrc->lines[$i]->id);
 						}
 					}
 				} else {
@@ -1189,8 +1193,21 @@ if ($action == 'create') {
 			$alreadyQtyBatchSetted = $alreadyQtySetted = array();
 
 			if ($numAsked) {
+				if (isModEnabled('subtotals')) {
+					foreach ($object->lines as $line) {
+						if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
+							$show_check_add_buttons = true;
+							break;
+						}
+					}
+				}
 				print '<tr class="liste_titre">';
-				print '<td>'.$langs->trans("Description").'</td>';
+				print '<td>';
+				if (isset($show_check_add_buttons)) {
+					print $form->showCheckAddButtons('checkforselect');
+				}
+				print $langs->trans("Description");
+				print '</td>';
 				print '<td class="center">'.$langs->trans("QtyOrdered").'</td>';
 				print '<td class="center">'.$langs->trans("QtyShipped").'</td>';
 				print '<td class="center">'.$langs->trans("QtyToShip");
@@ -1236,7 +1253,7 @@ if ($action == 'create') {
 					setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 				}
 
-				if (empty($reshook)) {
+				if (empty($reshook) && $line->special_code != SUBTOTALS_SPECIAL_CODE) {
 					// Show product and description
 					$type = $line->product_type ? $line->product_type : $line->fk_product_type;
 					// Try to enhance type detection using date_start and date_end for free lines where type
@@ -1858,6 +1875,8 @@ if ($action == 'create') {
 
 						print $expLine->showOptionals($extrafields, 'edit', array('style' => 'class="drag drop oddeven"', 'colspan' => $colspan), (string) $indiceAsked, '', '1');
 					}
+				} elseif ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
+					require dol_buildpath('/core/tpl/subtotalline_select.tpl.php');
 				}
 
 				$indiceAsked++;
@@ -2418,7 +2437,7 @@ if ($action == 'create') {
 			setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 		}
 
-		if (empty($reshook)) {
+		if (empty($reshook) && empty($lines[$i]->product_type)) {
 			print '<!-- origin line id = '.$lines[$i]->origin_line_id.' -->'; // id of order line
 			print '<tr class="oddeven" id="row-'.$lines[$i]->id.'" data-id="'.$lines[$i]->id.'" data-element="'.$lines[$i]->element.'" >';
 
@@ -2762,6 +2781,12 @@ if ($action == 'create') {
 				} else {
 					print $lines[$i]->showOptionals($extrafields, 'view', array('colspan' => $colspan), !empty($indiceAsked) ? $indiceAsked : '', '', '', 'card');
 				}
+			}
+		} elseif ($lines[$i]->product_type == "9") {
+			$objectsrc = new OrderLine($db);
+			$objectsrc->fetch($lines[$i]->origin_line_id);
+			if ($objectsrc->special_code == SUBTOTALS_SPECIAL_CODE) {
+				require dol_buildpath('/core/tpl/subtotal_expedition_view.tpl.php');
 			}
 		}
 	}
