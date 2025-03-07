@@ -37,13 +37,16 @@ if (empty($conf) || !is_object($conf)) {
 @phan-var-force PropaleLigne|ContratLigne|CommonObjectLine|CommonInvoiceLine|CommonOrderLine|ExpeditionLigne|DeliveryLine|FactureFournisseurLigneRec|SupplierInvoiceLine|SupplierProposalLine $line
 ';
 
-$classname = ucfirst($line->element_type);
-$objectsrc = new $classname($this->db);
-$objectsrc_line = new $objectsrc->class_element_line($this->db);
+if ($line->element == 'shipping') {
+	$classname = ucfirst($line->element_type);
+	$objectsrc = new $classname($this->db);
+	$objectsrc_line = new $objectsrc->class_element_line($this->db);
+	$objectsrc_line->fetch($line->origin_line_id);
+	$tpl = ($objectsrc_line->special_code == SUBTOTALS_SPECIAL_CODE);
+}
 
-$objectsrc_line->fetch($line->origin_line_id);
 // Handle subtotals line edit
-if ($line->special_code == SUBTOTALS_SPECIAL_CODE || $objectsrc_line->special_code == SUBTOTALS_SPECIAL_CODE) {
+if ($line->special_code == SUBTOTALS_SPECIAL_CODE || $tpl) {
 	return require DOL_DOCUMENT_ROOT.'/core/tpl/originsubtotalline.tpl.php';
 }
 

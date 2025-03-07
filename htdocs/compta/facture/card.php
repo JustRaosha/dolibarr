@@ -1967,6 +1967,8 @@ if (empty($reshook)) {
 
 						$object->update_price(1, 'auto', 0, $mysoc);
 
+						$object->line_order(true, 'DESC');
+
 						// Now we create same links to contact than the ones found on origin object
 						/* Useless, already into the create
 						if (getDolGlobalString('MAIN_PROPAGATE_CONTACTS_FROM_ORIGIN')) {

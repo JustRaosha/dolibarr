@@ -577,7 +577,11 @@ trait CommonSubtotal
 	{
 		$final_amount = 0;
 		for ($i = $line->rang-1; $i > 0; $i--) {
-			if ($this->lines[$i-1]->special_code == SUBTOTALS_SPECIAL_CODE && $this->lines[$i-1]->qty>0) {
+			if (is_null($this->lines[$i-1])){
+				continue;
+			}
+			if ($this->lines[$i-1]->special_code == SUBTOTALS_SPECIAL_CODE && $this->lines[$i-1]->qty > 0) {
+
 				if ($this->lines[$i-1]->qty <= abs($line->qty)) {
 					return price($final_amount);
 				}
