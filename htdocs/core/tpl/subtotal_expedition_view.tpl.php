@@ -1,10 +1,22 @@
 <?php
-print '<!-- origin line id = ' . $lines[$i]->origin_line_id . ' -->'; // id of order line
+if (!empty($line->origin_line_id)) {
+	print '<!-- subtotal origin line id = ' . $line->origin_line_id . ' -->'; // id of order line
+	$id = $line->id;
+	$element = $line->element;
+	$desc = $line->desc;
+	$line_options = $line->extraparams["subtotal"] ?? array();
+} else {
+	print '<!-- subtotal commande line id = ' . $line->rowid . ' -->'; // id of order line
+	$id = $line->rowid;
+	$element = "commande";
+	$desc = $line->description;
+	$extraparams = (array) json_decode($line->extraparams, true) ?? array();
+	$line_options = $extraparams["subtotal"] ?? array();
+}
 
 $langs->load('subtotals');
 
-$line_color = $object->getSubtotalColors($lines[$i]->qty);
-$line_options = $lines[$i]->extraparams["subtotal"] ?? array();
+$line_color = $object->getSubtotalColors($line->qty);
 $colspan = 8;
 
 if (isModEnabled('productbatch')) {
@@ -14,18 +26,16 @@ if (isModEnabled('stock')) {
 	$colspan++;
 }
 
-print '<tr id="row-' . $lines[$i]->id . '" data-id="' . $lines[$i]->id . '" data-element="' . $lines[$i]->element . '" style="background:#' . $line_color . '" >';
+print '<tr id="row-' . $id . '" data-id="' . $id . '" data-element="' . $element . '" style="background:#' . $line_color . '" >';
 
 if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 	print '<td class="center linecolnum">' . ($i + 1) . '</td>';
 }
 
-//print '<td class="linecoldescription" colspan="' . $colspan . '">' . $lines[$i]->description . "</td>\n";
-
-if ($lines[$i]->qty > 0) { ?>
-	<td class="linecollabel" colspan="<?php echo $colspan ?>" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?>><?php echo str_repeat('&nbsp;', (int)($lines[$i]->qty - 1) * 8); ?>
+if ($line->qty > 0) { ?>
+	<td class="linecollabel" colspan="<?php echo $colspan ?>" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?>><?php echo str_repeat('&nbsp;', (int)($line->qty - 1) * 8); ?>
 		<?php
-		echo $lines[$i]->desc;
+		echo $desc;
 		if ($line_options) {
 			if (!empty($line_options['titleshowuponpdf'])) {
 				echo '&nbsp;' . img_picto($langs->trans("ShowUPOnPDF"), 'invoicing');
@@ -39,10 +49,10 @@ if ($lines[$i]->qty > 0) { ?>
 		}
 		?>
 	</td>
-<?php } elseif ($lines[$i]->qty < 0) { ?>
+<?php } elseif ($line->qty < 0) { ?>
 <td class="linecollabel nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?> colspan="<?php echo $colspan ?>">
 	<?php
-	echo $lines[$i]->desc;
+	echo $desc;
 	if (!empty($line_options['subtotalshowtotalexludingvatonpdf'])) {
 		echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
 	}

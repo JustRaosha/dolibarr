@@ -1885,7 +1885,7 @@ if ($action == 'create') {
 
 						print $expLine->showOptionals($extrafields, 'edit', array('style' => 'class="drag drop oddeven"', 'colspan' => $colspan), (string) $indiceAsked, '', '1');
 					}
-				} elseif ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
+				} elseif (empty($reshook) && $line->special_code == SUBTOTALS_SPECIAL_CODE) {
 					require dol_buildpath('/core/tpl/subtotalline_select.tpl.php');
 				}
 
@@ -2792,10 +2792,11 @@ if ($action == 'create') {
 					print $lines[$i]->showOptionals($extrafields, 'view', array('colspan' => $colspan), !empty($indiceAsked) ? $indiceAsked : '', '', '', 'card');
 				}
 			}
-		} elseif ($lines[$i]->product_type == "9") {
+		} elseif (empty($reshook) && $lines[$i]->product_type == "9") {
 			$objectsrc = new OrderLine($db);
 			$objectsrc->fetch($lines[$i]->origin_line_id);
 			if ($objectsrc->special_code == SUBTOTALS_SPECIAL_CODE) {
+				$line = $lines[$i];
 				require dol_buildpath('/core/tpl/subtotal_expedition_view.tpl.php');
 			}
 		}
