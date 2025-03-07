@@ -207,13 +207,12 @@ trait CommonSubtotal
 			$this->fetch_lines();
 		}
 
-		foreach ($this->lines as $line) {
-			if ($current_module == 'shipping' && $line->origin_line_id == $parent_line) {
-				$line->extraparams["subtotal"] = $options;
-				$line->setExtraParameters();
-			} elseif ($line->id == $result) {
-				$line->extraparams["subtotal"] = $options;
-				$line->setExtraParameters();
+		if ($current_module != 'shipping') {
+			foreach ($this->lines as $line) {
+				if ($line->id == $result) {
+					$line->extraparams["subtotal"] = $options;
+					$line->setExtraParameters();
+				}
 			}
 		}
 

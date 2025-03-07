@@ -475,6 +475,16 @@ if (empty($reshook)) {
 
 		if (!$error) {
 			$db->commit();
+			$object->fetch_lines();
+			foreach ($object->lines as $line) {
+				$objectsrc_line = new $objectsrc->class_element_line($db);
+
+				$objectsrc_line->fetch($line->origin_line_id);
+
+				$line->extraparams = $objectsrc_line->extraparams;
+
+				$line->setExtraParameters();
+			}
 			header("Location: card.php?id=".$object->id);
 			exit;
 		} else {
