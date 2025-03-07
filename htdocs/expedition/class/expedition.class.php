@@ -1849,8 +1849,6 @@ class Expedition extends CommonObject
 
 				$line->special_code     = $obj->special_code;
 
-				$line->extraparams = !empty($obj->extraparams) ? (array) json_decode($obj->extraparams, true) : array();
-
 				// Multicurrency
 				$this->fk_multicurrency = $obj->fk_multicurrency;
 				$this->multicurrency_code = $obj->multicurrency_code;
