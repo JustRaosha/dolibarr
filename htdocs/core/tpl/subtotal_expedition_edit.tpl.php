@@ -21,7 +21,7 @@
 /**
  * @var CommonObject $this
  * @var CommonObject $object
- * @var CommonObjectLine $line
+ * @var array<CommonObjectLine> $lines
  * @var Form $form
  * @var HookManager $hookmanager
  * @var Translate $langs
@@ -39,7 +39,7 @@
 ';
 
 // Options for subtotal
-$sub_options = $line->extraparams["subtotal"] ?? array();
+$sub_options = $lines[$i]->extraparams["subtotal"] ?? array();
 
 $titleshowuponpdf = !empty($sub_options['titleshowuponpdf']);
 $titleshowtotalexludingvatonpdf = !empty($sub_options['titleshowtotalexludingvatonpdf']);
@@ -54,7 +54,7 @@ $line_options = array(
 );
 
 // Line type
-$line_type = $line->qty > 0 ? 'title' : 'subtotal';
+$line_type = $lines[$i]->qty > 0 ? 'title' : 'subtotal';
 
 print "<!-- BEGIN PHP TEMPLATE subtotal_edit.tpl.php -->\n";
 
@@ -98,18 +98,17 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 ?>
 
 <td class="linecoldesc minwidth250onall">
-	<div id="line_<?php echo $line->id; ?>"></div>
 
-	<input type="hidden" name="lineid" value="<?php echo $line->id; ?>">
-	<input type="hidden" id="product_type" name="type" value="<?php echo $line->product_type; ?>">
-	<input type="hidden" id="special_code" name="special_code" value="<?php echo $line->special_code; ?>">
-	<input type="hidden" id="fk_parent_line" name="fk_parent_line" value="<?php echo $line->fk_parent_line; ?>">
+	<input type="hidden" name="lineid" value="<?php echo $lines[$i]->id; ?>">
+	<input type="hidden" id="product_type" name="type" value="<?php echo $lines[$i]->product_type; ?>">
+	<input type="hidden" id="special_code" name="special_code" value="<?php echo $lines[$i]->special_code; ?>">
+	<input type="hidden" id="fk_parent_line" name="fk_parent_line" value="<?php echo $lines[$i]->fk_parent_line; ?>">
 	<input type="hidden" name="action" value="update<?php echo $line_type ?>line">
 
 	<?php
 
 	$situationinvoicelinewithparent = 0;
-	if ($line->fk_prev_id != null && in_array($object->element, array('facture', 'facturedet'))) {
+	if ($lines[$i]->fk_prev_id != null && in_array($object->element, array('facture', 'facturedet'))) {
 		/** @var CommonInvoice $object */
 		// @phan-suppress-next-line PhanUndeclaredConstantOfClass
 		if ($object->type == $object::TYPE_SITUATION) {    // The constant TYPE_SITUATION exists only for object invoice
@@ -129,17 +128,17 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 
 	if (!$situationinvoicelinewithparent) {
 		print '<input type="text" name="line_desc" class="marginrightonly" id="line_desc" value="';
-		print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $line->description . '"';
+		print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $lines[$i]->description . '"';
 		$disabled = 0;
 		if ($line_type == 'subtotal') {
 			print ' readonly="readonly"';
 			$disabled = 1;
 		}
 		print '>';
-		$depth_array = $this->getPossibleLevels($langs);
-		print $form->selectarray('line_depth', $depth_array, abs($line->qty), 0, 0, 0, '', 0, 0, $disabled);
+		$depth_array = $object->getPossibleLevels($langs);
+		print $form->selectarray('line_depth', $depth_array, abs($lines[$i]->qty), 0, 0, 0, '', 0, 0, $disabled);
 		if ($disabled) {
-			print '<input type="hidden" name="line_depth" value="' . $line->qty . '">';
+			print '<input type="hidden" name="line_depth" value="' . $lines[$i]->qty . '">';
 		}
 		print '<div><ul class="ecmjqft">';
 		foreach ($line_options as $key => $value) {
@@ -154,7 +153,7 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 		print '<td colspan="' . $colspan . '" class="right"></td>';
 	} else {
 		print '<input type="text" readonly name="line_desc" id="line_desc" value="';
-		print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $line->description;
+		print GETPOSTISSET('product_desc') ? GETPOST('product_desc', 'restricthtml') : $lines[$i]->description;
 		print '"></td>';
 	}
 	?>

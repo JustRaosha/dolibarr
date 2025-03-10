@@ -276,6 +276,10 @@ trait CommonSubtotal
 			$line = new FactureLigneRec($this->db);
 			$line->id = $id;
 			$result = $line->delete($user); // @phpstan-ignore-line
+		} elseif ($current_module == 'shipping') {
+			$line = new ExpeditionLigne($this->db);
+			$line->id = $id;
+			$result = $line->delete($user); // @phpstan-ignore-line
 		}
 
 		return $result >= 0 ? $result : -1; // Return line ID or false
