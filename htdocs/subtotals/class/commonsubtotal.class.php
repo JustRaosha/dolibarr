@@ -671,4 +671,41 @@ trait CommonSubtotal
 		}
 		return $depth_array;
 	}
+
+	/**
+	 *
+	 * @return array<int>	$total_ht
+	 *
+	 * @phan-suppress PhanUndeclaredProperty
+	 */
+	public function getDisabledShippmentSubtotalLines()
+	{
+		$disabledLines = array();
+
+		$oldDesc = "";
+		$oldDepth =  0;
+		$tempLines = array();
+		$addLines = true;
+		foreach ($this->lines as $line) {
+			if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
+				$tempLines[] = $line->id;
+			}
+			if ($line->special_code != SUBTOTALS_SPECIAL_CODE && $line->fk_product_type == 0) {
+				$addLines = false;
+			}
+			if (empty($oldDesc) && empty($oldDepth) && $line->special_code == SUBTOTALS_SPECIAL_CODE) {
+				$oldDesc = $line->desc;
+				$oldDepth = $line->qty;
+			}
+			if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
+				$oldDesc = "";
+				$oldDepth =  0;
+				if ($addLines) {
+					$disabledLines = array_merge($disabledLines, $tempLines);
+				}
+				$addLines = true;
+			}
+		}
+		return $disabledLines;
+	}
 }

@@ -1233,6 +1233,7 @@ if ($action == 'create') {
 
 			if ($numAsked) {
 				if (isModEnabled('subtotals')) {
+					$title_lines_to_disable = $object->getDisabledShippmentSubtotalLines();
 					foreach ($object->lines as $line) {
 						if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
 							$show_check_add_buttons = true;
@@ -1929,7 +1930,7 @@ if ($action == 'create') {
 
 						print $expLine->showOptionals($extrafields, 'edit', array('style' => 'class="drag drop oddeven"', 'colspan' => $colspan), (string) $indiceAsked, '', '1');
 					}
-				} elseif (empty($reshook) && $line->special_code == SUBTOTALS_SPECIAL_CODE) {
+				} elseif (empty($reshook) && $line->special_code == SUBTOTALS_SPECIAL_CODE && !in_array($line->id, $title_lines_to_disable)) {
 					require dol_buildpath('/core/tpl/subtotalline_select.tpl.php');
 				}
 
