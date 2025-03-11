@@ -673,13 +673,17 @@ trait CommonSubtotal
 	}
 
 	/**
-	 *getDisabledShippmentSubtotalLines
+	 * Returns an array with the IDs of the line that we don't need to show to avoid empty blocks
+	 *
 	 * @return array<int>	$total_ht
 	 *
 	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function getDisabledShippmentSubtotalLines()
 	{
+		if (getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
+			return array();
+		}
 		$toDisableLines = array();
 		$toDisable = true;
 		$oldDesc = "";
@@ -687,7 +691,6 @@ trait CommonSubtotal
 
 		foreach ($this->lines as $titleLine) {
 			if ($titleLine->special_code != SUBTOTALS_SPECIAL_CODE || $titleLine->qty <= 0) {
-//				var_dump($titleLine->desc . " " . $titleLine->qty . " " . $titleLine->special_code);
 				continue;
 			}
 			foreach ($this->lines as $line) {

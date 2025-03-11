@@ -504,6 +504,7 @@ class Expedition extends CommonObject
 						if ($this->create_line($this->lines[$i]->entrepot_id, $this->lines[$i]->origin_line_id, $this->lines[$i]->qty, $this->lines[$i]->rang, $this->lines[$i]->array_options) <= 0) {
 							$error++;
 						}
+						continue;
 					}
 					if (empty($this->lines[$i]->product_type) || getDolGlobalString('STOCK_SUPPORTS_SERVICES') || getDolGlobalString('SHIPMENT_SUPPORTS_SERVICES')) {
 						if (!isset($this->lines[$i]->detail_batch)) {	// no batch management
