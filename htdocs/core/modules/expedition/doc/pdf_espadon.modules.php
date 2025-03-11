@@ -748,7 +748,7 @@ class pdf_espadon extends ModelePdfExpedition
 						$nexY = max($pdf->GetY(), $nexY);
 					}
 
-					if ($this->getColumnStatus('subprice') && $object->lines[$i]->special_code != SUBTOTALS_SPECIAL_CODE){
+					if ($this->getColumnStatus('subprice') && $object->lines[$i]->special_code != SUBTOTALS_SPECIAL_CODE) {
 						$this->printStdColumnContent($pdf, $curY, 'subprice', price($object->lines[$i]->subprice, 0, $outputlangs));
 						$nexY = max($pdf->GetY(), $nexY);
 					}

@@ -34,7 +34,7 @@ if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 }
 
 if ($line->qty > 0) { ?>
-	<td class="linecollabel" colspan="<?php echo $colspan ?>" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?>><?php echo str_repeat('&nbsp;', (int)($line->qty - 1) * 8); ?>
+	<td class="linecollabel" colspan="<?php echo $colspan ?>" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?>><?php echo str_repeat('&nbsp;', (int) ($line->qty - 1) * 8); ?>
 		<?php
 		echo $desc;
 		if ($line_options) {
@@ -62,7 +62,7 @@ if ($line->qty > 0) { ?>
 <?php }
 
 if (isset($buttons)) {
-// Delete picto
+	// Delete picto
 	echo '<td class="linecoldelete center">';
 	echo '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=ask_subtotal_deleteline&token=' . newToken() . '&lineid=' . $id;
 	if ($line->qty > 0) {

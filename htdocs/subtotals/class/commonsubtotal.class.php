@@ -52,10 +52,11 @@ trait CommonSubtotal
 	 * Adds a subtotals line to a document.
 	 * This function inserts a subtotal line based on the given parameters.
 	 *
-	 * @param Translate						$langs  	Translation.
-	 * @param string						$desc		Description of the line.
-	 * @param int							$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
-	 * @param array<string,string>|string	$options	Subtotal options for pdf view
+	 * @param Translate						$langs  		Translation.
+	 * @param string						$desc			Description of the line.
+	 * @param int							$depth			Level of the line (>0 for title lines, <0 for subtotal lines)
+	 * @param array<string,string>|string	$options		Subtotal options for pdf view
+	 * @param int							$parent_line	ID of the parent line for shipments
 	 * @return int									ID of the added line if successful, 0 on warning, -1 on error
 	 *
 	 * @phan-suppress PhanUndeclaredMethod
@@ -581,7 +582,7 @@ trait CommonSubtotal
 	{
 		$final_amount = 0;
 		for ($i = $line->rang-1; $i > 0; $i--) {
-			if (is_null($this->lines[$i-1]) || $this->lines[$i-1]->rang >= $line->rang){
+			if (is_null($this->lines[$i-1]) || $this->lines[$i-1]->rang >= $line->rang) {
 				continue;
 			}
 			if ($this->lines[$i-1]->special_code == SUBTOTALS_SPECIAL_CODE && $this->lines[$i-1]->qty > 0) {
@@ -608,7 +609,7 @@ trait CommonSubtotal
 	{
 		$final_amount = 0;
 		for ($i = $line->rang-1; $i > 0; $i--) {
-			if (is_null($this->lines[$i-1]) || $this->lines[$i-1]->rang >= $line->rang){
+			if (is_null($this->lines[$i-1]) || $this->lines[$i-1]->rang >= $line->rang) {
 				continue;
 			}
 			if ($this->lines[$i-1]->special_code == SUBTOTALS_SPECIAL_CODE && $this->lines[$i-1]->qty>0) {
