@@ -673,39 +673,42 @@ trait CommonSubtotal
 	}
 
 	/**
-	 *
+	 *getDisabledShippmentSubtotalLines
 	 * @return array<int>	$total_ht
 	 *
 	 * @phan-suppress PhanUndeclaredProperty
 	 */
 	public function getDisabledShippmentSubtotalLines()
 	{
-		$disabledLines = array();
-
+		$toDisableLines = array();
+		$toDisable = true;
 		$oldDesc = "";
 		$oldDepth =  0;
-		$tempLines = array();
-		$addLines = true;
-		foreach ($this->lines as $line) {
-			if ($line->special_code == SUBTOTALS_SPECIAL_CODE) {
-				$tempLines[] = $line->id;
+
+		foreach ($this->lines as $titleLine) {
+			if ($titleLine->special_code != SUBTOTALS_SPECIAL_CODE || $titleLine->qty <= 0) {
+//				var_dump($titleLine->desc . " " . $titleLine->qty . " " . $titleLine->special_code);
+				continue;
 			}
-			if ($line->special_code != SUBTOTALS_SPECIAL_CODE && $line->fk_product_type == 0) {
-				$addLines = false;
-			}
-			if (empty($oldDesc) && empty($oldDepth) && $line->special_code == SUBTOTALS_SPECIAL_CODE) {
-				$oldDesc = $line->desc;
-				$oldDepth = $line->qty;
-			}
-			if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
-				$oldDesc = "";
-				$oldDepth =  0;
-				if ($addLines) {
-					$disabledLines = array_merge($disabledLines, $tempLines);
+			foreach ($this->lines as $line) {
+				if ($line->id == $titleLine->id) {
+					$oldDesc = $line->desc;
+					$oldDepth = $line->qty;
 				}
-				$addLines = true;
+				if ($line->special_code != SUBTOTALS_SPECIAL_CODE && $line->fk_product_type == 0 && !empty($oldDesc) && !empty($oldDepth)) {
+					$toDisable = false;
+				}
+				if ($line->special_code == SUBTOTALS_SPECIAL_CODE && $line->qty == -$oldDepth && $line->desc == $oldDesc) {
+					if ($toDisable) {
+						$toDisableLines = array_merge($toDisableLines, array($titleLine->id, $line->id));
+					}
+					$oldDesc = "";
+					$oldDepth =  0;
+					$toDisable = true;
+					break;
+				}
 			}
 		}
-		return $disabledLines;
+		return $toDisableLines;
 	}
 }
