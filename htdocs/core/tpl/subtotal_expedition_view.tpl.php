@@ -18,7 +18,7 @@ if (!empty($line->origin_line_id)) {
 $langs->load('subtotals');
 
 $line_color = $object->getSubtotalColors($line->qty);
-$colspan = 6;
+$colspan = 7;
 
 if (isModEnabled('productbatch')) {
 	$colspan++;
@@ -62,16 +62,6 @@ if ($line->qty > 0) { ?>
 <?php }
 
 if (isset($buttons)) {
-	// Edit picto
-	echo '<td class="linecoledit center">';
-	echo '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=editline&token=' . newToken() . '&lineid=' . $id . '">';
-	if (!colorIsLight($line_color)) {
-		echo img_edit('default', 0, 'style="color: white"');
-	} else {
-		echo img_edit('default', 0, 'style="color: #666"');
-	}
-	echo '</a> </td>';
-
 // Delete picto
 	echo '<td class="linecoldelete center">';
 	echo '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=ask_subtotal_deleteline&token=' . newToken() . '&lineid=' . $id;
