@@ -682,9 +682,6 @@ trait CommonSubtotal
 	 */
 	public function getDisabledShippmentSubtotalLines()
 	{
-		if (getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
-			return array();
-		}
 		$toDisableLines = array();
 		$toDisable = true;
 		$oldDesc = "";
