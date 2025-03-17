@@ -319,7 +319,7 @@ if (empty($reshook)) {
 		$object->fetch($id);
 		$object->fetch_thirdparty();
 
-		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline', 'alphanohtml'));
+		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), (bool) GETPOST('deletecorrespondingsubtotalline'));
 		if ($result > 0) {
 			// reorder lines
 			$object->line_order(true);
@@ -1100,7 +1100,7 @@ if (empty($reshook)) {
 		}
 
 		// Insert line
-		$result = $object->addSubtotalLine($langs, $desc, $depth, $subtotal_options);
+		$result = $object->addSubtotalLine($langs, $desc, (int) $depth, $subtotal_options);
 
 		if ($result >= 0) {
 			if ($result == 0) {
@@ -1152,7 +1152,7 @@ if (empty($reshook)) {
 
 		// Insert line
 		if (isset($desc) && isset($depth)) {
-			$result = $object->addSubtotalLine($langs, $desc, $depth, $subtotal_options);
+			$result = $object->addSubtotalLine($langs, $desc, (int) $depth, $subtotal_options);
 		} else {
 			$object->errors[] = $langs->trans("CorrespondingTitleNotFound");
 		}

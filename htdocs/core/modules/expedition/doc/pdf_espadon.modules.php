@@ -575,7 +575,7 @@ class pdf_espadon extends ModelePdfExpedition
 
 					$sub_options = $object->lines[$i]->extraparams["subtotal"] ?? array();
 
-					if (($curY + 6) > ($this->page_hauteur - $heightforfooter) || !empty($sub_options['titleforcepagebreak']) && !($pdf->getNumPages() == 1 && $curY == $tab_top + $this->tabTitleHeight)) {
+					if (($curY + 6) > ($this->page_hauteur - $heightforfooter) || isset($sub_options['titleforcepagebreak']) && !($pdf->getNumPages() == 1 && $curY == $tab_top + $this->tabTitleHeight)) {
 						$pdf->AddPage();
 						if (!empty($tplidx)) {
 							$pdf->useTemplate($tplidx);
@@ -728,7 +728,7 @@ class pdf_espadon extends ModelePdfExpedition
 					}
 
 					// weight and volume
-					if ($this->getColumnStatus('weight' && $object->lines[$i]->special_code != SUBTOTALS_SPECIAL_CODE)) {
+					if ($this->getColumnStatus('weight') && $object->lines[$i]->special_code != SUBTOTALS_SPECIAL_CODE) {
 						$this->printStdColumnContent($pdf, $curY, 'weight', $weighttxt.(($weighttxt && $voltxt) ? '<br>' : '').$voltxt);
 						$nexY = max($pdf->GetY(), $nexY);
 					}

@@ -568,7 +568,7 @@ if (empty($reshook)) {
 		//	}
 		//}
 	} elseif ($action == 'confirm_delete_subtotalline' && $confirm == 'yes' && $permissiontoadd) {
-		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline', 'alphanohtml'), $user);
+		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), (bool) GETPOST('deletecorrespondingsubtotalline'), $user);
 		if ($result > 0) {
 			// reorder lines
 			$object->line_order(true, 'ASC', false);

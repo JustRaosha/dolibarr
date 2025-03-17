@@ -309,7 +309,7 @@ if (empty($reshook)) {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	} elseif ($action == 'confirm_delete_subtotalline' && $confirm == 'yes' && $usercancreate) {
-		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline', 'alphanohtml'), $user);
+		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), (bool) GETPOST('deletecorrespondingsubtotalline'), $user);
 		if ($result > 0) {
 			// reorder lines
 			$object->line_order(true);
@@ -794,7 +794,7 @@ if (empty($reshook)) {
 		}
 
 		// Insert line
-		$result = $object->addSubtotalLine($langs, $desc, $depth, $subtotal_options);
+		$result = $object->addSubtotalLine($langs, $desc, (int) $depth, $subtotal_options);
 
 		if ($result >= 0) {
 			if ($result == 0) {
@@ -846,7 +846,7 @@ if (empty($reshook)) {
 
 		// Insert line
 		if (isset($desc) && isset($depth)) {
-			$result = $object->addSubtotalLine($langs, $desc, $depth, $subtotal_options);
+			$result = $object->addSubtotalLine($langs, $desc, (int) $depth, $subtotal_options);
 		} else {
 			$object->errors[] = $langs->trans("CorrespondingTitleNotFound");
 		}

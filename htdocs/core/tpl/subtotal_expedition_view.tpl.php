@@ -1,4 +1,18 @@
 <?php
+
+/**
+ * @var CommonObject $object
+ * @var CommonObjectLine $line
+ * @var Translate $langs
+ *
+ * @var int $i
+ */
+
+'
+@phan-var-force CommonObjectLine|CommonOrderLine|ExpeditionLigne $line
+@phan-var-force Commande|Expedition $object
+';
+
 if (!empty($line->origin_line_id)) {
 	print '<!-- subtotal origin line id = ' . $line->origin_line_id . ' -->'; // id of order line
 	$id = $line->id;
