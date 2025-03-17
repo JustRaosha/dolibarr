@@ -59,7 +59,6 @@ $default = 'ffffff';
 $modules = array(
 	'PROPAL' => array('lang' => 'propal', 'key' => 'Proposal', 'old_pdf' => '(azur model)'),
 	'COMMANDE' => array('lang' => 'orders', 'key' => 'CustomerOrder', 'old_pdf' => '(einstein model)'),
-	'SHIPPING' => array('lang' => 'sendings', 'key' => 'Sending', 'old_pdf' => '(rouget model)'),
 	'FACTURE' => array('lang' => 'bills', 'key' => 'CustomerInvoice', 'old_pdf' => '(crabe model)'),
 	'FACTUREREC' => array('lang' => 'bills', 'key' => 'RecurringInvoiceTemplate'),
 );
@@ -67,7 +66,6 @@ $modules = array(
 $conditions = array(
 	'PROPAL' => (isModEnabled("propal")),
 	'COMMANDE' => (isModEnabled("order")),
-	'SHIPPING' => (isModEnabled('shipping')),
 	'FACTURE' => (isModEnabled("invoice")),
 	'FACTUREREC' => (isModEnabled("invoice")),
 );
