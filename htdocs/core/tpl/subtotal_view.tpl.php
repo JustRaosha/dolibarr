@@ -24,30 +24,19 @@
  * @var CommonObjectLine $line
  * @var Conf $conf
  * @var Form $form
- * @var HookManager $hookmanager
- * @var ?Product $product_static
  * @var Societe $mysoc
  * @var Translate $langs
  * @var User $user
  *
- * @var 0|1 $forceall
  * @var int $num
- * @var 0|1 $senderissupplier
- * @var string $text
- * @var string $description
  * @var int $i
  */
 
 '
-@phan-var-force PropaleLigne|ContratLigne|CommonObjectLine|CommonInvoiceLine|CommonOrderLine|ExpeditionLigne|DeliveryLine|FactureFournisseurLigneRec|SupplierInvoiceLine|SupplierProposalLine $line
+@phan-var-force CommonObjectLine|CommonInvoiceLine|CommonOrderLine|ExpeditionLigne|PropaleLigne $line
 @phan-var-force CommonObject $this
 @phan-var-force Propal|Contrat|Commande|Facture|Expedition|Delivery|FactureFournisseur|FactureFournisseur|SupplierProposal $object
-@phan-var-force 0|1 $forceall
 @phan-var-force int $num
-@phan-var-force ?Product $product_static
-@phan-var-force string $text
-@phan-var-force string $description
-@phan-var-force Object $objp
 ';
 
 echo "<!-- BEGIN PHP TEMPLATE subtotal_view.tpl.php -->\n";

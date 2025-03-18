@@ -23,7 +23,6 @@
  * @var CommonObject $object
  * @var CommonObjectLine $line
  * @var Form $form
- * @var HookManager $hookmanager
  * @var Translate $langs
  * @var User $user
  * @var Conf $conf
@@ -32,10 +31,7 @@
 
 '
 @phan-var-force Propal|Contrat|Commande|Facture|Expedition|Delivery|FactureFournisseur|FactureFournisseur|SupplierProposal $object
-@phan-var-force PropaleLigne|ContratLigne|CommonObjectLine|CommonInvoiceLine|CommonOrderLine|ExpeditionLigne|DeliveryLine|FactureFournisseurLigneRec|SupplierInvoiceLine|SupplierProposalLine $line
-@phan-var-force ThirdParty $seller
-@phan-var-force ThirdParty $buyer
-@phan-var-force string $var
+@phan-var-force CommonObjectLine|CommonInvoiceLine|CommonOrderLine|ExpeditionLigne|PropaleLigne $line
 ';
 
 // Options for subtotal
