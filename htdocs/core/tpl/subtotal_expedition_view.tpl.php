@@ -31,7 +31,7 @@ if (!empty($line->origin_line_id)) {
 
 $langs->load('subtotals');
 
-$line_color = $object->getSubtotalColors($line->qty);
+$line_color = $object->getSubtotalColors((int) $line->qty);
 $colspan = 7;
 
 if (isModEnabled('productbatch')) {

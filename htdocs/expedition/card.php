@@ -2500,11 +2500,6 @@ if ($action == 'create') {
 	$conf->cache['product'] = array();
 	$conf->cache['warehouse'] = array();
 	for ($i = 0; $i < $num_prod; $i++) {
-		// Handle subtotals line edit
-		if ($action == 'editline' && $lines[$i]->special_code == SUBTOTALS_SPECIAL_CODE && $lines[$i]->id == $line_id) {
-			require DOL_DOCUMENT_ROOT.'/core/tpl/subtotal_expedition_edit.tpl.php';
-			continue;
-		}
 		$parameters = array('i' => $i, 'line' => $lines[$i], 'line_id' => $line_id, 'num' => $num_prod, 'alreadysent' => $alreadysent, 'editColspan' => !empty($editColspan) ? $editColspan : 0, 'outputlangs' => $outputlangs);
 		$reshook = $hookmanager->executeHooks('printObjectLine', $parameters, $object, $action);
 		if ($reshook < 0) {

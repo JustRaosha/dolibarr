@@ -664,7 +664,7 @@ class pdf_cyan extends ModelePDFPropales
 							$bg_color = colorStringToArray(getDolGlobalString("SUBTOTAL_BACK_COLOR_LEVEL_".abs($object->lines[$i]->qty)));
 							$pdf->SetFillColor($bg_color[0], $bg_color[1], $bg_color[2]);
 							$pdf->SetXY($pdf->GetX() + 1, $curY + 1);
-							$pdf->MultiCell($this->page_largeur - $this->marge_droite  - $this->marge_gauche - 2, 5, '', 0, '', 1);
+							$pdf->MultiCell($this->page_largeur - $this->marge_droite  - $this->marge_gauche - 2, 5, '', 0, '', true);
 							$previous_align = array();
 							$previous_align['align'] = $this->cols['desc']['content']['align'];
 							if ($object->lines[$i]->qty < 0) {
