@@ -210,6 +210,7 @@ trait CommonSubtotal
 
 		if ($current_module != 'shipping') {
 			foreach ($this->lines as $line) {
+				'@phan-var-force CommonObjectLine $line';
 				if ($line->id == $result) {
 					$line->extraparams["subtotal"] = $options;
 					$line->setExtraParameters();
@@ -439,6 +440,7 @@ trait CommonSubtotal
 		}
 
 		foreach ($this->lines as $line) {
+			'@phan-var-force CommonObjectLine $line';
 			if ($line->id == $lineid) {
 				$line->extraparams["subtotal"] = $options;
 				$line->setExtraParameters();

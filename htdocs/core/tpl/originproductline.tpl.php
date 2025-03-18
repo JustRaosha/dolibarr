@@ -41,6 +41,7 @@ if ($line->element == 'shipping') {
 	$classname = ucfirst($line->element_type);
 	$objectsrc = new $classname($this->db);
 	$objectsrc_line = new $objectsrc->class_element_line($this->db);
+	'@phan-var-force CommonObjectLine $objectsrc_line';
 	$objectsrc_line->fetch($line->origin_line_id);
 	$shipping_use_tpl = ($objectsrc_line->special_code == SUBTOTALS_SPECIAL_CODE);
 }

@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * @var CommonObject $object
+ * @var CommonObject $this
+ * @var CommonObjectLine $line
+ */
+
 $line_color = $object->getSubtotalColors($line->qty);
 
 print '<!-- line for order line '.$line->id.' -->'."\n";

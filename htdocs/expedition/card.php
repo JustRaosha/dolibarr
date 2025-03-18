@@ -479,11 +479,9 @@ if (empty($reshook)) {
 			$object->fetch_lines();
 			foreach ($object->lines as $line) {
 				$objectsrc_line = new $objectsrc->class_element_line($db);
-
+				'@phan-var-force CommonObjectLine $objectsrc_line';
 				$objectsrc_line->fetch($line->origin_line_id);
-
 				$line->extraparams = $objectsrc_line->extraparams;
-
 				$line->setExtraParameters();
 			}
 			header("Location: card.php?id=".$object->id);
@@ -1230,6 +1228,8 @@ if ($action == 'create') {
 
 
 			$alreadyQtyBatchSetted = $alreadyQtySetted = array();
+
+			$title_lines_to_disable = array();
 
 			if ($numAsked) {
 				if (isModEnabled('subtotals')) {
