@@ -101,16 +101,14 @@ if ($line->qty > 0) { ?>
 	<td class="linecollabel" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?>><?php echo str_repeat('&nbsp;', (int) ($line->qty - 1) * 8); ?>
 		<?php
 		echo $line->desc;
-		if ($line_options) {
-			if ($line_options['titleshowuponpdf']) {
-				echo '&nbsp;' . img_picto($langs->trans("ShowUPOnPDF"), 'invoicing');
-			}
-			if ($line_options['titleshowtotalexludingvatonpdf']) {
-				echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
-			}
-			if ($line_options['titleforcepagebreak']) {
-				echo '&nbsp;' . img_picto($langs->trans("ForcePageBreak"), 'file');
-			}
+		if (array_key_exists('titleshowuponpdf', $line_options)) {
+			echo '&nbsp;' . img_picto($langs->trans("ShowUPOnPDF"), 'invoicing');
+		}
+		if (array_key_exists('titleshowtotalexludingvatonpdf', $line_options)) {
+			echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
+		}
+		if (array_key_exists('titleforcepagebreak', $line_options)) {
+			echo '&nbsp;' . img_picto($langs->trans("ForcePageBreak"), 'file');
 		}
 		?>
 	</td>
@@ -169,7 +167,7 @@ if ($line->qty > 0) { ?>
 	<td class="linecollabel nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?> colspan="<?php echo $colspan + 2 ?>">
 		<?php
 		echo $line->desc;
-		if ($line_options['subtotalshowtotalexludingvatonpdf']) {
+		if (array_key_exists('subtotalshowtotalexludingvatonpdf', $line_options)) {
 			echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
 		}
 		echo ' :';
