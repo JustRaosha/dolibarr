@@ -628,7 +628,7 @@ trait CommonSubtotal
 	/**
 	 * Retrieve the background color associated with a specific subtotal level.
 	 *
-	 * @param int $level The level of the subtotal for which the color is requested.
+	 * @param int|float $level The level of the subtotal for which the color is requested.
 	 * @return string|null The background color in hexadecimal format or null if not set.
 	 */
 	public function getSubtotalColors($level)
