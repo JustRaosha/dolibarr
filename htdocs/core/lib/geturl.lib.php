@@ -243,7 +243,7 @@ function getURLContent($url, $postorget = 'GET', $param = '', $followlocation = 
 		*/
 
 		// Getting response from server
-		$response = curl_exec($ch);
+		$response = curl_exec($ch);		// return false on error, result on success
 
 		$info = curl_getinfo($ch); // Reading of request must be done after sending request
 		$http_code = $info['http_code'];
@@ -271,9 +271,13 @@ function getURLContent($url, $postorget = 'GET', $param = '', $followlocation = 
 	$rep = array();
 	if (curl_errno($ch)) {
 		// Add keys to $rep
-		$rep['content'] = $response;
+		if ($response) {
+			$rep['content'] = (string) $response;
+		} else {
+			$rep['content'] = '';
+		}
 
-		// moving to display page to display curl errors
+		$rep['http_code'] = 0;
 		$rep['curl_error_no'] = curl_errno($ch);
 		$rep['curl_error_msg'] = curl_error($ch);
 
@@ -281,23 +285,30 @@ function getURLContent($url, $postorget = 'GET', $param = '', $followlocation = 
 	} else {
 		//$info = curl_getinfo($ch);
 
-		// Add keys to $rep
+		// Return all fields found into $info.
 		$rep = $info;
-		//$rep['header_size']=$info['header_size'];
-		//$rep['http_code']=$info['http_code'];
+		//$rep['header_size'] = $info['header_size'];
+		//$rep['http_code'] = $info['http_code'];
+		//$rep['content_type'] = $info['http_code'];
+
 		dol_syslog("getURLContent http_code=".$rep['http_code']);
 
 		// Add more keys to $rep
 		if ($response) {
-			$rep['content'] = $response;
+			$rep['content'] = (string) $response;
+		} else {
+			$rep['content'] = '';
 		}
-		$rep['curl_error_no'] = '';
+
+		$rep['curl_error_no'] = 0;
 		$rep['curl_error_msg'] = '';
 	}
 
 	//closing the curl
 	curl_close($ch);
 
+	// We must exclude phpstant wwarning, because all fields found in result of curl_getinfo may not be all defined into description of this method.
+	// @phpstan-ignore-next-line
 	return $rep;
 }
 
