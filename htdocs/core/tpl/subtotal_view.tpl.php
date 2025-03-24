@@ -46,6 +46,7 @@ $langs->load('subtotals');
 // Base colspan if there is no module activated to display line correctly
 $colspan = $object->element != 'facturerec' ? 3 : 2;
 
+$description = $line->desc ?? $line->description;
 $line_options = $line->extraparams["subtotal"] ?? array();
 
 // Handling colspan if margin module is enabled
@@ -78,7 +79,7 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 
 $line_color = $this->getSubtotalColors($line->qty);
 
-echo '<tr data-level="' . $line->qty . '" data-desc="' . $line->desc . '" data-rang="' . $line->rang . '" id="row-' . $line->id . '" class="drag drop" style="background:#' . $line_color . '">';
+echo '<tr data-level="' . $line->qty . '" data-desc="' . $description . '" data-rang="' . $line->rang . '" id="row-' . $line->id . '" class="drag drop" style="background:#' . $line_color . '">';
 
 // Showing line number if conf is enabled
 if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
@@ -87,9 +88,10 @@ if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 
 if ($line->qty > 0) { ?>
 	<?php $colspan = isModEnabled('multicurrency') && $this->multicurrency_code != $conf->currency ? $colspan + 2 : $colspan + 1 ?>
-	<td class="linecollabel" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?>><?php echo str_repeat('&nbsp;', (int) ($line->qty - 1) * 8); ?>
+	<td class="linecollabel" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?> <?php echo $this->element == 'supplier_proposal' ?  ' colspan="2"': '' ?> >
 		<?php
-		echo $line->desc;
+		echo str_repeat('&nbsp;', (int) ($line->qty - 1) * 8);
+		echo $description;
 		if (array_key_exists('titleshowuponpdf', $line_options)) {
 			echo '&nbsp;' . img_picto($langs->trans("ShowUPOnPDF"), 'invoicing');
 		}
@@ -153,9 +155,10 @@ if ($line->qty > 0) { ?>
 	</td>
 	<td class="linecollabel" colspan="<?php echo $colspan - 4 ?>"></td>
 <?php } elseif ($line->qty < 0) { ?>
+	<?php $colspan = $this->element == 'supplier_proposal' ?  $colspan + 1 : $colspan ?>
 	<td class="linecollabel nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?> colspan="<?php echo $colspan + 2 ?>">
 		<?php
-		echo $line->desc;
+		echo $description;
 		if (array_key_exists('subtotalshowtotalexludingvatonpdf', $line_options)) {
 			echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
 		}
