@@ -47,7 +47,7 @@ if ($line->element == 'shipping') {
 }
 
 // Handle subtotals line edit
-if ($line->special_code == SUBTOTALS_SPECIAL_CODE || isset($shipping_use_tpl)) {
+if (defined('SUBTOTALS_SPECIAL_CODE') && $line->special_code == SUBTOTALS_SPECIAL_CODE || isset($shipping_use_tpl)) {
 	return require DOL_DOCUMENT_ROOT.'/core/tpl/originsubtotalline.tpl.php';
 }
 
