@@ -142,6 +142,10 @@ $usercancreateinvoice = ($user->hasRight('facture', 'creer') == 1);
 $usercancreatecontract = ($user->hasRight('contrat', 'creer') == 1);
 $usercancreateintervention = ($user->hasRight('ficheinter', 'creer') == 1);
 $usercancreatepurchaseorder = ($user->hasRight('fournisseur', 'commande', 'creer') || $user->hasRight('supplier_order', 'creer'));
+$usercanreopen = ((!getDolGlobalBool('MAIN_USE_ADVANCED_PERMS') && $usercanclose) || (getDolGlobalBool('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('propal', 'propal_advance', 'reopen')));
+if (getDolGlobalBool('PROPAL_DISALLOW_REOPEN')) {
+	$usercanreopen = false;
+}
 
 $permissionnote = $usercancreate; // Used by the include of actions_setnotes.inc.php
 $permissiondellink = $usercancreate; // Used by the include of actions_dellink.inc.php
@@ -865,7 +869,7 @@ if (empty($reshook)) {
 				}
 			}
 		}
-	} elseif ($action == 'confirm_reopen' && $usercanclose && !GETPOST('cancel', 'alpha')) {
+	} elseif ($action == 'confirm_reopen' && $usercanreopen && !GETPOST('cancel', 'alpha')) {
 		// Reopen proposal
 		// prevent browser refresh from reopening proposal several times
 		if ($object->status == Propal::STATUS_SIGNED || $object->status == Propal::STATUS_NOTSIGNED || $object->status == Propal::STATUS_BILLED || $object->status == Propal::STATUS_CANCELED) {
@@ -1183,7 +1187,7 @@ if (empty($reshook)) {
 	} elseif ($action == 'addline' && !GETPOST('submitforalllines', 'alpha') && !GETPOST('submitforallmargins', 'alpha') && $usercancreate) {		// Add line
 		// Set if we used free entry or predefined product
 		$predef = '';
-		$product_desc = (GETPOSTISSET('dp_desc') ? GETPOST('dp_desc', 'restricthtml') : '');
+		$line_desc = (GETPOSTISSET('dp_desc') ? GETPOST('dp_desc', 'restricthtml') : '');
 
 		$price_ht = '';
 		$price_ht_devise = '';
@@ -1245,7 +1249,7 @@ if (empty($reshook)) {
 			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("UnitPriceHT")), null, 'errors');
 			$error++;
 		}
-		if ($prod_entry_mode == 'free' && (empty($idprod) || $idprod < 0) && empty($product_desc)) {
+		if ($prod_entry_mode == 'free' && (empty($idprod) || $idprod < 0) && empty($line_desc)) {
 			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Description")), null, 'errors');
 			$error++;
 		}
@@ -1265,7 +1269,7 @@ if (empty($reshook)) {
 		}
 
 		$propal_qty_requirement = (getDolGlobalString('PROPAL_ENABLE_NEGATIVE_QTY') ? ($qty >= 0 || $qty <= 0) : $qty >= 0);
-		if (!$error && $propal_qty_requirement && (!empty($product_desc) || (!empty($idprod) && $idprod > 0))) {
+		if (!$error && $propal_qty_requirement && (!empty($line_desc) || (!empty($idprod) && $idprod > 0))) {
 			$pu_ht = 0;
 			$pu_ttc = 0;
 			$pu_ht_devise = 0;
@@ -1488,15 +1492,12 @@ if (empty($reshook)) {
 					$desc = $prod->description;
 				}
 
-				//If text set in desc is the same as product description (as now it's preloaded) we add it only one time
-				if ($product_desc == $desc && getDolGlobalString('PRODUIT_AUTOFILL_DESC')) {
-					$product_desc = '';
-				}
-
-				if (!empty($product_desc) && getDolGlobalString('MAIN_NO_CONCAT_DESCRIPTION')) {
-					$desc = $product_desc;
+				if (getDolGlobalInt('PRODUIT_AUTOFILL_DESC') == 0) {
+					// 'DoNotAutofillButAutoConcat'
+					$desc = dol_concatdesc($desc, $line_desc, false, getDolGlobalString('MAIN_CHANGE_ORDER_CONCAT_DESCRIPTION') ? true : false);
 				} else {
-					$desc = dol_concatdesc($desc, $product_desc, false, getDolGlobalString('MAIN_CHANGE_ORDER_CONCAT_DESCRIPTION') ? true : false);
+					//'AutoFillFormFieldBeforeSubmit' or 'DoNotUseDescriptionOfProdut' => User has already done the modification they want
+					$desc = $line_desc;
 				}
 
 				// Add custom code and origin country into description
@@ -1552,7 +1553,7 @@ if (empty($reshook)) {
 				}
 				$tva_tx = str_replace('*', '', $tva_tx);
 				$label = (GETPOST('product_label') ? GETPOST('product_label') : '');
-				$desc = $product_desc;
+				$desc = $line_desc;
 				$type = GETPOST('type');
 				$fk_unit = GETPOST('units', 'alpha');
 				$pu_ht_devise = price2num($price_ht_devise, 'MU');
@@ -3426,9 +3427,13 @@ if ($action == 'create') {
 				}
 
 				// ReOpen
-				if (((getDolGlobalString('PROPAL_REOPEN_UNSIGNED_ONLY') && $object->status == Propal::STATUS_NOTSIGNED) || (!getDolGlobalString('PROPAL_REOPEN_UNSIGNED_ONLY') && ($object->status == Propal::STATUS_SIGNED || $object->status == Propal::STATUS_NOTSIGNED || $object->status == Propal::STATUS_BILLED || $object->status == Propal::STATUS_CANCELED))) && $usercanclose) {
-					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=reopen&token='.newToken().(!getDolGlobalString('MAIN_JUMP_TAG') ? '' : '#reopen').'"';
-					print '>'.$langs->trans('ReOpen').'</a>';
+				if (((getDolGlobalString('PROPAL_REOPEN_UNSIGNED_ONLY') && $object->status == Propal::STATUS_NOTSIGNED) || (!getDolGlobalString('PROPAL_REOPEN_UNSIGNED_ONLY') && ($object->status == Propal::STATUS_SIGNED || $object->status == Propal::STATUS_NOTSIGNED || $object->status == Propal::STATUS_BILLED || $object->status == Propal::STATUS_CANCELED)))) {
+					if ($usercanreopen) {
+						print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=reopen&token='.newToken().(!getDolGlobalString('MAIN_JUMP_TAG') ? '' : '#reopen').'"';
+						print '>'.$langs->trans('ReOpen').'</a>';
+					} else {
+						print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans("ReOpen").'</a>';
+					}
 				}
 
 				// Send
