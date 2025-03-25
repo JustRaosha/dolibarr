@@ -27,46 +27,36 @@ if (empty($conf) || !is_object($conf)) {
 	print "Error, template page can't be called as URL";
 	exit(1);
 }
-
 ?>
 
 <!-- BEGIN PHP TEMPLATE originproductline.tpl.php -->
 <?php
+
 '
 @phan-var-force CommonObject $this
-@phan-var-force PropaleLigne|ContratLigne|CommonObjectLine|CommonInvoiceLine|CommonOrderLine|ExpeditionLigne|DeliveryLine|FactureFournisseurLigneRec|SupplierInvoiceLine|SupplierProposalLine $line
+@phan-var-force CommonObjectLine|CommonInvoiceLine|CommonOrderLine|ExpeditionLigne|PropaleLigne $line
 ';
 
-if ($line->element == 'shipping') {
-	$classname = ucfirst($line->element_type);
-	$objectsrc = new $classname($this->db);
-	$objectsrc_line = new $objectsrc->class_element_line($this->db);
-	'@phan-var-force CommonObjectLine $objectsrc_line';
-	$objectsrc_line->fetch($line->origin_line_id);
-	$shipping_use_tpl = ($objectsrc_line->special_code == SUBTOTALS_SPECIAL_CODE);
-}
-
-// Handle subtotals line edit
-if (defined('SUBTOTALS_SPECIAL_CODE') && $line->special_code == SUBTOTALS_SPECIAL_CODE || isset($shipping_use_tpl)) {
-	return require DOL_DOCUMENT_ROOT.'/core/tpl/originsubtotalline.tpl.php';
-}
-
-print '<tr data-id="'.$this->tpl['id'].'" class="oddeven'.(empty($this->tpl['strike']) ? '' : ' strikefordisabled').'">';
-print '<td class="linecolref">'.$this->tpl['label'].'</td>';
-print '<td class="linecoldescription">'.$this->tpl['description'].'</td>';
-print '<td class="linecolvat right">'.$this->tpl['vat_rate'].'</td>';
-print '<td class="linecoluht right">'.$this->tpl['price'].'</td>';
+print '<tr data-id="'.$this->tpl['id'].'" class="'.(empty($this->tpl['strike']) ? '' : ' strikefordisabled').'" style="background:#'.$this->getSubtotalColors($line->qty).'">';
+print '<td class="linecolref">'.$this->tpl['description'].'</td>';
+print '<td class="linecoldescription"></td>';
+print '<td class="linecolvat right"></td>';
+print '<td class="linecoluht right"></td>';
 if (isModEnabled("multicurrency")) {
-	print '<td class="linecoluht_currency right">'.$this->tpl['multicurrency_price'].'</td>';
+	print '<td class="linecoluht_currency right">'.$this->getSubtotalLineMulticurrencyAmount($line).'</td>';
 }
 
-print '<td class="linecolqty right">'.$this->tpl['qty'].'</td>';
+print '<td class="linecolqty right"></td>';
 if (getDolGlobalString('PRODUCT_USE_UNITS')) {
-	print '<td class="linecoluseunit left">'.$langs->trans($this->tpl['unit']).'</td>';
+	print '<td class="linecoluseunit left"></td>';
 }
 
-print '<td class="linecoldiscount right">'.$this->tpl['remise_percent'].'</td>';
-print '<td class="linecolht right">'.$this->tpl['total_ht'].'</td>';
+print '<td class="linecoldiscount right"></td>';
+if ($this->tpl['qty'] < 0) {
+	print '<td class="linecolht right">'.$this->getSubtotalLineAmount($line).'</td>';
+} else {
+	print '<td class="linecolht right"></td>';
+}
 
 $selected = 1;
 if (!empty($selectedLines) && !in_array($this->tpl['id'], $selectedLines)) {
