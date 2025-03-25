@@ -72,7 +72,7 @@ trait CommonSubtotal
 		}
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
-		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping', 'supplier_proposal');
+		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping', 'supplier_proposal', 'order_supplier');
 		if (!in_array($current_module, $allowed_types)) {
 			if (isset($this->errors)) {
 				$this->errors[] = $langs->trans("UnsupportedModuleError");
@@ -197,6 +197,33 @@ trait CommonSubtotal
 				$rang,					// Rang @phpstan-ignore-line
 				SUBTOTALS_SPECIAL_CODE	// Special code @phpstan-ignore-line
 			);
+		} elseif ($current_module == 'order_supplier') {
+			$result = $this->addline( 	// @phpstan-ignore-line
+				$desc,					// Description @phpstan-ignore-line
+				0,						// Unit price @phpstan-ignore-line
+				$depth,					// Quantity @phpstan-ignore-line
+				0,						// VAT rate @phpstan-ignore-line
+				0,						// Local tax 1 @phpstan-ignore-line
+				0,						// Local tax 2 @phpstan-ignore-line
+				0,						// FK product @phpstan-ignore-line
+				0,						// FK product fourn price @phpstan-ignore-line
+				'',						// Ref supplier @phpstan-ignore-line
+				0,						// Discount percentage @phpstan-ignore-line
+				'',						// Price base type @phpstan-ignore-line
+				0,						// PU ttc @phpstan-ignore-line
+				self::$PRODUCT_TYPE,	// Type @phpstan-ignore-line
+				0,						// Info bits @phpstan-ignore-line
+				0,						// Notrigger @phpstan-ignore-line
+				'',						// Date start @phpstan-ignore-line
+				'',						// Date end @phpstan-ignore-line
+				[],						// Array options @phpstan-ignore-line
+				null,					// FK unit @phpstan-ignore-line
+				0,						// PU ht devise @phpstan-ignore-line
+				'',						// Origin @phpstan-ignore-line
+				0,						// Origin id @phpstan-ignore-line
+				$rang,					// Rang @phpstan-ignore-line
+				SUBTOTALS_SPECIAL_CODE	// Special code @phpstan-ignore-line
+			);
 		} elseif ($current_module == 'shipping') {
 			$result = $this->addline( // @phpstan-ignore-line
 				'',						// Warehouse ID @phpstan-ignore-line
@@ -259,7 +286,7 @@ trait CommonSubtotal
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
-		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping', 'supplier_proposal');
+		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping', 'supplier_proposal', 'order_supplier');
 		if (!in_array($current_module, $allowed_types)) {
 			if (isset($this->errors)) {
 				$this->errors[] = $langs->trans("UnsupportedModuleError");
@@ -293,6 +320,8 @@ trait CommonSubtotal
 			$result = $this->deleteLine($user, $id); // @phpstan-ignore-line
 		} elseif ($current_module == 'supplier_proposal') {
 			$result = $this->deleteLine($id); // @phpstan-ignore-line
+		} elseif ($current_module == 'order_supplier') {
+			$result = $this->deleteLine($id); // @phpstan-ignore-line
 		} elseif ($current_module == 'facturerec') {
 			$line = new FactureLigneRec($this->db);
 			$line->id = $id;
@@ -325,7 +354,7 @@ trait CommonSubtotal
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
-		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping', 'supplier_proposal');
+		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping', 'supplier_proposal', 'order_supplier');
 		if (!in_array($current_module, $allowed_types)) {
 			if (isset($this->errors)) {
 				$this->errors[] = $langs->trans("UnsupportedModuleError");
@@ -454,6 +483,20 @@ trait CommonSubtotal
 				'',						// Label @phpstan-ignore-line
 				self::$PRODUCT_TYPE		// Type @phpstan-ignore-line
 			);
+		} elseif ($current_module == 'order_supplier') {
+			$result = $this->updateline( // @phpstan-ignore-line
+				$lineid, 				// ID of line to change @phpstan-ignore-line
+				$desc,					// Description @phpstan-ignore-line
+				0,						// Unit price @phpstan-ignore-line
+				$depth,					// Quantity @phpstan-ignore-line
+				0,						// Discount percentage @phpstan-ignore-line
+				0,						// VAT rate @phpstan-ignore-line
+				0,						// Local tax 1 @phpstan-ignore-line
+				0,						// Local tax 2 @phpstan-ignore-line
+				'',						// Price base type @phpstan-ignore-line
+				0,						// Info bits @phpstan-ignore-line
+				self::$PRODUCT_TYPE		// Type @phpstan-ignore-line
+			);
 		} elseif ($current_module == 'facturerec') {
 			$objectline = new FactureLigneRec($this->db);
 			$objectline->fetch($lineid);
@@ -509,7 +552,7 @@ trait CommonSubtotal
 	{
 		$current_module = $this->element;
 		// Ensure the object is one of the supported types
-		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping');
+		$allowed_types = array('propal', 'commande', 'facture', 'facturerec', 'shipping', 'supplier_proposal', 'order_supplier');
 		if (!in_array($current_module, $allowed_types)) {
 			if (isset($this->errors)) {
 				$this->errors[] = $langs->trans("UnsupportedModuleError");

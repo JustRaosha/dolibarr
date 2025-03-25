@@ -73,7 +73,7 @@ if ($line->qty > 0) { ?>
 		?>
 	</td>
 	<?php
-	if ($object->element == 'supplier_proposal') {
+	if (in_array($object->element, array('supplier_proposal', 'order_supplier'))) {
 		print '<td class="linecolrefsupplier"></td>';
 	}
 	?>
@@ -166,7 +166,7 @@ if ($line->qty > 0) { ?>
 	$colspan = 3;
 
 	// Handling colspan if the current object is a supplier proposal
-	if ($object->element == 'supplier_proposal') {
+	if (in_array($object->element, array('supplier_proposal', 'order_supplier'))) {
 		$colspan += 1;
 	}
 

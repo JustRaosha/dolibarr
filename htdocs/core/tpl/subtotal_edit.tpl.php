@@ -64,7 +64,7 @@ if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 $colspan = 4;
 
 // Handling colspan if we are in supplier proposals
-$colspan = $this->element == 'supplier_proposal' ? $colspan + 1 : $colspan;
+$colspan = in_array($object->element, array('supplier_proposal', 'order_supplier')) ? $colspan + 1 : $colspan;
 
 // Handling colspan if margin module is enabled
 if (!empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande')) && isModEnabled('margin') && empty($user->socid)) {
