@@ -63,6 +63,9 @@ if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 // Base colspan if there is no module activated to display line correctly
 $colspan = 4;
 
+// Handling colspan if we are in supplier proposals
+$colspan = in_array($object->element, array('supplier_proposal', 'order_supplier', 'invoice_supplier')) ? $colspan + 1 : $colspan;
+
 // Handling colspan if margin module is enabled
 if (!empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande')) && isModEnabled('margin') && empty($user->socid)) {
 	if ($user->hasRight('margins', 'creer')) {

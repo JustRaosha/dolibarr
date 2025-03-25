@@ -44,6 +44,7 @@ require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/margin/lib/margins.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/multicurrency/class/multicurrency.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonincoterm.class.php';
+require_once DOL_DOCUMENT_ROOT.'/subtotals/class/commonsubtotal.class.php';
 
 /**
  *	Class to manage price ask supplier
@@ -51,6 +52,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonincoterm.class.php';
 class SupplierProposal extends CommonObject
 {
 	use CommonIncoterm;
+	use CommonSubtotal;
 
 	/**
 	 * @var string ID to identify managed object
@@ -680,6 +682,7 @@ class SupplierProposal extends CommonObject
 
 				// Mise a jour information denormalisees au niveau de la propale meme
 				$result = $this->update_price(1, 'auto', 0, $this->thirdparty); // This method is designed to add line from user input so total calculation must be done using 'auto' mode.
+				$this->lines[] = $this->line;
 				if ($result > 0) {
 					$this->db->commit();
 					return $this->line->id;
@@ -2721,7 +2724,7 @@ class SupplierProposal extends CommonObject
 				$this->lines[$i]->ref_fourn = $obj->ref_supplier; // deprecated
 				$this->lines[$i]->ref_supplier = $obj->ref_supplier;
 
-				$this->extraparams = !empty($obj->extraparams) ? (array) json_decode($obj->extraparams, true) : array();
+				$this->lines[$i]->extraparams = !empty($obj->extraparams) ? (array) json_decode($obj->extraparams, true) : array();
 
 				// Multicurrency
 				$this->lines[$i]->fk_multicurrency = $obj->fk_multicurrency;

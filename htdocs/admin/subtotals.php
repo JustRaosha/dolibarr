@@ -61,6 +61,9 @@ $modules = array(
 	'COMMANDE' => array('lang' => 'orders', 'key' => 'CustomerOrder', 'old_pdf' => '(einstein model)'),
 	'FACTURE' => array('lang' => 'bills', 'key' => 'CustomerInvoice', 'old_pdf' => '(crabe model)'),
 	'FACTUREREC' => array('lang' => 'bills', 'key' => 'RecurringInvoiceTemplate'),
+	'SUPPLIER_PROPOSAL' => array('lang' => 'supplier_proposal', 'key' => 'SupplierProposals', 'old_pdf' => '(aurore)'),
+	'ORDER_SUPPLIER' => array('lang' => 'orders', 'key' => 'SupplierOrder', 'old_pdf' => '(muscadet)'),
+	'INVOICE_SUPPLIER' => array('lang' => 'bills', 'key' => 'BillsSuppliers'),
 );
 // Conditions for the option to be offered
 $conditions = array(
@@ -68,6 +71,9 @@ $conditions = array(
 	'COMMANDE' => (isModEnabled("order")),
 	'FACTURE' => (isModEnabled("invoice")),
 	'FACTUREREC' => (isModEnabled("invoice")),
+	'SUPPLIER_PROPOSAL' => (isModEnabled('supplier_proposal')),
+	'ORDER_SUPPLIER' => (isModEnabled('supplier_order')),
+	'INVOICE_SUPPLIER' => (isModEnabled('supplier_invoice')),
 );
 
 $max_depth = 0;

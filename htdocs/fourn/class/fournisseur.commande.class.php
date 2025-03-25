@@ -44,13 +44,15 @@ require_once DOL_DOCUMENT_ROOT.'/multicurrency/class/multicurrency.class.php';
 if (isModEnabled('productbatch')) {
 	require_once DOL_DOCUMENT_ROOT.'/product/class/productbatch.class.php';
 }
-
+require_once DOL_DOCUMENT_ROOT.'/subtotals/class/commonsubtotal.class.php';
 
 /**
  *	Class to manage predefined suppliers products
  */
 class CommandeFournisseur extends CommonOrder
 {
+	use CommonSubtotal;
+
 	/**
 	 * @var string ID to identify managed object
 	 */
@@ -2057,7 +2059,7 @@ class CommandeFournisseur extends CommonOrder
 			$desc = trim($desc);
 
 			// Check parameters
-			if ($qty < 0 && !$fk_product) {
+			if ($qty < 0 && !$fk_product && $special_code != SUBTOTALS_SPECIAL_CODE) {
 				$this->error = $langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Product"));
 				return -1;
 			}
