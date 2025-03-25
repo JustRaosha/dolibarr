@@ -63,6 +63,7 @@ $modules = array(
 	'FACTUREREC' => array('lang' => 'bills', 'key' => 'RecurringInvoiceTemplate'),
 	'SUPPLIER_PROPOSAL' => array('lang' => 'supplier_proposal', 'key' => 'SupplierProposals', 'old_pdf' => '(aurore)'),
 	'ORDER_SUPPLIER' => array('lang' => 'orders', 'key' => 'SupplierOrder', 'old_pdf' => '(muscadet)'),
+	'INVOICE_SUPPLIER' => array('lang' => 'bills', 'key' => 'BillsSuppliers'),
 );
 // Conditions for the option to be offered
 $conditions = array(
@@ -72,6 +73,7 @@ $conditions = array(
 	'FACTUREREC' => (isModEnabled("invoice")),
 	'SUPPLIER_PROPOSAL' => (isModEnabled('supplier_proposal')),
 	'ORDER_SUPPLIER' => (isModEnabled('supplier_order')),
+	'INVOICE_SUPPLIER' => (isModEnabled('supplier_invoice')),
 );
 
 $max_depth = 0;
