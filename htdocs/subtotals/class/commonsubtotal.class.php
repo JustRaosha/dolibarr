@@ -54,7 +54,7 @@ trait CommonSubtotal
 	 *
 	 * @param Translate						$langs  		Translation.
 	 * @param string						$desc			Description of the line.
-	 * @param int							$depth			Level of the line (>0 for title lines, <0 for subtotal lines)
+	 * @param int|float						$depth			Level of the line (>0 for title lines, <0 for subtotal lines)
 	 * @param array<string,string>|string	$options		Subtotal options for pdf view
 	 * @param int							$parent_line	ID of the parent line for shipments
 	 * @return int									ID of the added line if successful, 0 on warning, -1 on error
@@ -370,7 +370,7 @@ trait CommonSubtotal
 	 * @param Translate						$langs  	Translation.
 	 * @param int							$lineid  	ID of the line to update.
 	 * @param string						$desc		Description of the line.
-	 * @param int							$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
+	 * @param int|float						$depth		Level of the line (>0 for title lines, <0 for subtotal lines)
 	 * @param array<string,string>|string	$options	Subtotal options for pdf view
 	 * @return int									ID of the added line if successful, 0 on warning, -1 on error
 	 *

@@ -48,7 +48,7 @@ $line_options = $line->extraparams["subtotal"] ?? array();
 
 $line_color = $this->getSubtotalColors($line->qty);
 
-$line_description = $line->desc ?? $line->description;
+$line_description = $object->element == 'supplier_proposal' ? $line->description : $line->desc;
 
 echo '<tr data-level="' . $line->qty . '" data-desc="' . $line_description . '" data-rang="' . $line->rang . '" id="row-' . $line->id . '" class="drag drop" style="background:#' . $line_color . '">';
 

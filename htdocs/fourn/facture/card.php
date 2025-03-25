@@ -352,7 +352,7 @@ if (empty($reshook)) {
 		$object->fetch($id);
 		$object->fetch_thirdparty();
 
-		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), GETPOST('deletecorrespondingsubtotalline', 'alphanohtml'), $user);
+		$result = $object->deleteSubtotalLine($langs, GETPOSTINT('lineid'), (bool) GETPOST('deletecorrespondingsubtotalline', 'alphanohtml'), $user);
 
 		if ($result > 0) {
 			$result = $object->update_price(1);
@@ -2038,7 +2038,6 @@ if (empty($reshook)) {
 			}
 			$ret = $object->fetch($object->id); // Reload to get new records
 			$object->fetch_thirdparty();
-
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
