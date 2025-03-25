@@ -155,7 +155,6 @@ if ($line->qty > 0) { ?>
 		<td class="linecolutotalht_currency"></td>
 	<?php } ?>
 <?php } elseif ($line->qty < 0) {
-
 	// Base colspan if there is no module activated to display line correctly
 	$colspan = 3;
 
