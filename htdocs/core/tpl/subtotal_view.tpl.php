@@ -27,6 +27,7 @@
  * @var Societe $mysoc
  * @var Translate $langs
  * @var User $user
+ * @var string $action
  *
  * @var int $num
  * @var int $i
@@ -43,43 +44,11 @@ echo "<!-- BEGIN PHP TEMPLATE subtotal_view.tpl.php -->\n";
 
 $langs->load('subtotals');
 
-// Base colspan if there is no module activated to display line correctly
-$colspan = $object->element != 'facturerec' ? 3 : 2;
-
-$description = $line->desc ?? $line->description;
 $line_options = $line->extraparams["subtotal"] ?? array();
-
-// Handling colspan if margin module is enabled
-if (!empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande')) && isModEnabled('margin') && empty($user->socid)) {
-	if ($user->hasRight('margins', 'creer')) {
-		$colspan += 1;
-	}
-	if (getDolGlobalString('DISPLAY_MARGIN_RATES') && $user->hasRight('margins', 'liretous')) {
-		$colspan += 1;
-	}
-	if (getDolGlobalString('DISPLAY_MARK_RATES') && $user->hasRight('margins', 'liretous')) {
-		$colspan += 1;
-	}
-}
-
-// Handling colspan if multicurrency module is enabled
-if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
-	$colspan += 1;
-}
-
-// Handling colspan if MAIN_NO_INPUT_PRICE_WITH_TAX conf is enabled
-if (!getDolGlobalInt('MAIN_NO_INPUT_PRICE_WITH_TAX')) {
-	$colspan += 1;
-}
-
-// Handling colspan if PRODUCT_USE_UNITS conf is enabled
-if (getDolGlobalString('PRODUCT_USE_UNITS')) {
-	$colspan += 1;
-}
 
 $line_color = $this->getSubtotalColors($line->qty);
 
-echo '<tr data-level="' . $line->qty . '" data-desc="' . $description . '" data-rang="' . $line->rang . '" id="row-' . $line->id . '" class="drag drop" style="background:#' . $line_color . '">';
+echo '<tr data-level="' . $line->qty . '" data-desc="' . $line->desc . '" data-rang="' . $line->rang . '" id="row-' . $line->id . '" class="drag drop" style="background:#' . $line_color . '">';
 
 // Showing line number if conf is enabled
 if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
@@ -87,11 +56,9 @@ if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
 }
 
 if ($line->qty > 0) { ?>
-	<?php $colspan = isModEnabled('multicurrency') && $this->multicurrency_code != $conf->currency ? $colspan + 2 : $colspan + 1 ?>
-	<td class="linecollabel" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?> <?php echo $this->element == 'supplier_proposal' ?  ' colspan="2"': '' ?> >
+	<td class="linecollabel" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?>><?php echo str_repeat('&nbsp;', (int) ($line->qty - 1) * 8); ?>
 		<?php
-		echo str_repeat('&nbsp;', (int) ($line->qty - 1) * 8);
-		echo $description;
+		echo $line->desc;
 		if (array_key_exists('titleshowuponpdf', $line_options)) {
 			echo '&nbsp;' . img_picto($langs->trans("ShowUPOnPDF"), 'invoicing');
 		}
@@ -125,7 +92,23 @@ if ($line->qty > 0) { ?>
 		}
 		?>
 	</td>
-	<td class="linecollabel" colspan="<?php echo $colspan - 2 ?>"></td>
+	<td class="linecoluht"></td>
+	<?php
+	if (isModEnabled("multicurrency") && $this->multicurrency_code != $conf->currency) {
+		print '<td class="linecoluht_currency"></td>';
+	}
+	// Handling colspan if MAIN_NO_INPUT_PRICE_WITH_TAX conf is enabled
+	if (!getDolGlobalInt('MAIN_NO_INPUT_PRICE_WITH_TAX') && $object->element != 'facturerec') {
+		print '<td class="linecoluttc"></td>';
+	}
+
+	print '<td class="linecolqty"></td>';
+
+	// Handling colspan if PRODUCT_USE_UNITS conf is enabled
+	if (getDolGlobalString('PRODUCT_USE_UNITS')) {
+		print '<td class="linecoluseunit"></td>';
+	}
+	?>
 	<td class="linecoldiscount right">
 		<?php
 		if ($this->status == 0 && $object->element != 'facturerec') {
@@ -153,12 +136,59 @@ if ($line->qty > 0) { ?>
 		}
 		?>
 	</td>
-	<td class="linecollabel" colspan="<?php echo $colspan - 4 ?>"></td>
-<?php } elseif ($line->qty < 0) { ?>
-	<?php $colspan = $this->element == 'supplier_proposal' ?  $colspan + 1 : $colspan ?>
+	<?php
+	// Handling colspan if margin module is enabled
+	if (!empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande')) && isModEnabled('margin') && empty($user->socid)) {
+		if ($user->hasRight('margins', 'creer')) {
+			print '<td class="linecolmargin1"></td>';
+		}
+		if (getDolGlobalString('DISPLAY_MARGIN_RATES') && $user->hasRight('margins', 'liretous')) {
+			print '<td class="linecolmargin2"></td>';
+		}
+		if (getDolGlobalString('DISPLAY_MARK_RATES') && $user->hasRight('margins', 'liretous')) {
+			print '<td class="linecolmark1"></td>';
+		}
+	}
+	?>
+	<td class="linecolht"></td>
+	<?php if (isModEnabled("multicurrency") && $this->multicurrency_code != $conf->currency) { ?>
+		<td class="linecolutotalht_currency"></td>
+	<?php } ?>
+<?php } elseif ($line->qty < 0) {
+	// Base colspan if there is no module activated to display line correctly
+	$colspan = 3;
+
+	// Handling colspan if margin module is enabled
+	if (!empty($object->element) && in_array($object->element, array('facture', 'facturerec', 'propal', 'commande')) && isModEnabled('margin') && empty($user->socid)) {
+		if ($user->hasRight('margins', 'creer')) {
+			$colspan += 1;
+		}
+		if (getDolGlobalString('DISPLAY_MARGIN_RATES') && $user->hasRight('margins', 'liretous')) {
+			$colspan += 1;
+		}
+		if (getDolGlobalString('DISPLAY_MARK_RATES') && $user->hasRight('margins', 'liretous')) {
+			$colspan += 1;
+		}
+	}
+
+	// Handling colspan if multicurrency module is enabled
+	if (isModEnabled('multicurrency') && $object->multicurrency_code != $conf->currency) {
+		$colspan += 1;
+	}
+
+	// Handling colspan if MAIN_NO_INPUT_PRICE_WITH_TAX conf is enabled
+	if (!getDolGlobalInt('MAIN_NO_INPUT_PRICE_WITH_TAX') && $object->element != 'facturerec') {
+		$colspan += 1;
+	}
+
+	// Handling colspan if PRODUCT_USE_UNITS conf is enabled
+	if (getDolGlobalString('PRODUCT_USE_UNITS')) {
+		$colspan += 1;
+	}
+	?>
 	<td class="linecollabel nowrap right" <?php echo !colorIsLight($line_color) ? ' style="color: white"' : ' style="color: black"' ?> colspan="<?php echo $colspan + 2 ?>">
 		<?php
-		echo $description;
+		echo $line->desc;
 		if (array_key_exists('subtotalshowtotalexludingvatonpdf', $line_options)) {
 			echo '&nbsp; <span title="' . $langs->trans("ShowTotalExludingVATOnPDF") . '">%</span>';
 		}
@@ -234,6 +264,11 @@ if ($this->status == 0) {
 	}
 	print '<td colspan="' . $colspan . '"></td>';
 }
+
+if ($action == 'selectlines') { ?>
+	<td class="linecolcheck center"><input type="checkbox" class="linecheckbox" name="line_checkbox[<?php print $i + 1; ?>]" value="<?php print $line->id; ?>" ></td>
+<?php }
+
 echo '</tr>';
 echo '<!-- END PHP TEMPLATE subtotal_view.tpl.php -->';
 ?>
