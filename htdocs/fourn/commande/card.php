@@ -1517,7 +1517,7 @@ if (empty($reshook)) {
 							$num = count($lines);
 
 							for ($i = 0; $i < $num; $i++) {
-								if (empty($lines[$i]->subprice) || $lines[$i]->qty <= 0 || !in_array($lines[$i]->id, $selectedLines)) {
+								if (empty($lines[$i]->subprice) || ($lines[$i]->qty <= 0 && $lines[$i]->special_code != SUBTOTALS_SPECIAL_CODE) || !in_array($lines[$i]->id, $selectedLines)) {
 									continue;
 								}
 
@@ -1616,6 +1616,13 @@ if (empty($reshook)) {
 									setEventMessages($object->error, $object->errors, 'errors');
 									$error++;
 									break;
+								}
+
+								foreach ($object->lines as $line) {
+									if ($line->id == $result) {
+										$line->extraparams = $lines[$i]->extraparams;
+										$line->setExtraParameters();
+									}
 								}
 
 								// Defined the new fk_parent_line

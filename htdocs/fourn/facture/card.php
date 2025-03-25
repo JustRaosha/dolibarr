@@ -1417,6 +1417,13 @@ if (empty($reshook)) {
 									$error++;
 									break;
 								}
+
+								foreach ($object->lines as $line) {
+									if ($line->id == $result) {
+										$line->extraparams = $lines[$i]->extraparams;
+										$line->setExtraParameters();
+									}
+								}
 							}
 
 							// Now reload line
